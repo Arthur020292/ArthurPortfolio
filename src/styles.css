@@ -1,0 +1,311 @@
+@import "tailwindcss";
+
+@theme {
+  --color-shell-bg: #edf1f3;
+  --color-panel: #ffffff;
+  --color-panel-soft: #f6f7f8;
+  --color-rail: #232b30;
+  --color-rail-end: #1d2529;
+  --color-copy: #16181b;
+  --color-muted: #687078;
+  --color-line: #dde2e6;
+  --font-sans: "Sora", sans-serif;
+  --font-heading: "Space Grotesk", sans-serif;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.98), transparent 26%),
+    linear-gradient(180deg, #eef2f4 0%, #e9edef 100%);
+  color: var(--color-copy);
+  font-family: var(--font-sans);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(35, 43, 48, 0.16);
+}
+
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-content-enter {
+  animation: content-enter 280ms ease;
+}
+
+@keyframes design-two-shell-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes design-two-copy-in {
+  from {
+    opacity: 0;
+    transform: translateX(-22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes design-two-hero-in {
+  from {
+    opacity: 0;
+    transform: translateX(28px) scale(1.02);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes design-two-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.design-two-shell {
+  animation: design-two-shell-in 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.design-two-copy {
+  animation: design-two-copy-in 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.design-two-hero {
+  animation: design-two-hero-in 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.design-two-badge {
+  animation: design-two-float 3.8s ease-in-out infinite;
+}
+
+.design-two-pencil-primary,
+.design-two-pencil-secondary {
+  animation: design-two-float 4.6s ease-in-out infinite;
+}
+
+.design-two-pencil-secondary {
+  animation-delay: 180ms;
+}
+
+@keyframes design-two-left-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-34px);
+  }
+}
+
+@keyframes design-two-left-enter {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes design-two-right-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+}
+
+@keyframes design-two-right-enter {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes design-two-screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes design-two-screen-exit-next {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-120vw);
+  }
+}
+
+@keyframes design-two-screen-enter-next {
+  from {
+    transform: translateX(120vw);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes design-two-screen-exit-previous {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(120vw);
+  }
+}
+
+@keyframes design-two-screen-enter-previous {
+  from {
+    transform: translateX(-120vw);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.design-two-left-stage-exit .design-two-left-item {
+  animation: design-two-left-exit 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.design-two-left-stage-exit .design-two-left-item:nth-child(2) {
+  animation-delay: 35ms;
+}
+
+.design-two-left-stage-exit .design-two-left-item:nth-child(3) {
+  animation-delay: 70ms;
+}
+
+.design-two-left-stage-enter .design-two-left-item {
+  animation: design-two-left-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.design-two-left-stage-enter .design-two-left-item:nth-child(2) {
+  animation-delay: 45ms;
+}
+
+.design-two-left-stage-enter .design-two-left-item:nth-child(3) {
+  animation-delay: 90ms;
+}
+
+.design-two-right-stage-exit .design-two-right-panel {
+  animation: design-two-right-exit 220ms ease both;
+}
+
+.design-two-right-stage-enter .design-two-right-panel {
+  animation: design-two-right-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.design-two-screen-frame {
+  animation: design-two-screen-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.design-two-screen-exit-next {
+  animation: design-two-screen-exit-next 240ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.design-two-screen-enter-next {
+  animation: design-two-screen-enter-next 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.design-two-screen-exit-previous {
+  animation: design-two-screen-exit-previous 240ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.design-two-screen-enter-previous {
+  animation: design-two-screen-enter-previous 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-content-enter,
+  .design-two-shell,
+  .design-two-copy,
+  .design-two-hero,
+  .design-two-badge,
+  .design-two-left-stage-exit .design-two-left-item,
+  .design-two-left-stage-enter .design-two-left-item,
+  .design-two-right-stage-exit .design-two-right-panel,
+  .design-two-right-stage-enter .design-two-right-panel,
+  .design-two-screen-frame,
+  .design-two-screen-exit-next,
+  .design-two-screen-enter-next,
+  .design-two-screen-exit-previous,
+  .design-two-screen-enter-previous,
+  .design-two-pencil-primary,
+  .design-two-pencil-secondary {
+    animation: none;
+  }
+}
+
+@media (max-width: 920px) {
+  body {
+    height: auto;
+    overflow: auto;
+  }
+}
