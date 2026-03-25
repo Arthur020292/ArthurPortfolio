@@ -23,6 +23,10 @@ const DEFAULT_META_DESCRIPTION =
 const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/work/zip-thumb-v2.png';
 const DESIGN_TWO_EXIT_MS = 420;
 const DESIGN_TWO_ENTER_MS = 420;
+const PROJECTS_SEQUENCE_ENTER_MS = 600;
+const CONTACT_EXIT_MS_OVERVIEW = 540;
+const CONTACT_EXIT_MS_PROJECTS = 800;
+const CONTACT_ENTER_MS = 420;
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || '';
 
 function getSiteUrl() {
@@ -292,8 +296,14 @@ function PortfolioLayout() {
   const [transitionState, setTransitionState] = useState('idle');
   const [showStickyNav, setShowStickyNav] = useState(false);
   const [overviewGridMotion, setOverviewGridMotion] = useState(null);
+  const contactPanelTransitionState =
+    displayedRoute.type === 'contact' && transitionState !== 'idle' ? transitionState : 'idle';
+  const contactExitState = actualRoute.type === 'contact' && transitionState === 'exit';
+  const contactTransitionActive =
+    actualRoute.type === 'contact' || displayedRoute.type === 'contact';
   const disableRightPanelTransition =
-    isOverviewRoute(actualRoute.type) && isOverviewRoute(displayedRoute.type);
+    (isOverviewRoute(actualRoute.type) && isOverviewRoute(displayedRoute.type)) ||
+    contactTransitionActive;
 
   useDocumentMeta(
     actualRoute.type === 'project'
@@ -341,25 +351,33 @@ function PortfolioLayout() {
     }
 
     setTransitionState('exit');
+    const isEnteringContact = actualRoute.type === 'contact';
+    const exitDuration = isEnteringContact
+      ? displayedRoute.type === 'projects'
+        ? CONTACT_EXIT_MS_PROJECTS
+        : CONTACT_EXIT_MS_OVERVIEW
+      : DESIGN_TWO_EXIT_MS;
+    const enterDuration = isEnteringContact ? CONTACT_ENTER_MS : DESIGN_TWO_ENTER_MS;
 
     const swapTimer = window.setTimeout(() => {
-      setOverviewGridMotion(
+      const nextOverviewGridMotion =
         isOverviewRoute(displayedRoute.type) && isOverviewRoute(actualRoute.type)
           ? {
               from: displayedRoute.type,
               to: actualRoute.type,
               token: `${displayedRoute.type}-${actualRoute.type}-${Date.now()}`,
             }
-          : null
-      );
+          : null;
+
+      setOverviewGridMotion(nextOverviewGridMotion);
       setDisplayedRoute(actualRoute);
       setTransitionState('enter');
-    }, DESIGN_TWO_EXIT_MS);
+    }, exitDuration);
 
     const finishTimer = window.setTimeout(() => {
       setTransitionState('idle');
       setOverviewGridMotion(null);
-    }, DESIGN_TWO_EXIT_MS + DESIGN_TWO_ENTER_MS);
+    }, exitDuration + enterDuration);
 
     return () => {
       window.clearTimeout(swapTimer);
@@ -485,7 +503,12 @@ function PortfolioLayout() {
           key={`${displayedRoute.key}-panel`}
           ref={rightPanelRef}
         >
-          <PortfolioRightContent overviewGridMotion={overviewGridMotion} route={displayedRoute} />
+          <PortfolioRightContent
+            contactExitState={contactExitState}
+            contactPanelTransitionState={contactPanelTransitionState}
+            overviewGridMotion={overviewGridMotion}
+            route={displayedRoute}
+          />
         </section>
       </div>
       </main>
@@ -963,27 +986,53 @@ function PortfolioContactContent() {
   );
 }
 
-function PortfolioRightContent({ overviewGridMotion, route }) {
+function PortfolioRightContent({
+  contactExitState,
+  contactPanelTransitionState,
+  overviewGridMotion,
+  route,
+}) {
   if (route.type === 'about') {
-    return <PortfolioProjectGrid mode="featured" overviewGridMotion={overviewGridMotion} />;
+    return (
+      <PortfolioProjectGrid
+        contactExitState={contactExitState}
+        contactPanelTransitionState={contactPanelTransitionState}
+        mode="featured"
+        overviewGridMotion={overviewGridMotion}
+      />
+    );
   }
 
   if (route.type === 'projects') {
-    return <PortfolioProjectGrid mode="all" overviewGridMotion={overviewGridMotion} />;
+    return (
+      <PortfolioProjectGrid
+        contactExitState={contactExitState}
+        contactPanelTransitionState={contactPanelTransitionState}
+        mode="all"
+        overviewGridMotion={overviewGridMotion}
+      />
+    );
   }
 
   if (route.type === 'contact') {
-    return <PortfolioContactPanel />;
+    return <PortfolioContactPanel motionState={contactPanelTransitionState} />;
   }
 
   return <PortfolioProjectViewer project={route.project} />;
 }
 
-function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
+function PortfolioProjectGrid({
+  contactExitState,
+  contactPanelTransitionState,
+  mode = 'all',
+  overviewGridMotion,
+}) {
   const location = useLocation();
   const [projectsSequenceStage, setProjectsSequenceStage] = useState('idle');
   const [projectsSequenceToken, setProjectsSequenceToken] = useState(null);
-  const [projectsSequenceCompressing, setProjectsSequenceCompressing] = useState(false);
+  const [projectsSequenceCompressing, setProjectsSequenceCompressing] = useState(
+    mode === 'all' && location.pathname === PORTFOLIO_PROJECTS_PATH && !overviewGridMotion?.token
+  );
   const featuredProjectOrder = [
     'zip',
     'chronomedia',
@@ -1028,6 +1077,7 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
       : isWideContactTile
         ? 'portfolio-contact-tile-span-2'
         : '';
+  const isContactExit = contactExitState;
   const gridMotionClass =
     mode === 'all'
       ? `${projectsSequenceStage === 'enter' ? 'portfolio-grid-projects-enter' : ''} ${
@@ -1037,12 +1087,13 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
         ? 'portfolio-grid-overview-collapse'
         : overviewGridMotion?.to === 'projects' && mode === 'featured'
           ? 'portfolio-grid-projects-exit'
-        : '';
+          : '';
   const leadProjects =
     mode === 'all' ? orderedProjects.slice(0, featuredProjectOrder.length) : orderedProjects;
   const trailingProjects =
     mode === 'all' ? orderedProjects.slice(featuredProjectOrder.length) : [];
   const showContactTile = mode === 'featured' || remainingDesktopSlots > 0;
+  const exitTileCount = leadProjects.length + trailingProjects.length + (showContactTile ? 1 : 0);
 
   useEffect(() => {
     if (location.hash !== '#projects') {
@@ -1077,6 +1128,25 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
   }, [mode, overviewGridMotion?.to, overviewGridMotion?.token]);
 
   useEffect(() => {
+    if (mode !== 'all' || projectsSequenceStage !== 'enter') {
+      return undefined;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setProjectsSequenceStage('idle');
+      return undefined;
+    }
+
+    const settleTimer = window.setTimeout(() => {
+      setProjectsSequenceStage('idle');
+    }, PROJECTS_SEQUENCE_ENTER_MS);
+
+    return () => {
+      window.clearTimeout(settleTimer);
+    };
+  }, [mode, projectsSequenceStage, projectsSequenceToken]);
+
+  useEffect(() => {
     if (mode !== 'all' || !projectsSequenceToken) {
       return undefined;
     }
@@ -1107,10 +1177,10 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
       </div>
 
       <div
-        className={`relative grid flex-1 grid-cols-3 overflow-hidden border-r border-b border-slate-200 bg-[#fbfaf7] max-[980px]:grid-cols-2 max-[720px]:grid-cols-1 ${gridMotionClass}`}
+        className={`relative grid flex-1 grid-cols-3 border-r border-b border-slate-200 bg-[#fbfaf7] max-[980px]:grid-cols-2 max-[720px]:grid-cols-1 ${gridMotionClass} ${isContactExit ? 'portfolio-grid-contact-exit' : ''}`}
         key={overviewGridMotion?.token || mode}
       >
-        {leadProjects.map((project) => (
+        {leadProjects.map((project, index) => (
           <Link
             className={`portfolio-project-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4 ${
               mode === 'all' ? 'min-h-[17.75rem] max-[980px]:min-h-[12.5rem]' : ''
@@ -1118,6 +1188,11 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
               mode === 'all' ? 'portfolio-project-tile-shared' : ''
             }`}
             key={project.slug}
+            style={
+              isContactExit
+                ? { animationDelay: `${(exitTileCount - 1 - index) * 30}ms` }
+                : undefined
+            }
             to={getProjectPath(project.slug)}
           >
             <span
@@ -1150,9 +1225,15 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
             className="portfolio-project-tile portfolio-project-tile-new group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4"
             key={project.slug}
             style={
-              overviewGridMotion?.to === 'projects'
-                ? { animationDelay: `${20 + index * 60}ms` }
-                : undefined
+              isContactExit
+                ? {
+                    animationDelay: `${
+                      (exitTileCount - 1 - (leadProjects.length + index)) * 30
+                    }ms`,
+                  }
+                : overviewGridMotion?.to === 'projects'
+                  ? { animationDelay: `${20 + index * 60}ms` }
+                  : undefined
             }
             to={getProjectPath(project.slug)}
           >
@@ -1191,8 +1272,14 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
               contactTileLayoutClass
             }`}
             style={
-              mode === 'all' && overviewGridMotion?.to === 'projects'
-                ? { animationDelay: `${80 + trailingProjects.length * 70}ms` }
+              isContactExit
+                ? {
+                    animationDelay: `${
+                      (exitTileCount - 1 - (leadProjects.length + trailingProjects.length)) * 30
+                    }ms`,
+                  }
+                : mode === 'all' && overviewGridMotion?.to === 'projects'
+                  ? { animationDelay: `${80 + trailingProjects.length * 70}ms` }
                 : undefined
             }
             to={PORTFOLIO_CONTACT_PATH}
@@ -1265,7 +1352,7 @@ function FeaturedProjectCtaContent() {
   );
 }
 
-function PortfolioContactPanel() {
+function PortfolioContactPanel({ motionState = 'idle' }) {
   const [formState, setFormState] = useState({
     company: '',
     email: '',
@@ -1326,7 +1413,15 @@ function PortfolioContactPanel() {
   }
 
   return (
-    <div className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#f7f3ed_0%,#f2ede5_100%)] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:px-5 max-[640px]:px-4 max-[640px]:py-8">
+    <div
+      className={`portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden border-l border-slate-200 bg-[#fbfaf7] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:border-l-0 max-[980px]:px-5 max-[640px]:px-4 max-[640px]:py-8 ${
+        motionState === 'enter'
+          ? 'portfolio-contact-panel-enter'
+          : motionState === 'exit'
+            ? 'portfolio-contact-panel-exit'
+            : ''
+      }`}
+    >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,rgba(255,255,255,0.9),transparent_26%),radial-gradient(circle_at_78%_74%,rgba(15,23,42,0.06),transparent_24%)]" />
       <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:rounded-[26px] max-[980px]:p-6 max-[640px]:rounded-[22px] max-[640px]:p-4">
         <form aria-busy={isSubmitting} className="grid gap-4" onSubmit={handleSubmit}>
