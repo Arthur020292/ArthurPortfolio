@@ -311,28 +311,12 @@ select:focus-visible,
   }
 }
 
-.portfolio-left-stage-exit .portfolio-left-item {
-  animation: portfolio-left-exit 220ms cubic-bezier(0.4, 0, 1, 1) both;
+.portfolio-left-stage-exit {
+  animation: portfolio-left-exit 420ms cubic-bezier(0.4, 0, 1, 1) both;
 }
 
-.portfolio-left-stage-exit .portfolio-left-item:nth-child(2) {
-  animation-delay: 35ms;
-}
-
-.portfolio-left-stage-exit .portfolio-left-item:nth-child(3) {
-  animation-delay: 70ms;
-}
-
-.portfolio-left-stage-enter .portfolio-left-item {
+.portfolio-left-stage-enter {
   animation: portfolio-left-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.portfolio-left-stage-enter .portfolio-left-item:nth-child(2) {
-  animation-delay: 45ms;
-}
-
-.portfolio-left-stage-enter .portfolio-left-item:nth-child(3) {
-  animation-delay: 90ms;
 }
 
 .portfolio-right-stage-exit .portfolio-right-panel {
