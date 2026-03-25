@@ -775,7 +775,7 @@ function PortfolioProjectDetails({ project }) {
 
 function CaseStudySection({ section }) {
   return (
-    <section className="rounded-[24px] border border-slate-200 bg-white/80 p-5 shadow-[0_8px_24px_rgba(15,23,42,0.03)] max-[640px]:rounded-[20px] max-[640px]:p-4">
+    <section className="border-t border-slate-200/80 pt-5 max-[640px]:pt-4">
       <h2 className="font-heading text-[1.05rem] font-bold tracking-[-0.03em] text-slate-900 max-[640px]:text-[1rem]">
         {section.title}
       </h2>
@@ -1525,7 +1525,7 @@ function PortfolioContactPanel({ motionState = 'idle' }) {
             />
           </label>
 
-          <div className="mt-6 border-t border-slate-200 pt-6 max-[640px]:mt-4 max-[640px]:pt-4">
+          <div className="mt-4 pt-3 max-[640px]:mt-3 max-[640px]:pt-2">
             <button
               className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 max-[640px]:w-full"
               style={{ backgroundColor: BRAND_COLOR }}
@@ -1678,7 +1678,7 @@ function PortfolioProjectViewer({ project }) {
       <div className="absolute inset-0 bg-[radial-gradient(rgba(21,22,25,0.12)_0.9px,transparent_0.9px)] bg-[size:6px_6px] opacity-18" />
       <div className="relative flex h-full w-full items-center justify-center">
         <div
-          className={`portfolio-screen-frame max-w-[min(76%,820px)] overflow-hidden rounded-[24px] bg-white/35 shadow-[0_26px_60px_rgba(15,18,25,0.18)] backdrop-blur-[2px] max-[980px]:max-w-[92%] ${
+          className={`portfolio-screen-frame flex w-full items-center justify-center ${
             screenTransition === 'exit'
               ? screenDirection === 'next'
                 ? 'portfolio-screen-exit-next'
@@ -1693,15 +1693,17 @@ function PortfolioProjectViewer({ project }) {
           }`}
           key={`${project.slug}-${displayedScreenIndex}`}
         >
-          <SafeImage
-            alt={currentScreen.alt}
-            className="max-h-[72vh] w-full object-contain max-[980px]:max-h-[46vh] max-[640px]:max-h-[42vh]"
-            fetchPriority="high"
-            loading="eager"
-            fallbackClassName="h-[52vh] w-[min(76vw,760px)] rounded-[24px]"
-            fallbackLabel={project.name}
-            src={currentScreen.src}
-          />
+          <div className="mx-auto w-full max-w-[min(88vw,980px)] overflow-hidden rounded-[12px] border border-white/30 bg-white/24 shadow-[0_22px_48px_rgba(15,18,25,0.16)] max-[640px]:rounded-[10px]">
+            <SafeImage
+              alt={currentScreen.alt}
+              className="max-h-[72vh] w-full object-contain max-[980px]:max-h-[46vh] max-[640px]:max-h-[42vh]"
+              fetchPriority="high"
+              loading="eager"
+              fallbackClassName="h-[52vh] w-full rounded-[12px] max-[640px]:rounded-[10px]"
+              fallbackLabel={project.name}
+              src={currentScreen.src}
+            />
+          </div>
         </div>
       </div>
 
