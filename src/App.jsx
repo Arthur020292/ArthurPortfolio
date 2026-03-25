@@ -1,33 +1,187 @@
 import {
   Link,
   Navigate,
-  Outlet,
   Route,
   Routes,
   useLocation,
+  useNavigate,
   useParams,
 } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import { aboutContent, designOptions, projects } from './data';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { aboutContent, projects } from './data';
 
-const DESIGN_ONE_PATH = '/design1';
-const DESIGN_ONE_NAME = 'Design 1';
-const DESIGN_TWO_PATH = '/design2';
-const DESIGN_TWO_NAME = 'Design 2';
+const LEGACY_DESIGN_ONE_PATH = '/design1';
+const LEGACY_DESIGN_TWO_PATH = '/design2';
+const PORTFOLIO_HOME_PATH = '/';
+const PORTFOLIO_CONTACT_PATH = '/contact';
+const PORTFOLIO_PROJECTS_PATH = '/projects';
+const BRAND_COLOR = '#eb6e51';
+const CONTACT_EMAIL = 'arthur.baduyen@gmail.com';
+const LINKEDIN_URL = 'https://www.linkedin.com/in/arthurbaduyenf/';
+const SITE_NAME = 'Arthur Baduyen';
+const DEFAULT_META_DESCRIPTION =
+  'Arthur Baduyen is a Senior Product Designer focused on product UX, frontend-ready design, and AI-augmented delivery.';
+const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/work/zip-thumb-v2.png';
 const DESIGN_TWO_EXIT_MS = 220;
 const DESIGN_TWO_ENTER_MS = 420;
-const DESIGN_TWO_DEFAULT_PROJECT = projects[0];
+const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || '';
 
-function useDocumentMeta(title, description) {
+function getSiteUrl() {
+  if (ENV_SITE_URL) {
+    return ENV_SITE_URL;
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/$/, '');
+  }
+
+  return '';
+}
+
+function getProjectPath(slug) {
+  return `${PORTFOLIO_PROJECTS_PATH}/${slug}`;
+}
+
+function toAbsoluteUrl(path) {
+  if (!path) {
+    return '';
+  }
+
+  if (/^https?:\/\//.test(path)) {
+    return path;
+  }
+
+  const siteUrl = getSiteUrl();
+
+  if (!siteUrl) {
+    return path;
+  }
+
+  return `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+function setMetaTag({ content, name, property }) {
+  if (!content) {
+    return;
+  }
+
+  const selector = name ? `meta[name="${name}"]` : `meta[property="${property}"]`;
+  let element = document.head.querySelector(selector);
+
+  if (!element) {
+    element = document.createElement('meta');
+
+    if (name) {
+      element.setAttribute('name', name);
+    }
+
+    if (property) {
+      element.setAttribute('property', property);
+    }
+
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute('content', content);
+}
+
+function setCanonicalLink(href) {
+  let element = document.head.querySelector('link[rel="canonical"]');
+
+  if (!element) {
+    element = document.createElement('link');
+    element.setAttribute('rel', 'canonical');
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute('href', href);
+}
+
+function setStructuredData(data) {
+  let script = document.head.querySelector('script[data-portfolio-schema="true"]');
+
+  if (!script) {
+    script = document.createElement('script');
+    script.setAttribute('type', 'application/ld+json');
+    script.setAttribute('data-portfolio-schema', 'true');
+    document.head.appendChild(script);
+  }
+
+  script.textContent = JSON.stringify(data);
+}
+
+function useDocumentMeta({
+  description = DEFAULT_META_DESCRIPTION,
+  imagePath = DEFAULT_SOCIAL_IMAGE_PATH,
+  path = PORTFOLIO_HOME_PATH,
+  title,
+  type = 'website',
+}) {
   useEffect(() => {
     document.title = title;
 
-    const meta = document.querySelector('meta[name="description"]');
+    const canonicalUrl = toAbsoluteUrl(path);
+    const imageUrl = toAbsoluteUrl(imagePath);
 
-    if (meta) {
-      meta.setAttribute('content', description);
+    setMetaTag({ name: 'description', content: description });
+    setMetaTag({ name: 'robots', content: 'index,follow,max-image-preview:large' });
+    setMetaTag({ property: 'og:site_name', content: SITE_NAME });
+    setMetaTag({ property: 'og:title', content: title });
+    setMetaTag({ property: 'og:description', content: description });
+    setMetaTag({ property: 'og:type', content: type });
+    setMetaTag({ property: 'og:url', content: canonicalUrl || path });
+    setMetaTag({ property: 'og:image', content: imageUrl || imagePath });
+    setMetaTag({ name: 'twitter:card', content: 'summary_large_image' });
+    setMetaTag({ name: 'twitter:title', content: title });
+    setMetaTag({ name: 'twitter:description', content: description });
+    setMetaTag({ name: 'twitter:image', content: imageUrl || imagePath });
+
+    if (canonicalUrl) {
+      setCanonicalLink(canonicalUrl);
     }
-  }, [description, title]);
+
+    if (type === 'article') {
+      setStructuredData({
+        '@context': 'https://schema.org',
+        '@type': 'CreativeWork',
+        author: {
+          '@type': 'Person',
+          email: CONTACT_EMAIL,
+          jobTitle: 'Senior Product Designer',
+          name: SITE_NAME,
+          sameAs: [LINKEDIN_URL],
+        },
+        description,
+        image: imageUrl ? [imageUrl] : undefined,
+        headline: title,
+        name: title,
+        url: canonicalUrl || path,
+      });
+
+      return;
+    }
+
+    setStructuredData({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Person',
+          email: CONTACT_EMAIL,
+          jobTitle: 'Senior Product Designer',
+          name: SITE_NAME,
+          sameAs: [LINKEDIN_URL],
+          url: getSiteUrl() || undefined,
+        },
+        {
+          '@type': 'WebSite',
+          description: DEFAULT_META_DESCRIPTION,
+          image: imageUrl || imagePath,
+          name: SITE_NAME,
+          url: getSiteUrl() || canonicalUrl || path,
+        },
+      ],
+    });
+  }, [description, imagePath, path, title, type]);
 }
 
 function usePrefersReducedMotion() {
@@ -49,8 +203,11 @@ function usePrefersReducedMotion() {
 function SafeImage({
   alt,
   className = '',
+  decoding = 'async',
   fallbackClassName = '',
   fallbackLabel = 'Preview',
+  fetchPriority = 'auto',
+  loading = 'lazy',
   src,
 }) {
   const [hasError, setHasError] = useState(!src);
@@ -77,328 +234,28 @@ function SafeImage({
     <img
       alt={alt}
       className={className}
+      decoding={decoding}
+      fetchPriority={fetchPriority}
+      loading={loading}
       onError={() => setHasError(true)}
       src={src}
     />
   );
 }
 
-function DesignIndexPage() {
-  useDocumentMeta(
-    'Arthur Baduyen | Design Index',
-    'A table of contents for Arthur Baduyen portfolio design explorations and layout directions.'
-  );
+function parsePortfolioRoute(pathname) {
+  const normalizedPath =
+    pathname !== '/' && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 
-  return (
-    <main className="min-h-dvh bg-white px-8 py-12 max-[720px]:px-5">
-      <div className="mx-auto max-w-4xl">
-        <p className="mb-3 text-xs font-bold tracking-[0.18em] text-slate-500 uppercase">
-          Designs
-        </p>
-        <h1 className="font-heading text-[clamp(2rem,4vw,3.2rem)] leading-[1.02] font-bold tracking-[-0.03em] text-slate-900">
-          Portfolio design directions
-        </h1>
-
-        <div className="mt-10 grid gap-4">
-          {designOptions.map((design) => (
-            <Link
-              key={design.path}
-              className="block border-b border-slate-200 py-4 text-[1.15rem] text-slate-900 no-underline transition-colors hover:text-slate-500"
-              to={design.path}
-            >
-              {design.name}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </main>
-  );
-}
-
-function ProfileRail() {
-  return (
-    <aside className="sticky top-0 flex h-dvh flex-col justify-between overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.08),_transparent_36%),linear-gradient(180deg,#232b30_0%,#1d2529_100%)] px-9 py-10 text-slate-50 max-[920px]:static max-[920px]:h-auto max-[920px]:gap-8 max-[920px]:px-6 max-[920px]:py-8">
-      <div className="flex min-h-0 flex-1 flex-col gap-6">
-        <div className="grid h-31 w-31 place-items-center rounded-full border border-white/15 bg-[linear-gradient(135deg,rgba(255,255,255,0.2),rgba(255,255,255,0.06)),#8b98a2] shadow-[inset_0_1px_10px_rgba(255,255,255,0.14)]">
-          <span className="font-heading text-[2rem] font-bold tracking-[0.08em]">
-            AB
-          </span>
-        </div>
-
-        <div>
-          <p className="mb-3 text-xs font-bold tracking-[0.18em] text-white/95 uppercase">
-            Senior Product Designer
-          </p>
-          <h1 className="font-heading text-[clamp(2.2rem,4vw,3rem)] leading-[1.02] font-bold tracking-[-0.03em] text-white">
-            Arthur
-            <br />
-            Baduyen
-          </h1>
-          <p className="mt-4 text-[1.05rem] font-medium text-slate-100">
-            AI-Augmented Design &amp; Development
-          </p>
-          <p className="mt-4 max-w-[30ch] text-[1.05rem] leading-[1.75] text-white/78">
-            Senior Product Designer with 10+ years of experience designing and
-            delivering digital products from concept to production, with a focus
-            on UX systems, frontend-ready design, and AI-assisted product
-            development.
-          </p>
-        </div>
-
-        <div className="mt-auto grid gap-4">
-          <a
-            className="inline-flex min-h-13 items-center justify-center rounded-full bg-slate-50 px-5 py-4 text-center text-[1.02rem] font-semibold text-slate-900 transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(6,8,10,0.18)]"
-            href="mailto:arthur.baduyen@gmail.com"
-          >
-            arthur.baduyen@gmail.com
-          </a>
-          <div className="flex flex-wrap gap-x-6 gap-y-3 text-lg text-white/90">
-            <a
-              className="border-b border-white/25 pb-0.5 transition-colors hover:text-white"
-              href="https://www.linkedin.com/in/arthurbaduyenf/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              LinkedIn
-            </a>
-            <a
-              className="border-b border-white/25 pb-0.5 transition-colors hover:text-white"
-              href="/assets/ARTHURBADUYEN_2024.pdf"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Resume
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <footer className="mt-8 border-t border-white/12 pt-4 text-sm text-white/65">
-        © {new Date().getFullYear()} Arthur Baduyen
-      </footer>
-    </aside>
-  );
-}
-
-function ProjectCard({ project }) {
-  return (
-    <Link
-      className="group grid gap-4 text-inherit no-underline transition-transform duration-200 hover:-translate-y-1 hover:opacity-90"
-      to={`projects/${project.slug}`}
-    >
-      <SafeImage
-        alt={project.cardAlt}
-        className="aspect-[1.08/1] w-full rounded-md border border-slate-200 bg-slate-50 object-cover"
-        fallbackLabel={project.name}
-        src={project.cardImage}
-      />
-      <div>
-        <h3 className="font-heading text-[2rem] leading-none font-bold tracking-[-0.03em] text-slate-900">
-          {project.name}
-        </h3>
-        <p className="mt-2 max-w-[34ch] text-[1.05rem] leading-[1.7] text-slate-500">
-          {project.cardSummary}
-        </p>
-      </div>
-    </Link>
-  );
-}
-
-function DesignOneHomePage() {
-  useDocumentMeta(
-    `Arthur Baduyen | ${DESIGN_ONE_NAME}`,
-    'Minimal portfolio of Arthur Baduyen, a Senior Product Designer specializing in AI-augmented design, UX systems, and frontend-ready product experiences.'
-  );
-
-  return (
-    <div>
-      <div className="mb-8 max-w-[820px]">
-        <p className="mb-3 text-xs font-bold tracking-[0.18em] text-slate-900 uppercase">
-          Projects
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-6 max-[720px]:grid-cols-1">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function DesignOneProjectPage() {
-  const { slug } = useParams();
-  const project = projects.find((entry) => entry.slug === slug);
-
-  useDocumentMeta(
-    project?.metaTitle ?? `Arthur Baduyen | ${DESIGN_ONE_NAME}`,
-    project?.metaDescription ??
-      'Minimal portfolio of Arthur Baduyen, a Senior Product Designer specializing in AI-augmented design, UX systems, and frontend-ready product experiences.'
-  );
-
-  if (!project) {
-    return <Navigate replace to={DESIGN_ONE_PATH} />;
-  }
-
-  return (
-    <div>
-      <Link
-        className="mb-7 inline-flex items-center gap-2 text-[0.94rem] text-slate-500 no-underline transition-colors hover:text-slate-900"
-        to={DESIGN_ONE_PATH}
-      >
-        <span aria-hidden="true">←</span>
-        <span>Back to selected projects</span>
-      </Link>
-
-      <header className="grid gap-4">
-        <p className="text-xs font-bold tracking-[0.18em] text-slate-900 uppercase">
-          {project.category}
-        </p>
-        <h2 className="font-heading text-[clamp(2.2rem,4vw,3.8rem)] leading-[1.02] font-bold tracking-[-0.03em] text-slate-900">
-          {project.name}
-        </h2>
-        <p className="max-w-[64ch] text-[1.12rem] leading-[1.8] text-slate-500">
-          {project.overview}
-        </p>
-      </header>
-
-      <figure className="mt-7 overflow-hidden rounded-[24px] border border-slate-200 bg-slate-50">
-        <SafeImage
-          alt={project.heroAlt}
-          className="w-full"
-          fallbackLabel={project.name}
-          src={project.heroImage}
-        />
-      </figure>
-
-      <div className="mt-6 grid grid-cols-3 gap-4 max-[720px]:grid-cols-1">
-        <MetaCard label="Role" value={project.role} />
-        <MetaCard label="Duration" value={project.duration} />
-        <MetaCard label="Focus" value={project.focus} />
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-4 max-[720px]:grid-cols-1">
-        <InfoCard title="Challenge">{project.challenge}</InfoCard>
-        <InfoCard title="Approach">{project.approach}</InfoCard>
-        <InfoCard title="Selected Work">
-          <ul className="list-disc space-y-3 pl-5">
-            {project.selectedWork.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </InfoCard>
-        <InfoCard title="Outcome">{project.outcome}</InfoCard>
-      </div>
-
-      <section
-        aria-labelledby={`${project.slug}-screens`}
-        className="mt-6 grid grid-cols-2 gap-4 max-[720px]:grid-cols-1"
-      >
-        <h3
-          className="col-span-full font-heading text-[1.2rem] font-bold text-slate-900 max-[720px]:col-span-1"
-          id={`${project.slug}-screens`}
-        >
-          Selected screens
-        </h3>
-        {project.gallery.map((image) => (
-          <figure
-            className="overflow-hidden rounded-[20px] border border-slate-200 bg-slate-50"
-            key={image.src}
-          >
-            <SafeImage
-              alt={image.alt}
-              className="w-full"
-              fallbackLabel={project.name}
-              src={image.src}
-            />
-          </figure>
-        ))}
-      </section>
-
-      <section className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-6">
-        <div>
-          <h3 className="font-heading text-xl font-bold text-slate-900">
-            {project.ctaTitle}
-          </h3>
-          <p className="mt-2 max-w-[48ch] text-[1rem] leading-[1.75] text-slate-500">
-            {project.ctaBody}
-          </p>
-        </div>
-        <a
-          className="inline-flex min-h-13 items-center justify-center rounded-full bg-slate-900 px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
-          href="mailto:arthur.baduyen@gmail.com"
-        >
-          Start a conversation
-        </a>
-      </section>
-    </div>
-  );
-}
-
-function MetaCard({ label, value }) {
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-4">
-      <span className="mb-1 block text-[0.76rem] font-bold tracking-[0.14em] text-slate-500 uppercase">
-        {label}
-      </span>
-      <strong className="text-[0.98rem] leading-[1.5] text-slate-900">
-        {value}
-      </strong>
-    </article>
-  );
-}
-
-function InfoCard({ children, title }) {
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-6 text-[1rem] leading-[1.75] text-slate-500">
-      <h3 className="mb-3 font-heading text-[1.18rem] font-bold text-slate-900">
-        {title}
-      </h3>
-      <div>{children}</div>
-    </article>
-  );
-}
-
-function DesignOneLayout() {
-  const location = useLocation();
-  const panelRef = useRef(null);
-
-  useEffect(() => {
-    panelRef.current?.scrollTo({ top: 0, behavior: 'auto' });
-  }, [location.pathname]);
-
-  return (
-    <div className="grid min-h-dvh w-full max-w-dvw grid-cols-[minmax(320px,380px)_minmax(0,1fr)] overflow-hidden max-[920px]:grid-cols-1">
-      <ProfileRail />
-      <section
-        className="h-dvh overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.94),#ffffff_24%)] px-14 py-12 max-[920px]:h-auto max-[920px]:overflow-visible max-[920px]:px-6 max-[920px]:py-9"
-        ref={panelRef}
-      >
-        <div className="animate-content-enter" key={location.pathname}>
-          <Outlet />
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function parseDesignTwoRoute(pathname) {
-  const relativePath = pathname.replace(`${DESIGN_TWO_PATH}/`, '');
-
-  if (!relativePath || pathname === DESIGN_TWO_PATH) {
+  if (normalizedPath === PORTFOLIO_HOME_PATH) {
     return { key: 'about', type: 'about' };
   }
 
-  if (relativePath === 'about') {
-    return { key: 'about', type: 'about' };
-  }
-
-  if (relativePath === 'contact') {
+  if (normalizedPath === PORTFOLIO_CONTACT_PATH) {
     return { key: 'contact', type: 'contact' };
   }
 
-  const match = relativePath.match(/^projects\/([^/]+)$/);
+  const match = normalizedPath.match(/^\/projects\/([^/]+)$/);
 
   if (match) {
     const project = projects.find((entry) => entry.slug === match[1]);
@@ -415,28 +272,41 @@ function parseDesignTwoRoute(pathname) {
   return { key: 'missing', type: 'missing' };
 }
 
-function DesignTwoLayout() {
+function PortfolioLayout() {
   const location = useLocation();
-  const actualRoute = parseDesignTwoRoute(location.pathname);
+  const actualRoute = parsePortfolioRoute(location.pathname);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const leftPanelRef = useRef(null);
+  const mainContentRef = useRef(null);
+  const previousPathRef = useRef(location.pathname);
+  const lastLeftScrollRef = useRef(0);
   const [displayedRoute, setDisplayedRoute] = useState(actualRoute);
   const [transitionState, setTransitionState] = useState('idle');
+  const [showStickyNav, setShowStickyNav] = useState(false);
 
   useDocumentMeta(
     actualRoute.type === 'project'
-      ? actualRoute.project.metaTitle
-      : actualRoute.type === 'about'
-        ? `Arthur Baduyen | ${DESIGN_TWO_NAME} About`
-        : actualRoute.type === 'contact'
-          ? `Arthur Baduyen | ${DESIGN_TWO_NAME} Contact`
-          : `Arthur Baduyen | ${DESIGN_TWO_NAME}`,
-    actualRoute.type === 'project'
-      ? actualRoute.project.metaDescription
-      : actualRoute.type === 'about'
-        ? 'About Arthur Baduyen, Senior Product Designer with a focus on UX systems, product thinking, and AI-assisted development.'
-        : actualRoute.type === 'contact'
-          ? 'Contact Arthur Baduyen about product design, UI/UX, and AI-augmented design collaboration.'
-          : 'Immersive portfolio exploration for Arthur Baduyen.'
+      ? {
+          description: actualRoute.project.metaDescription,
+          imagePath: actualRoute.project.cardImage || actualRoute.project.heroImage,
+          path: getProjectPath(actualRoute.project.slug),
+          title: actualRoute.project.metaTitle,
+          type: 'article',
+        }
+      : actualRoute.type === 'contact'
+        ? {
+            description:
+              'Contact Arthur Baduyen about product design, UI/UX, design systems, and frontend-ready collaboration.',
+            imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
+            path: PORTFOLIO_CONTACT_PATH,
+            title: 'Arthur Baduyen | Contact',
+          }
+        : {
+            description: DEFAULT_META_DESCRIPTION,
+            imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
+            path: PORTFOLIO_HOME_PATH,
+            title: 'Arthur Baduyen | Senior Product Designer',
+          }
   );
 
   useEffect(() => {
@@ -467,83 +337,285 @@ function DesignTwoLayout() {
     };
   }, [actualRoute, displayedRoute.key, prefersReducedMotion]);
 
+  useEffect(() => {
+    const panel = leftPanelRef.current;
+
+    if (!panel) {
+      return undefined;
+    }
+
+    const handleScroll = () => {
+      const currentScrollTop = panel.scrollTop;
+      const previousScrollTop = lastLeftScrollRef.current;
+      const isScrollingUp = currentScrollTop < previousScrollTop;
+      const shouldShowStickyNav = currentScrollTop > 140 && isScrollingUp;
+
+      setShowStickyNav((current) =>
+        current === shouldShowStickyNav ? current : shouldShowStickyNav
+      );
+
+      lastLeftScrollRef.current = currentScrollTop;
+    };
+
+    handleScroll();
+    panel.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      panel.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const panel = leftPanelRef.current;
+
+    if (!panel) {
+      return;
+    }
+
+    lastLeftScrollRef.current = panel.scrollTop;
+    setShowStickyNav(false);
+  }, [displayedRoute.key]);
+
+  useEffect(() => {
+    if (previousPathRef.current === location.pathname) {
+      return;
+    }
+
+    mainContentRef.current?.focus({ preventScroll: true });
+    previousPathRef.current = location.pathname;
+  }, [location.pathname]);
+
   if (actualRoute.type === 'missing') {
-    return <Navigate replace to={`${DESIGN_TWO_PATH}/projects/${DESIGN_TWO_DEFAULT_PROJECT.slug}`} />;
+    return <Navigate replace to={PORTFOLIO_HOME_PATH} />;
   }
 
   return (
-    <main className="min-h-dvh overflow-hidden bg-white">
+    <>
+      <a className="skip-link" href="#portfolio-main-content">
+        Skip to main content
+      </a>
+      <main
+        className="min-h-dvh overflow-hidden bg-white"
+        id="portfolio-main-content"
+        ref={mainContentRef}
+        tabIndex={-1}
+      >
       <div className="relative grid min-h-dvh grid-cols-[minmax(360px,0.9fr)_minmax(0,1.1fr)] overflow-hidden bg-white max-[980px]:grid-cols-1">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-y-0 left-[45%] z-20 hidden w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(223,218,210,0.35),rgba(223,218,210,0.8),rgba(223,218,210,0.35))] shadow-[0_0_18px_rgba(255,255,255,0.55)] max-[980px]:hidden"
         />
-        <section className="design-two-copy relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 py-10 max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-7 max-[980px]:py-8">
-          <DesignTwoHeader activeRoute={actualRoute.type} />
+        <section
+          aria-label="Portfolio details"
+          className="portfolio-copy relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 py-10 max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-7 max-[980px]:py-8"
+          ref={leftPanelRef}
+        >
+          <div className="relative z-30 max-[980px]:sticky max-[980px]:top-0 max-[980px]:-mx-7 max-[980px]:mb-6 max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] max-[980px]:px-7 max-[980px]:py-4 max-[980px]:backdrop-blur-sm">
+            <PortfolioHeader activeRoute={actualRoute.type} />
+          </div>
+          {showStickyNav ? (
+            <div className="pointer-events-none sticky -top-10 z-30 -mx-12 mb-0 pt-0 pb-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] translate-y-0 opacity-100 max-[980px]:hidden">
+              <div className="pointer-events-auto border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-12 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm">
+                <PortfolioHeader activeRoute={actualRoute.type} />
+              </div>
+            </div>
+          ) : null}
           <div
-            className={`mt-10 flex-1 ${transitionState === 'exit' ? 'design-two-left-stage-exit' : ''} ${transitionState === 'enter' ? 'design-two-left-stage-enter' : ''}`}
+            className={`mt-10 flex-1 ${transitionState === 'exit' ? 'portfolio-left-stage-exit' : ''} ${transitionState === 'enter' ? 'portfolio-left-stage-enter' : ''}`}
             key={displayedRoute.key}
           >
-            <DesignTwoLeftContent route={displayedRoute} />
+            <PortfolioLeftContent route={displayedRoute} />
           </div>
         </section>
 
         <section
-          className={`relative h-dvh min-h-dvh ${displayedRoute.type === 'about' ? 'overflow-y-auto overflow-x-hidden' : 'overflow-hidden'} ${transitionState === 'exit' ? 'design-two-right-stage-exit' : ''} ${transitionState === 'enter' ? 'design-two-right-stage-enter' : ''} max-[980px]:h-auto max-[980px]:overflow-visible`}
+          aria-label={
+            displayedRoute.type === 'project' ? `${displayedRoute.project.name} screens` : 'Portfolio showcase'
+          }
+          className={`relative h-dvh min-h-dvh ${displayedRoute.type === 'about' ? 'overflow-y-auto overflow-x-hidden' : 'overflow-hidden'} ${transitionState === 'exit' ? 'portfolio-right-stage-exit' : ''} ${transitionState === 'enter' ? 'portfolio-right-stage-enter' : ''} max-[980px]:h-auto max-[980px]:overflow-visible`}
           key={`${displayedRoute.key}-panel`}
         >
-          <DesignTwoRightContent route={displayedRoute} />
+          <PortfolioRightContent route={displayedRoute} />
         </section>
       </div>
-    </main>
+      </main>
+    </>
   );
 }
 
-function DesignTwoHeader({ activeRoute }) {
+function PortfolioHeader({ activeRoute, isInteractive = true }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const aboutLinkRef = useRef(null);
+  const contactLinkRef = useRef(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    left: 0,
+    opacity: 0,
+    width: 0,
+  });
+
+  useLayoutEffect(() => {
+    const activeKey =
+      activeRoute === 'about' ? 'about' : activeRoute === 'contact' ? 'contact' : null;
+
+    const activeElement =
+      activeKey === 'about'
+        ? aboutLinkRef.current
+        : activeKey === 'contact'
+          ? contactLinkRef.current
+          : null;
+
+    if (!activeElement) {
+      setIndicatorStyle((current) => ({
+        ...current,
+        opacity: 0,
+      }));
+      return undefined;
+    }
+
+    const updateIndicator = () => {
+      const indicatorWidth = 48;
+      setIndicatorStyle({
+        left: activeElement.offsetLeft + (activeElement.offsetWidth - indicatorWidth) / 2,
+        opacity: 1,
+        width: indicatorWidth,
+      });
+    };
+
+    updateIndicator();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateIndicator);
+
+      return () => {
+        window.removeEventListener('resize', updateIndicator);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(updateIndicator);
+    resizeObserver.observe(activeElement);
+
+    window.addEventListener('resize', updateIndicator);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [activeRoute]);
+
+  const handleProjectsClick = () => {
+    const projectsSection = document.getElementById('portfolio-projects-section');
+    const isAboutRoute = location.pathname === PORTFOLIO_HOME_PATH;
+
+    if (isAboutRoute && projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      navigate('/#projects', { replace: true });
+      return;
+    }
+
+    navigate('/#projects');
+  };
+
   return (
-    <div className="flex items-center gap-6 text-[0.8rem] text-slate-500">
-      <Link
-        className="font-heading text-[1.05rem] font-bold text-slate-900 no-underline"
-        to={DESIGN_TWO_PATH}
-      >
-        Arthur.
-      </Link>
-      <Link
-        className={`transition-colors ${activeRoute === 'about' ? 'text-slate-900' : 'hover:text-slate-900'}`}
-        to={DESIGN_TWO_PATH}
-      >
-        About
-      </Link>
-      <Link
-        className={`transition-colors ${activeRoute === 'contact' ? 'text-slate-900' : 'hover:text-slate-900'}`}
-        to={`${DESIGN_TWO_PATH}/contact`}
-      >
-        Contact
-      </Link>
-    </div>
+    <nav aria-label="Primary" className="flex items-baseline gap-6 text-[0.8rem] text-slate-500">
+      {isInteractive ? (
+        <Link
+          className="font-heading text-[1.05rem] font-bold text-slate-900 no-underline"
+          to={PORTFOLIO_HOME_PATH}
+        >
+          Arthur.
+        </Link>
+      ) : (
+        <span className="font-heading text-[1.05rem] font-bold text-slate-900">
+          Arthur.
+        </span>
+      )}
+      <div className="relative flex items-baseline gap-6 pb-3">
+        <PortfolioHeaderNavLink
+          active={activeRoute === 'about'}
+          href={PORTFOLIO_HOME_PATH}
+          isInteractive={isInteractive}
+          label="About"
+          linkRef={aboutLinkRef}
+        />
+        <PortfolioHeaderNavLink
+          active={activeRoute === 'contact'}
+          href={PORTFOLIO_CONTACT_PATH}
+          isInteractive={isInteractive}
+          label="Contact"
+          linkRef={contactLinkRef}
+        />
+        {isInteractive ? (
+          <button
+            className="relative z-10 hidden cursor-pointer appearance-none border-0 bg-transparent p-0 text-inherit transition-colors hover:text-slate-900 max-[980px]:inline-flex"
+            onClick={handleProjectsClick}
+            type="button"
+          >
+            Projects
+          </button>
+        ) : (
+          <span className="relative z-10 hidden max-[980px]:inline-flex">Projects</span>
+        )}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 h-1 rounded-full transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          style={{
+            backgroundColor: BRAND_COLOR,
+            opacity: indicatorStyle.opacity,
+            transform: `translateX(${indicatorStyle.left}px)`,
+            width: indicatorStyle.width,
+          }}
+        />
+      </div>
+    </nav>
   );
 }
 
-function DesignTwoLeftContent({ route }) {
+function PortfolioHeaderNavLink({ active, href, isInteractive, label, linkRef }) {
+  const className = `relative z-10 transition-colors ${
+    active ? 'text-slate-900' : 'hover:text-slate-900'
+  }`;
+
+  if (!isInteractive) {
+    return (
+      <span className={className} ref={linkRef}>
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <Link
+      aria-current={active ? 'page' : undefined}
+      className={className}
+      ref={linkRef}
+      to={href}
+    >
+      {label}
+    </Link>
+  );
+}
+
+function PortfolioLeftContent({ route }) {
   if (route.type === 'about') {
-    return <DesignTwoAboutContent />;
+    return <PortfolioAboutContent />;
   }
 
   if (route.type === 'contact') {
-    return <DesignTwoContactContent />;
+    return <PortfolioContactContent />;
   }
 
-  return <DesignTwoProjectDetails project={route.project} />;
+  return <PortfolioProjectDetails project={route.project} />;
 }
 
-function DesignTwoProjectDetails({ project }) {
+function PortfolioProjectDetails({ project }) {
   const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
   const previousProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
   const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="design-two-left-item">
+    <div className="flex h-full flex-col pb-28 max-[980px]:pb-0">
+      <div className="portfolio-left-item">
         <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
           {project.shortMeta.label}
         </p>
@@ -552,13 +624,13 @@ function DesignTwoProjectDetails({ project }) {
         </h1>
       </div>
 
-      <div className="design-two-left-item mt-8 max-w-[28rem]">
+      <div className="portfolio-left-item mt-8 max-w-[28rem]">
         <p className="text-[1.08rem] leading-[1.85] text-slate-500">
           {project.shortMeta.summary}
         </p>
       </div>
 
-      <dl className="design-two-left-item mt-8 grid gap-5 text-sm text-slate-500">
+      <dl className="portfolio-left-item mt-8 grid gap-5 text-sm text-slate-500">
         {project.shortMeta.details.map((item) => (
           <div key={item.label}>
             <dt className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
@@ -571,12 +643,36 @@ function DesignTwoProjectDetails({ project }) {
         ))}
       </dl>
 
-      <div className="design-two-left-item mt-auto border-t border-slate-200 pt-7">
+      {project.caseStudySections?.length ? (
+        <div className="portfolio-left-item mt-10 grid gap-4">
+          {project.caseStudySections.map((section) => (
+            <CaseStudySection key={section.title} section={section} />
+          ))}
+        </div>
+      ) : null}
+
+      {project.caseStudyTools?.length ? (
+        <div className="portfolio-left-item mt-10">
+          <SectionLabel>Tools & Technologies</SectionLabel>
+          <div className="mt-4 flex flex-wrap gap-2.5">
+            {project.caseStudyTools.map((tool) => (
+              <span
+                className="rounded-full border border-slate-200 bg-[#fbfaf7] px-3 py-1.5 text-[0.82rem] font-medium text-slate-700"
+                key={tool}
+              >
+                {tool}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 mt-10 border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,0.92)_20%,rgba(250,250,250,0.98))] px-12 pt-10 pb-0 backdrop-blur-sm max-[980px]:static max-[980px]:mx-0 max-[980px]:border-t max-[980px]:border-slate-200 max-[980px]:bg-transparent max-[980px]:px-0 max-[980px]:pt-7 max-[980px]:pb-10 max-[980px]:backdrop-blur-none">
         <div className="flex items-center gap-4 text-[0.96rem]">
           {previousProject ? (
             <Link
               className="text-slate-500 transition-colors hover:text-slate-900"
-              to={`${DESIGN_TWO_PATH}/projects/${previousProject.slug}`}
+              to={getProjectPath(previousProject.slug)}
             >
               Previous project
             </Link>
@@ -587,7 +683,7 @@ function DesignTwoProjectDetails({ project }) {
           {nextProject ? (
             <Link
               className="text-slate-500 transition-colors hover:text-slate-900"
-              to={`${DESIGN_TWO_PATH}/projects/${nextProject.slug}`}
+              to={getProjectPath(nextProject.slug)}
             >
               Next project
             </Link>
@@ -600,19 +696,64 @@ function DesignTwoProjectDetails({ project }) {
   );
 }
 
-function DesignTwoAboutContent() {
+function CaseStudySection({ section }) {
+  return (
+    <section className="rounded-[24px] border border-slate-200 bg-white/80 p-5 shadow-[0_8px_24px_rgba(15,23,42,0.03)]">
+      <h2 className="font-heading text-[1.05rem] font-bold tracking-[-0.03em] text-slate-900">
+        {section.title}
+      </h2>
+
+      {section.body ? (
+        <p className="mt-3 text-[0.98rem] leading-[1.75] text-slate-600">{section.body}</p>
+      ) : null}
+
+      {section.items?.length ? (
+        <ul className="mt-3 grid gap-2.5 list-disc pl-5">
+          {section.items.map((item) => (
+            <li
+              className="text-[0.96rem] leading-[1.7] text-slate-600 marker:text-slate-400"
+              key={item}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
+  );
+}
+
+function PortfolioAboutContent() {
   return (
     <div className="flex h-full flex-col">
-      <div className="design-two-left-item">
-        <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-          About
-        </p>
+      <div className="portfolio-left-item">
         <h1 className="mt-4 font-heading text-[clamp(2.4rem,4vw,4.1rem)] leading-[0.95] font-bold tracking-[-0.05em] text-slate-900">
-          {aboutContent.title}
+          {aboutContent.title.split('\n').map((line, index) => (
+            <Fragment key={line}>
+              {index > 0 ? <br /> : null}
+              {index === 0 ? (
+                <>
+                  {line.split('Arthur')[0]}
+                  <span style={{ color: BRAND_COLOR }}>Arthur</span>
+                  {line.split('Arthur')[1]}
+                </>
+              ) : (
+                line.split(' ').map((word, wordIndex) => (
+                  <Fragment key={`${line}-${word}`}>
+                    {wordIndex > 0 ? ' ' : null}
+                    {word}
+                  </Fragment>
+                ))
+              )}
+            </Fragment>
+          ))}
         </h1>
+        <p className="mt-3 text-[1rem] font-medium tracking-[0.01em] text-slate-500">
+          AI-Augmented Design &amp; Development
+        </p>
       </div>
 
-      <div className="design-two-left-item mt-8 grid gap-5">
+      <div className="portfolio-left-item mt-8 grid gap-5">
         {aboutContent.summary.map((paragraph) => (
           <p
             className="max-w-[30rem] text-[1.02rem] leading-[1.8] text-slate-500"
@@ -623,38 +764,56 @@ function DesignTwoAboutContent() {
         ))}
       </div>
 
-      <div className="design-two-left-item mt-10 grid gap-7 max-[980px]:grid-cols-1">
-        <div>
-          <p className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-            Strengths
-          </p>
-          <ul className="mt-3 grid gap-2 text-[0.98rem] text-slate-700">
-            {aboutContent.strengths.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <p className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-            Tools
-          </p>
-          <ul className="mt-3 grid gap-2 text-[0.98rem] text-slate-700">
-            {aboutContent.tools.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+      <div className="portfolio-left-item mt-10">
+        <SectionLabel>Capabilities</SectionLabel>
+        <div className="mt-4 grid gap-4">
+          {aboutContent.capabilityGroups.map((group) => (
+            <section
+              className="rounded-[24px] border border-slate-200 bg-white/78 p-5 shadow-[0_8px_24px_rgba(15,23,42,0.03)]"
+              key={group.title}
+            >
+              <h2 className="font-heading text-[1.08rem] font-bold tracking-[-0.03em] text-slate-900">
+                {group.title}
+              </h2>
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                {group.items.map((item) => (
+                  <span
+                    className="rounded-full border border-slate-200 bg-[#fbfaf7] px-3 py-1.5 text-[0.84rem] font-medium text-slate-600"
+                    key={item}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
 
-      <div className="design-two-left-item mt-auto border-t border-slate-200 pt-7">
-        <p className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-          Experience
-        </p>
-        <div className="mt-3 grid gap-3 text-[0.95rem] text-slate-700">
+      <div className="portfolio-left-item mt-10">
+        <SectionLabel>Experience</SectionLabel>
+        <div className="mt-4 grid gap-3">
           {aboutContent.experience.map((item) => (
-            <p key={item}>
-              {item}
-            </p>
+            <article
+              className="rounded-[22px] border border-slate-200/90 bg-[#fbfaf7] p-5"
+              key={item}
+            >
+              <p className="text-[0.98rem] leading-[1.75] text-slate-600">{item}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="portfolio-left-item mt-10 pb-10">
+        <SectionLabel>Tools & Workflow</SectionLabel>
+        <div className="mt-4 flex flex-wrap gap-2.5">
+          {aboutContent.tools.map((tool) => (
+            <span
+              className="rounded-full bg-slate-900 px-3 py-1.5 text-[0.82rem] font-medium tracking-[0.01em] text-white"
+              key={tool}
+            >
+              {tool}
+            </span>
           ))}
         </div>
       </div>
@@ -662,174 +821,416 @@ function DesignTwoAboutContent() {
   );
 }
 
-function DesignTwoContactContent() {
-  const [formState, setFormState] = useState({
-    email: '',
-    message: '',
-    name: '',
-  });
+function SectionLabel({ children }) {
+  return (
+    <p className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+      {children}
+    </p>
+  );
+}
 
-  const mailtoHref = `mailto:arthur.baduyen@gmail.com?subject=${encodeURIComponent(
-    formState.name ? `Portfolio inquiry from ${formState.name}` : 'Portfolio inquiry'
-  )}&body=${encodeURIComponent(
-    `Name: ${formState.name || ''}\nEmail: ${formState.email || ''}\n\n${formState.message || ''}`
-  )}`;
-
+function PortfolioContactContent() {
   return (
     <div className="flex h-full flex-col">
-      <div className="design-two-left-item">
-        <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-          Contact
-        </p>
-        <h1 className="mt-4 font-heading text-[clamp(2.3rem,4vw,4rem)] leading-[0.96] font-bold tracking-[-0.05em] text-slate-900">
+      <div className="portfolio-left-item">
+        <h1 className="font-heading text-[clamp(2.3rem,4vw,4rem)] leading-[0.96] font-bold tracking-[-0.05em] text-slate-900">
           Let&apos;s talk about your next product.
         </h1>
         <p className="mt-6 max-w-[29rem] text-[1.02rem] leading-[1.8] text-slate-500">
-          This is an inline prototype form. Fill it out and I&apos;ll open an email draft with your message.
+          Tell me what you&apos;re building, where you need support, and what stage you&apos;re in. I work across product design, redesigns, UX systems, and frontend-ready execution.
         </p>
       </div>
 
-      <form className="design-two-left-item mt-8 grid gap-4">
-        <label className="grid gap-2">
-          <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-            Name
-          </span>
-          <input
-            className="rounded-full border border-slate-200 px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
-            name="name"
-            onChange={(event) =>
-              setFormState((current) => ({
-                ...current,
-                name: event.target.value,
-              }))
-            }
-            type="text"
-            value={formState.name}
-          />
-        </label>
-        <label className="grid gap-2">
-          <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-            Email
-          </span>
-          <input
-            className="rounded-full border border-slate-200 px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
-            name="email"
-            onChange={(event) =>
-              setFormState((current) => ({
-                ...current,
-                email: event.target.value,
-              }))
-            }
-            type="email"
-            value={formState.email}
-          />
-        </label>
-        <label className="grid gap-2">
-          <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-            Message
-          </span>
-          <textarea
-            className="min-h-36 rounded-[24px] border border-slate-200 px-5 py-4 text-slate-900 outline-none transition-colors focus:border-slate-400"
-            name="message"
-            onChange={(event) =>
-              setFormState((current) => ({
-                ...current,
-                message: event.target.value,
-              }))
-            }
-            value={formState.message}
-          />
-        </label>
-      </form>
+      <div className="portfolio-left-item mt-8 rounded-[24px] border border-slate-200 bg-[#fbfaf7] p-5">
+        <p className="text-[0.95rem] leading-[1.7] text-slate-700">
+          I usually reply within 1 to 2 business days. If it looks like a good fit,
+          I&apos;ll suggest the next best step right away.
+        </p>
+      </div>
 
-      <div className="design-two-left-item mt-auto border-t border-slate-200 pt-7">
-        <a
-          className="inline-flex min-h-13 items-center justify-center rounded-full bg-slate-900 px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
-          href={mailtoHref}
-        >
-          Open email draft
-        </a>
+      <div className="portfolio-left-item mt-10">
+        <SectionLabel>Best Fit For</SectionLabel>
+        <ul className="mt-4 grid gap-3 list-disc pl-5">
+          <li className="text-[0.98rem] leading-[1.7] text-slate-600 marker:text-slate-400">
+            New product direction and early-stage UX definition
+          </li>
+          <li className="text-[0.98rem] leading-[1.7] text-slate-600 marker:text-slate-400">
+            Product redesigns, workflow simplification, and design systems
+          </li>
+          <li className="text-[0.98rem] leading-[1.7] text-slate-600 marker:text-slate-400">
+            Frontend-ready design support for teams shipping in React
+          </li>
+        </ul>
+      </div>
+
+      <div className="portfolio-left-item mt-10">
+        <SectionLabel>Quick Contact</SectionLabel>
+        <div className="mt-4 grid gap-3">
+          <a
+            className="inline-flex text-[1rem] text-slate-700 no-underline transition-colors hover:text-slate-900"
+            href={`mailto:${CONTACT_EMAIL}`}
+          >
+            {CONTACT_EMAIL}
+          </a>
+          <a
+            className="inline-flex text-[1rem] text-slate-700 no-underline transition-colors hover:text-slate-900"
+            href={LINKEDIN_URL}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Message me on LinkedIn
+          </a>
+        </div>
       </div>
     </div>
   );
 }
 
-function DesignTwoRightContent({ route }) {
+function PortfolioRightContent({ route }) {
   if (route.type === 'about') {
-    return <DesignTwoAboutProjects />;
+    return <PortfolioProjectGrid />;
   }
 
   if (route.type === 'contact') {
-    return <DesignTwoContactPanel />;
+    return <PortfolioContactPanel />;
   }
 
-  return <DesignTwoProjectViewer project={route.project} />;
+  return <PortfolioProjectViewer project={route.project} />;
 }
 
-function DesignTwoAboutProjects() {
+function PortfolioProjectGrid() {
+  const location = useLocation();
+  const preferredProjectOrder = [
+    'zip',
+    'chromedia',
+    'portlandpedalpower',
+    'nester',
+    'harvest21',
+    'workrite',
+    'kidough',
+    'msp-photography',
+  ];
+
+  const orderedProjects = [
+    ...preferredProjectOrder
+      .map((slug) => projects.find((project) => project.slug === slug))
+      .filter(Boolean),
+    ...projects.filter((project) => !preferredProjectOrder.includes(project.slug)),
+  ];
+  const remainingDesktopSlots = (3 - (orderedProjects.length % 3)) % 3;
+  const isWideContactTile = remainingDesktopSlots === 2;
+
+  useEffect(() => {
+    if (location.hash !== '#projects') {
+      return;
+    }
+
+    const scrollTimer = window.setTimeout(() => {
+      document
+        .getElementById('portfolio-projects-section')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+    };
+  }, [location.hash]);
+
   return (
-    <div className="design-two-right-panel flex h-full min-h-full flex-col border-l border-slate-200 bg-[#fbfaf7] max-[980px]:min-h-[55vh] max-[980px]:border-l-0">
-      <div className="border-b border-slate-200 px-10 py-7 max-[980px]:px-7">
+    <div
+      className="portfolio-right-panel flex h-full min-h-full flex-col border-l border-slate-200 bg-[#fbfaf7] max-[980px]:min-h-[55vh] max-[980px]:border-l-0"
+      id="portfolio-projects-section"
+    >
+      <div className="hidden border-b border-slate-200 px-10 py-7 max-[980px]:block max-[980px]:px-7">
         <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
           Projects
         </p>
       </div>
 
       <div className="grid flex-1 grid-cols-3 gap-px bg-slate-200 max-[980px]:grid-cols-2 max-[720px]:grid-cols-1">
-        {projects.map((project) => (
+        {orderedProjects.map((project) => (
           <Link
-            className="group flex min-h-0 flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline transition-colors hover:text-slate-500 max-[980px]:p-6"
+            className="portfolio-project-tile group flex min-h-0 flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:p-6"
             key={project.slug}
-            to={`${DESIGN_TWO_PATH}/projects/${project.slug}`}
+            to={getProjectPath(project.slug)}
           >
-            <div>
-              <h2 className="max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900">
+            <span
+              aria-hidden="true"
+              className="portfolio-project-overlay absolute inset-0"
+            />
+
+            <div className="relative z-10">
+              <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900">
                 {project.name}
               </h2>
             </div>
 
-            <div className="mt-8">
-              <p className="text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
+            <div className="relative z-10 mt-8">
+              <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
                 {project.category}
               </p>
-              <div className="mt-4 h-1.5 w-12 rounded-full bg-slate-200">
+              <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200">
                 <div
-                  className="h-full rounded-full"
-                  style={{ backgroundColor: project.design2Color }}
+                  className="portfolio-project-bar-fill h-full origin-left rounded-full"
+                  style={{ backgroundColor: project.accentColor }}
                 />
               </div>
             </div>
           </Link>
         ))}
+
+        {remainingDesktopSlots > 0 ? (
+          <Link
+            className={`portfolio-project-tile portfolio-contact-tile group flex min-h-0 flex-col justify-between bg-[#f3f0ea] p-8 text-inherit no-underline max-[980px]:p-6 ${
+              isWideContactTile ? 'portfolio-contact-tile-span-2' : ''
+            }`}
+            to={PORTFOLIO_CONTACT_PATH}
+          >
+            <span
+              aria-hidden="true"
+              className="portfolio-project-overlay absolute inset-0"
+            />
+
+            <div className="relative z-10">
+              <h2
+                className={`portfolio-project-title font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 ${
+                  isWideContactTile ? 'max-w-[18ch]' : 'max-w-[12ch]'
+                }`}
+              >
+                Tell me about your project.
+              </h2>
+            </div>
+
+            <div className="relative z-10 mt-8">
+              <p
+                className={`portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase ${
+                  isWideContactTile ? 'max-w-none' : ''
+                }`}
+              >
+                Start a conversation
+              </p>
+              <div className="portfolio-project-bar mt-6 h-1.5 w-12 rounded-full bg-slate-200">
+                <div
+                  className="portfolio-project-bar-fill h-full origin-left rounded-full"
+                  style={{ backgroundColor: BRAND_COLOR }}
+                />
+              </div>
+            </div>
+          </Link>
+        ) : null}
       </div>
     </div>
   );
 }
 
-function DesignTwoContactPanel() {
+function PortfolioContactPanel() {
+  const [formState, setFormState] = useState({
+    company: '',
+    email: '',
+    message: '',
+    name: '',
+    projectType: '',
+  });
+  const [submitState, setSubmitState] = useState({
+    message: '',
+    status: 'idle',
+  });
+  const isSubmitting = submitState.status === 'submitting';
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    setSubmitState({
+      message: '',
+      status: 'submitting',
+    });
+
+    try {
+      const response = await fetch('/api/contact', {
+        body: JSON.stringify(formState),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setSubmitState({
+          message: result.message || 'I could not send your message right now.',
+          status: 'error',
+        });
+        return;
+      }
+
+      setFormState({
+        company: '',
+        email: '',
+        message: '',
+        name: '',
+        projectType: '',
+      });
+      setSubmitState({
+        message: result.message || 'Thanks, your message has been sent.',
+        status: 'success',
+      });
+    } catch {
+      setSubmitState({
+        message: 'I could not send your message right now. Please try again later.',
+        status: 'error',
+      });
+    }
+  }
+
   return (
-    <div className="design-two-right-panel flex min-h-dvh items-center justify-center bg-[#f6f3ee] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:px-7">
-      <div className="max-w-xl text-center">
-        <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-          Contact
-        </p>
-        <h2 className="mt-4 font-heading text-[clamp(2.3rem,4vw,4.2rem)] leading-[0.95] font-bold tracking-[-0.05em] text-slate-900">
-          Tell me what you&apos;re building.
-        </h2>
-        <p className="mt-6 text-[1.05rem] leading-[1.8] text-slate-500">
-          Product design, design systems, UX strategy, and AI-augmented product work.
-        </p>
+    <div className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#f7f3ed_0%,#f2ede5_100%)] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:px-7">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,rgba(255,255,255,0.9),transparent_26%),radial-gradient(circle_at_78%_74%,rgba(15,23,42,0.06),transparent_24%)]" />
+      <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:p-6">
+        <form aria-busy={isSubmitting} className="grid gap-4" onSubmit={handleSubmit}>
+          <div aria-hidden="true" className="hidden">
+            <label className="block">
+              Company
+              <input
+                autoComplete="off"
+                name="company"
+                onChange={(event) =>
+                  setFormState((current) => ({
+                    ...current,
+                    company: event.target.value,
+                  }))
+                }
+                tabIndex={-1}
+                type="text"
+                value={formState.company}
+              />
+            </label>
+          </div>
+          <label className="grid gap-2">
+            <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+              Name
+            </span>
+            <input
+              autoComplete="name"
+              className="rounded-full border border-slate-200 bg-white px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
+              name="name"
+              placeholder="Your name"
+              required
+              onChange={(event) =>
+                setFormState((current) => ({
+                  ...current,
+                  name: event.target.value,
+                }))
+              }
+              type="text"
+              value={formState.name}
+            />
+          </label>
+          <label className="grid gap-2">
+            <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+              Email
+            </span>
+            <input
+              autoComplete="email"
+              className="rounded-full border border-slate-200 bg-white px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
+              name="email"
+              placeholder="you@company.com"
+              required
+              onChange={(event) =>
+                setFormState((current) => ({
+                  ...current,
+                  email: event.target.value,
+                }))
+              }
+              type="email"
+              value={formState.email}
+            />
+          </label>
+          <label className="grid gap-2">
+            <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+              Project Type
+            </span>
+            <select
+              className="rounded-full border border-slate-200 bg-white px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
+              name="projectType"
+              onChange={(event) =>
+                setFormState((current) => ({
+                  ...current,
+                  projectType: event.target.value,
+                }))
+              }
+              value={formState.projectType}
+            >
+              <option value="">Select one if helpful</option>
+              <option value="New product">New product</option>
+              <option value="Redesign">Redesign</option>
+              <option value="Design system">Design system</option>
+              <option value="Frontend-ready design">Frontend-ready design</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label className="grid gap-2">
+            <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+              Message
+            </span>
+            <textarea
+              className="min-h-44 rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-slate-900 outline-none transition-colors focus:border-slate-400"
+              name="message"
+              placeholder="A quick overview of what you're building, where you need help, and what timeline you're working with."
+              required
+              onChange={(event) =>
+                setFormState((current) => ({
+                  ...current,
+                  message: event.target.value,
+                }))
+              }
+              value={formState.message}
+            />
+          </label>
+
+          <div className="mt-6 border-t border-slate-200 pt-6">
+            <button
+              className="inline-flex min-h-13 items-center justify-center rounded-full bg-slate-900 px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+              disabled={isSubmitting}
+              type="submit"
+            >
+              {isSubmitting ? 'Sending...' : 'Send message'}
+            </button>
+
+            <p
+              aria-atomic="true"
+              aria-live="polite"
+              className={`mt-4 text-[0.95rem] ${
+                submitState.status === 'error' ? 'text-red-600' : 'text-slate-500'
+              }`}
+              role={submitState.status === 'error' ? 'alert' : 'status'}
+            >
+              {submitState.message ||
+                `Or email me directly at ${CONTACT_EMAIL}. I usually reply within 1 to 2 business days.`}
+            </p>
+          </div>
+        </form>
+
+        <div className="mt-4">
+          <a
+            className="text-[0.95rem] text-slate-600 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-900"
+            href={`mailto:${CONTACT_EMAIL}`}
+          >
+            Prefer your email app instead?
+          </a>
+        </div>
       </div>
     </div>
   );
 }
 
-function DesignTwoProjectViewer({ project }) {
+function PortfolioProjectViewer({ project }) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [screenIndex, setScreenIndex] = useState(0);
   const [displayedScreenIndex, setDisplayedScreenIndex] = useState(0);
   const [screenTransition, setScreenTransition] = useState('idle');
   const [screenDirection, setScreenDirection] = useState('next');
+  const preloadedScreensRef = useRef(new Set());
   const currentScreen = project.screens[displayedScreenIndex];
 
   useEffect(() => {
@@ -866,6 +1267,59 @@ function DesignTwoProjectViewer({ project }) {
     };
   }, [displayedScreenIndex, prefersReducedMotion, screenIndex]);
 
+  useEffect(() => {
+    if (typeof Image === 'undefined') {
+      return undefined;
+    }
+
+    const adjacentScreenSources = [
+      project.screens[displayedScreenIndex - 1],
+      project.screens[displayedScreenIndex + 1],
+    ]
+      .filter(Boolean)
+      .map((screen) => screen.src)
+      .filter((src) => src && !preloadedScreensRef.current.has(src));
+
+    if (!adjacentScreenSources.length) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    let idleCallbackId;
+    let timeoutId;
+
+    const preloadScreens = () => {
+      if (cancelled) {
+        return;
+      }
+
+      adjacentScreenSources.forEach((src) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = src;
+        preloadedScreensRef.current.add(src);
+      });
+    };
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      idleCallbackId = window.requestIdleCallback(preloadScreens, { timeout: 1200 });
+    } else {
+      timeoutId = window.setTimeout(preloadScreens, 240);
+    }
+
+    return () => {
+      cancelled = true;
+
+      if (typeof window !== 'undefined' && idleCallbackId) {
+        window.cancelIdleCallback(idleCallbackId);
+      }
+
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [displayedScreenIndex, project.screens]);
+
   function handleScreenChange(nextIndex) {
     if (
       nextIndex < 0 ||
@@ -881,23 +1335,23 @@ function DesignTwoProjectViewer({ project }) {
 
   return (
     <div
-      className="design-two-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden px-14 py-12 max-[980px]:min-h-[55vh] max-[980px]:px-6"
-      style={{ backgroundColor: project.design2Color }}
+      className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden px-14 py-12 max-[980px]:min-h-[55vh] max-[980px]:px-6"
+      style={{ backgroundColor: project.accentColor }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(rgba(21,22,25,0.12)_0.9px,transparent_0.9px)] bg-[size:6px_6px] opacity-18" />
       <div className="relative flex h-full w-full items-center justify-center">
         <div
-          className={`design-two-screen-frame max-w-[min(76%,820px)] overflow-hidden rounded-[24px] bg-white/35 shadow-[0_26px_60px_rgba(15,18,25,0.18)] backdrop-blur-[2px] max-[980px]:max-w-[88%] ${
+          className={`portfolio-screen-frame max-w-[min(76%,820px)] overflow-hidden rounded-[24px] bg-white/35 shadow-[0_26px_60px_rgba(15,18,25,0.18)] backdrop-blur-[2px] max-[980px]:max-w-[88%] ${
             screenTransition === 'exit'
               ? screenDirection === 'next'
-                ? 'design-two-screen-exit-next'
-                : 'design-two-screen-exit-previous'
+                ? 'portfolio-screen-exit-next'
+                : 'portfolio-screen-exit-previous'
               : ''
           } ${
             screenTransition === 'enter'
               ? screenDirection === 'next'
-                ? 'design-two-screen-enter-next'
-                : 'design-two-screen-enter-previous'
+                ? 'portfolio-screen-enter-next'
+                : 'portfolio-screen-enter-previous'
               : ''
           }`}
           key={`${project.slug}-${displayedScreenIndex}`}
@@ -905,6 +1359,8 @@ function DesignTwoProjectViewer({ project }) {
           <SafeImage
             alt={currentScreen.alt}
             className="max-h-[72vh] w-full object-contain"
+            fetchPriority="high"
+            loading="eager"
             fallbackClassName="h-[52vh] w-[min(76vw,760px)] rounded-[24px]"
             fallbackLabel={project.name}
             src={currentScreen.src}
@@ -937,58 +1393,57 @@ function DesignTwoProjectViewer({ project }) {
   );
 }
 
+function LegacyProjectRedirect() {
+  const { slug } = useParams();
+
+  if (!slug) {
+    return <Navigate replace to={PORTFOLIO_HOME_PATH} />;
+  }
+
+  return <Navigate replace to={getProjectPath(slug)} />;
+}
+
 export default function App() {
   return (
     <Routes>
-      <Route element={<DesignIndexPage />} path="/" />
-
-      <Route element={<DesignOneLayout />} path={DESIGN_ONE_PATH}>
-        <Route element={<DesignOneHomePage />} index />
-        <Route element={<DesignOneProjectPage />} path="projects/:slug" />
-      </Route>
-
-      <Route element={<Navigate replace to={DESIGN_TWO_PATH} />} path={`${DESIGN_TWO_PATH}/about`} />
-      <Route element={<DesignTwoLayout />} path={`${DESIGN_TWO_PATH}/*`} />
-
+      <Route element={<Navigate replace to={PORTFOLIO_HOME_PATH} />} path="/about" />
       <Route
-        element={<Navigate replace to={DESIGN_ONE_PATH} />}
-        path="/projects/:slug"
+        element={<Navigate replace to={PORTFOLIO_HOME_PATH} />}
+        path={LEGACY_DESIGN_ONE_PATH}
       />
       <Route
-        element={<Navigate replace to={DESIGN_ONE_PATH} />}
+        element={<LegacyProjectRedirect />}
+        path={`${LEGACY_DESIGN_ONE_PATH}/projects/:slug`}
+      />
+      <Route
+        element={<Navigate replace to={PORTFOLIO_HOME_PATH} />}
+        path={LEGACY_DESIGN_TWO_PATH}
+      />
+      <Route
+        element={<Navigate replace to={PORTFOLIO_HOME_PATH} />}
+        path={`${LEGACY_DESIGN_TWO_PATH}/about`}
+      />
+      <Route
+        element={<Navigate replace to={PORTFOLIO_CONTACT_PATH} />}
+        path={`${LEGACY_DESIGN_TWO_PATH}/contact`}
+      />
+      <Route
+        element={<LegacyProjectRedirect />}
+        path={`${LEGACY_DESIGN_TWO_PATH}/projects/:slug`}
+      />
+      <Route
+        element={<Navigate replace to={PORTFOLIO_HOME_PATH} />}
         path="/designs/editorial-split"
       />
       <Route
-        element={<Navigate replace to={`${DESIGN_ONE_PATH}/projects/mrioa`} />}
-        path="/designs/editorial-split/projects/mrioa"
+        element={<LegacyProjectRedirect />}
+        path="/designs/editorial-split/projects/:slug"
       />
       <Route
-        element={
-          <Navigate replace to={`${DESIGN_ONE_PATH}/projects/contractsrx`} />
-        }
-        path="/designs/editorial-split/projects/contractsrx"
-      />
-      <Route
-        element={
-          <Navigate replace to={`${DESIGN_ONE_PATH}/projects/chromedia`} />
-        }
-        path="/designs/editorial-split/projects/chromedia"
-      />
-      <Route
-        element={<Navigate replace to={`${DESIGN_ONE_PATH}/projects/nlrp`} />}
-        path="/designs/editorial-split/projects/nlrp"
-      />
-      <Route
-        element={
-          <Navigate replace to={`${DESIGN_ONE_PATH}/projects/spokehealth`} />
-        }
-        path="/designs/editorial-split/projects/spokehealth"
-      />
-      <Route
-        element={<Navigate replace to={DESIGN_ONE_PATH} />}
+        element={<Navigate replace to={PORTFOLIO_HOME_PATH} />}
         path="/work.html"
       />
-      <Route element={<Navigate replace to="/" />} path="*" />
+      <Route element={<PortfolioLayout />} path="*" />
     </Routes>
   );
 }
