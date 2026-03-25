@@ -45,10 +45,13 @@ export function advancePortfolioTransition({
 }
 
 export function usePortfolioTransition({ actualRoute, prefersReducedMotion }) {
-  const [displayedRoute, setDisplayedRoute] = useState(actualRoute);
-  const [transitionState, setTransitionState] = useState('idle');
-  const [overviewGridMotion, setOverviewGridMotion] = useState(null);
-  const [pendingRoute, setPendingRoute] = useState(null);
+  const [transition, setTransition] = useState({
+    displayedRoute: actualRoute,
+    overviewGridMotion: null,
+    pendingRoute: null,
+    transitionState: 'idle',
+  });
+  const { displayedRoute, overviewGridMotion, pendingRoute, transitionState } = transition;
 
   useEffect(() => {
     if (actualRoute.type === 'missing' || actualRoute.key === displayedRoute.key) {
@@ -56,18 +59,23 @@ export function usePortfolioTransition({ actualRoute, prefersReducedMotion }) {
     }
 
     if (prefersReducedMotion) {
-      setDisplayedRoute(actualRoute);
-      setTransitionState('idle');
-      setOverviewGridMotion(null);
-      setPendingRoute(null);
+      setTransition({
+        displayedRoute: actualRoute,
+        overviewGridMotion: null,
+        pendingRoute: null,
+        transitionState: 'idle',
+      });
       return undefined;
     }
 
-    setPendingRoute(actualRoute);
-    setTransitionState('exit');
+    setTransition((current) => ({
+      ...current,
+      pendingRoute: actualRoute,
+      transitionState: 'exit',
+    }));
 
     return undefined;
-  }, [actualRoute, displayedRoute.key, prefersReducedMotion]);
+  }, [actualRoute, displayedRoute.key, prefersReducedMotion, setTransition]);
 
   const handleStageAnimationEnd = useCallback(
     (event) => {
@@ -76,31 +84,15 @@ export function usePortfolioTransition({ actualRoute, prefersReducedMotion }) {
       }
 
       if (transitionState === 'exit' && pendingRoute) {
-        const nextState = advancePortfolioTransition({
-          displayedRoute,
-          pendingRoute,
-          transitionState,
-        });
-
-        setOverviewGridMotion(nextState.overviewGridMotion);
-        setDisplayedRoute(nextState.displayedRoute);
-        setTransitionState(nextState.transitionState);
+        setTransition((current) => advancePortfolioTransition(current));
         return;
       }
 
       if (transitionState === 'enter') {
-        const nextState = advancePortfolioTransition({
-          displayedRoute,
-          pendingRoute,
-          transitionState,
-        });
-
-        setTransitionState(nextState.transitionState);
-        setOverviewGridMotion(nextState.overviewGridMotion);
-        setPendingRoute(nextState.pendingRoute);
+        setTransition((current) => advancePortfolioTransition(current));
       }
     },
-    [displayedRoute.type, pendingRoute, prefersReducedMotion, transitionState]
+    [pendingRoute, prefersReducedMotion, transitionState]
   );
 
   return {
