@@ -5,8 +5,10 @@ dist/
 *.log
 .env
 .env.*
+!.env.example
 /docs/
 /assets/
+design-archive/
 pdf_text.txt
 read_pdf.py
 generate_thumbnails.py
@@ -15,4 +17,5 @@ restore_images.cjs
 update_images.cjs
 public/assets/work/extracted/
 public/assets/work/curated/
-/public/assets/ArthurBaduyenPortfolio2021.pdf
+*.pdf
+!public/assets/ARTHURBADUYEN_2026.pdf

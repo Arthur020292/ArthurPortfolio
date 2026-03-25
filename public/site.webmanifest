@@ -1,0 +1,15 @@
+{
+  "name": "Arthur Baduyen Portfolio",
+  "short_name": "Arthur Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eef2f4",
+  "theme_color": "#eb6e51",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
