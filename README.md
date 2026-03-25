@@ -25,6 +25,17 @@ React + Tailwind portfolio site for Arthur Baduyen.
 3. Build for production:
    `npm run build`
 
+## CI/CD
+
+GitHub Actions runs CI for pull requests into `main` and for direct pushes to `main`.
+The workflow installs dependencies with `npm ci` and validates the production build with
+`npm run build`.
+
+Deployment can stay in Cloudflare Pages:
+
+- preview deployments for branch and pull request changes
+- production deployments from `main`
+
 ## Cloudflare Pages
 
 This project is ready to deploy on Cloudflare Pages as a static React/Vite site.
