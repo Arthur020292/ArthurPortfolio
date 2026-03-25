@@ -1134,31 +1134,31 @@ export const aboutContent = {
 
 const portfolioProjectColors = {
   chromedia: {
-    color: '#f2be3f',
+    color: '#88c8c5',
   },
   chronomedia: {
-    color: '#d9b36a',
+    color: '#1079ac',
   },
   contractsrx: {
-    color: '#d9dfeb',
+    color: '#db4136',
   },
   harvest21: {
-    color: '#d3c476',
+    color: '#57a0d3',
   },
   kidough: {
-    color: '#ffd768',
+    color: '#49bca4',
   },
   mrioa: {
-    color: '#d6bf6b',
+    color: '#313765',
   },
   portlandpedalpower: {
     color: '#8fb24a',
   },
   msp: {
-    color: '#d7c0a1',
+    color: '#b5d332',
   },
   nester: {
-    color: '#e6d5b8',
+    color: '#1db673',
   },
   nlrp: {
     color: '#97aecd',
@@ -1170,7 +1170,7 @@ const portfolioProjectColors = {
     color: '#d2dfe7',
   },
   zip: {
-    color: '#e3bf6d',
+    color: '#1079ac',
   },
 };
 
