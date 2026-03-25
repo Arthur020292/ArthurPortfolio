@@ -62,21 +62,19 @@ the favicon are already configured via:
 4. Use the build settings above.
 5. Deploy.
 
-### Contact form note
+### Contact form
 
-The current live contact experience opens a mail draft in the browser, so Cloudflare Pages
-works fine for the site as-is.
+The contact page posts to `/api/contact`.
 
-There is also an `api/` folder in this repo from a serverless-mail setup, but that code is
-not used by the current contact UI and will not automatically run on Cloudflare Pages without
-being migrated to Cloudflare Pages Functions or Workers.
+For local Vite development, this repo includes dev middleware in `vite.config.js`.
 
-## Optional Serverless Email
+For Cloudflare Pages production, this repo includes a Pages Function at:
 
-The current contact page uses a `mailto:` flow, so no backend is required for deployment.
+- `functions/api/contact.js`
 
-This repo still includes an optional `api/contact.js` serverless mail implementation from an
-earlier setup. If you want to use that later, you will need these environment variables:
+### Email environment variables
+
+Set these variables in Cloudflare Pages under `Settings > Variables and Secrets`:
 
 - `RESEND_API_KEY` - your Resend API key
 - `RESEND_FROM_EMAIL` - sender address, ideally on a verified domain
@@ -86,5 +84,5 @@ If you use `onboarding@resend.dev` as the sender, Resend keeps the account in te
 only allows sending to the email address tied to the Resend account. To send to any other inbox,
 verify a domain in Resend and change `RESEND_FROM_EMAIL` to an address on that domain.
 
-If you want to use that backend on Cloudflare later, it should be migrated to Cloudflare Pages
-Functions or Workers first.
+Because this site is deployed on Cloudflare Pages, changing those production variables requires
+redeploying the site before the new values take effect.

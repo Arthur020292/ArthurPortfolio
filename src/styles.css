@@ -328,6 +328,8 @@ select:focus-visible,
 }
 
 .portfolio-project-tile {
+  border-top: 1px solid #e2e8f0;
+  border-left: 1px solid #e2e8f0;
   position: relative;
   overflow: hidden;
   transition:
@@ -335,7 +337,7 @@ select:focus-visible,
 }
 
 .portfolio-contact-tile {
-  border: 1px solid rgba(226, 232, 240, 0.85);
+  border: none;
 }
 
 .portfolio-project-overlay {
@@ -399,6 +401,78 @@ select:focus-visible,
 .portfolio-project-tile:hover .portfolio-project-bar-fill,
 .portfolio-project-tile:focus-visible .portfolio-project-bar-fill {
   transform: scaleX(1.1);
+}
+
+@keyframes portfolio-grid-cell-settle {
+  from {
+    opacity: 0.92;
+    transform: translateY(-8px) scale(1.01);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes portfolio-grid-cell-grow {
+  from {
+    opacity: 0;
+    transform: translateY(56px) scaleY(0.72);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes portfolio-grid-shared-compress {
+  from {
+    opacity: 1;
+    transform: scaleY(1.24);
+  }
+
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes portfolio-grid-row-rise {
+  from {
+    opacity: 0;
+    transform: translateY(138px) scaleY(0.88);
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+.portfolio-grid-overview-expand .portfolio-project-tile-shared {
+  transform-origin: center top;
+  animation: portfolio-grid-shared-compress 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.portfolio-grid-overview-expand .portfolio-project-tile-new {
+  transform-origin: center top;
+  animation: portfolio-grid-row-rise 580ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 40ms;
+}
+
+.portfolio-grid-overview-collapse .portfolio-project-tile:not(.portfolio-featured-cta-row) {
+  animation: portfolio-grid-cell-settle 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.portfolio-grid-overview-collapse .portfolio-featured-cta-row {
+  transform-origin: center top;
+  animation: portfolio-grid-cell-grow 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (min-width: 981px) {
