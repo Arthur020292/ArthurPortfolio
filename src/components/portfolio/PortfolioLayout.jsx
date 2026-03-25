@@ -181,7 +181,7 @@ export function PortfolioLayout() {
           />
           <section
             aria-label="Portfolio details"
-            className={`portfolio-copy relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 ${
+            className={`relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 ${
               displayedRoute.type === 'project' ? 'pt-10 pb-0' : 'py-10'
             } max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-5 ${
               displayedRoute.type === 'project'
