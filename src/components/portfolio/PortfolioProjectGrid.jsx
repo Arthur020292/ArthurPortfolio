@@ -1,0 +1,278 @@
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { getBrowseProjects, getFeaturedProjects } from '../../data';
+import { PROJECTS_SEQUENCE_ENTER_MS, BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../portfolio/constants';
+import { getProjectPath } from '../../portfolio/routes';
+
+function FeaturedProjectCtaContent() {
+  return (
+    <div className="relative z-10 flex h-full flex-col justify-center gap-10 max-[720px]:gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="max-w-[34rem]">
+        <h2 className="font-heading text-[clamp(2.25rem,3vw,3.5rem)] leading-[0.94] font-medium tracking-[-0.05em] text-slate-900 transition-colors duration-500 group-hover:text-white group-focus-visible:text-white max-[720px]:text-[clamp(2rem,11vw,2.7rem)]">
+          Tell me about your project.
+        </h2>
+        <p className="mt-4 max-w-[30rem] text-[1rem] leading-[1.8] text-slate-600 transition-colors duration-500 group-hover:text-slate-200 group-focus-visible:text-slate-200 max-[720px]:mt-3 max-[720px]:text-[0.96rem] max-[720px]:leading-[1.7]">
+          If you need product design, UX systems, or frontend-ready execution, I can help shape
+          the work and move it toward something shippable.
+        </p>
+      </div>
+
+      <div className="flex flex-col items-start max-[720px]:w-full lg:items-center">
+        <span
+          className="inline-flex min-h-14 min-w-[17rem] items-center justify-center rounded-full px-8 py-3 text-center text-[0.98rem] font-semibold text-white whitespace-nowrap transition-colors duration-300 group-hover:bg-white group-hover:text-slate-900 group-focus-visible:bg-white group-focus-visible:text-slate-900 max-[720px]:min-h-12 max-[720px]:w-full max-[720px]:min-w-0 max-[720px]:px-6 max-[720px]:text-[0.95rem] max-[720px]:whitespace-normal"
+          style={{ backgroundColor: BRAND_COLOR }}
+        >
+          Start a conversation
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function ProjectTile({
+  animationDelay,
+  className,
+  project,
+  to,
+}) {
+  return (
+    <Link
+      className={className}
+      style={animationDelay != null ? { animationDelay: `${animationDelay}ms` } : undefined}
+      to={to}
+    >
+      <span
+        aria-hidden="true"
+        className="portfolio-project-overlay absolute inset-0"
+      />
+
+      <div className="relative z-10">
+        <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 max-[720px]:max-w-[9ch] max-[720px]:text-[clamp(1.8rem,10vw,2.3rem)]">
+          {project.name}
+        </h2>
+      </div>
+
+      <div className="relative z-10 mt-8 max-[720px]:mt-6">
+        <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase max-[720px]:text-[0.72rem]">
+          {project.category}
+        </p>
+        <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200 max-[720px]:mt-3">
+          <div
+            className="portfolio-project-bar-fill h-full origin-left rounded-full"
+            style={{ backgroundColor: project.accentColor }}
+          />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export function PortfolioProjectGrid({
+  contactExitState,
+  mode = 'all',
+  overviewGridMotion,
+}) {
+  const location = useLocation();
+  const [projectsSequenceStage, setProjectsSequenceStage] = useState('idle');
+  const [projectsSequenceToken, setProjectsSequenceToken] = useState(null);
+  const [projectsSequenceCompressing, setProjectsSequenceCompressing] = useState(
+    mode === 'all' && location.pathname === '/projects' && !overviewGridMotion?.token
+  );
+  const orderedProjects = mode === 'featured' ? getFeaturedProjects() : getBrowseProjects();
+  const remainingDesktopSlots = (3 - (orderedProjects.length % 3)) % 3;
+  const isWideContactTile = remainingDesktopSlots === 2;
+  const contactTileLayoutClass =
+    mode === 'featured'
+      ? 'col-span-3 max-[980px]:col-span-2 max-[720px]:col-span-1'
+      : isWideContactTile
+        ? 'portfolio-contact-tile-span-2'
+        : '';
+  const isContactExit = contactExitState;
+  const gridMotionClass =
+    mode === 'all'
+      ? `${projectsSequenceStage === 'enter' ? 'portfolio-grid-projects-enter' : ''} ${
+          projectsSequenceCompressing ? 'portfolio-grid-projects-compress' : ''
+        }`.trim()
+      : overviewGridMotion?.to === 'about' && mode === 'featured'
+        ? 'portfolio-grid-overview-collapse'
+        : overviewGridMotion?.to === 'projects' && mode === 'featured'
+          ? 'portfolio-grid-projects-exit'
+          : '';
+  const leadProjects = mode === 'all' ? orderedProjects.slice(0, getFeaturedProjects().length) : orderedProjects;
+  const trailingProjects = mode === 'all' ? orderedProjects.slice(getFeaturedProjects().length) : [];
+  const showContactTile = mode === 'featured' || remainingDesktopSlots > 0;
+  const exitTileCount = leadProjects.length + trailingProjects.length + (showContactTile ? 1 : 0);
+
+  useEffect(() => {
+    if (location.hash !== '#projects') {
+      return;
+    }
+
+    const scrollTimer = window.setTimeout(() => {
+      document
+        .getElementById('portfolio-projects-section')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+
+    return () => {
+      window.clearTimeout(scrollTimer);
+    };
+  }, [location.hash]);
+
+  useEffect(() => {
+    if (mode !== 'all') {
+      setProjectsSequenceToken(null);
+      setProjectsSequenceStage('idle');
+      setProjectsSequenceCompressing(false);
+      return undefined;
+    }
+
+    if (overviewGridMotion?.to !== 'projects' || !overviewGridMotion?.token) {
+      return undefined;
+    }
+
+    setProjectsSequenceToken(overviewGridMotion.token);
+    setProjectsSequenceStage('enter');
+  }, [mode, overviewGridMotion?.to, overviewGridMotion?.token]);
+
+  useEffect(() => {
+    if (mode !== 'all' || projectsSequenceStage !== 'enter') {
+      return undefined;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setProjectsSequenceStage('idle');
+      return undefined;
+    }
+
+    const settleTimer = window.setTimeout(() => {
+      setProjectsSequenceStage('idle');
+    }, PROJECTS_SEQUENCE_ENTER_MS);
+
+    return () => {
+      window.clearTimeout(settleTimer);
+    };
+  }, [mode, projectsSequenceStage, projectsSequenceToken]);
+
+  useEffect(() => {
+    if (mode !== 'all' || !projectsSequenceToken) {
+      return undefined;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setProjectsSequenceCompressing(false);
+      return undefined;
+    }
+
+    const compressFrame = window.requestAnimationFrame(() => {
+      setProjectsSequenceCompressing(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(compressFrame);
+    };
+  }, [mode, projectsSequenceToken]);
+
+  return (
+    <div
+      className="portfolio-right-panel flex h-full min-h-full flex-col border-l border-slate-200 bg-[#fbfaf7] max-[980px]:min-h-[55vh] max-[980px]:border-l-0"
+      id="portfolio-projects-section"
+    >
+      <div className="hidden border-b border-slate-200 px-10 py-7 max-[980px]:block max-[980px]:px-7">
+        <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
+          Projects
+        </p>
+      </div>
+
+      <div
+        className={`relative grid flex-1 grid-cols-3 border-r border-b border-slate-200 bg-[#fbfaf7] max-[980px]:grid-cols-2 max-[720px]:grid-cols-1 ${gridMotionClass} ${isContactExit ? 'portfolio-grid-contact-exit' : ''}`}
+        key={overviewGridMotion?.token || mode}
+      >
+        {leadProjects.map((project, index) => (
+          <ProjectTile
+            animationDelay={isContactExit ? (exitTileCount - 1 - index) * 30 : null}
+            className={`portfolio-project-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4 ${
+              mode === 'all' ? 'min-h-[17.75rem] max-[980px]:min-h-[12.5rem]' : ''
+            } ${mode === 'all' ? 'portfolio-project-tile-shared' : ''}`}
+            key={project.slug}
+            project={project}
+            to={getProjectPath(project.slug)}
+          />
+        ))}
+
+        {trailingProjects.map((project, index) => (
+          <ProjectTile
+            animationDelay={
+              isContactExit
+                ? (exitTileCount - 1 - (leadProjects.length + index)) * 30
+                : overviewGridMotion?.to === 'projects'
+                  ? 20 + index * 60
+                  : null
+            }
+            className="portfolio-project-tile portfolio-project-tile-new group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4"
+            key={project.slug}
+            project={project}
+            to={getProjectPath(project.slug)}
+          />
+        ))}
+
+        {showContactTile ? (
+          <Link
+            className={`portfolio-project-tile portfolio-contact-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#f3f0ea] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11.5rem] max-[720px]:p-4 ${
+              mode === 'all' ? 'portfolio-project-tile-new' : ''
+            } ${mode === 'featured' ? 'portfolio-featured-cta-row' : ''} ${contactTileLayoutClass}`}
+            style={
+              isContactExit
+                ? {
+                    animationDelay: `${
+                      (exitTileCount - 1 - (leadProjects.length + trailingProjects.length)) * 30
+                    }ms`,
+                  }
+                : mode === 'all' && overviewGridMotion?.to === 'projects'
+                  ? { animationDelay: `${80 + trailingProjects.length * 70}ms` }
+                  : undefined
+            }
+            to={PORTFOLIO_CONTACT_PATH}
+          >
+            <span
+              aria-hidden="true"
+              className="portfolio-project-overlay absolute inset-0"
+            />
+
+            {mode === 'featured' ? (
+              <FeaturedProjectCtaContent />
+            ) : (
+              <>
+                <div className="relative z-10">
+                  <h2
+                    className={`portfolio-project-title font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 max-[720px]:text-[clamp(1.85rem,10vw,2.25rem)] ${
+                      isWideContactTile ? 'max-w-[18ch]' : 'max-w-[12ch]'
+                    }`}
+                  >
+                    Tell me about your project.
+                  </h2>
+                </div>
+
+                <div className="relative z-10 mt-8 max-[720px]:mt-6">
+                  <p
+                    className={`portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase max-[720px]:text-[0.72rem] ${
+                      isWideContactTile ? 'max-w-none' : ''
+                    }`}
+                  >
+                    Start a conversation
+                  </p>
+                  <div className="portfolio-project-bar mt-6 h-1.5 w-12 rounded-full bg-slate-200">
+                    <div
+                      className="portfolio-project-bar-fill h-full origin-left rounded-full"
+                      style={{ backgroundColor: BRAND_COLOR }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </Link>
+        ) : null}
+      </div>
+    </div>
+  );
+}

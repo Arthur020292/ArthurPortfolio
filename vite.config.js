@@ -67,7 +67,13 @@ function contactApiPlugin() {
 export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
 
+  const plugins = mode === 'test' ? [react()] : [react(), tailwindcss(), contactApiPlugin()];
+
   return {
-    plugins: [react(), tailwindcss(), contactApiPlugin()],
+    plugins,
+    test: {
+      environment: 'node',
+      globals: true,
+    },
   };
 });
