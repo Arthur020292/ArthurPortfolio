@@ -21,7 +21,7 @@ const SITE_NAME = 'Arthur Baduyen';
 const DEFAULT_META_DESCRIPTION =
   'Arthur Baduyen is a Senior Product Designer focused on product UX, frontend-ready design, and AI-augmented delivery.';
 const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/work/zip-thumb-v2.png';
-const DESIGN_TWO_EXIT_MS = 220;
+const DESIGN_TWO_EXIT_MS = 420;
 const DESIGN_TWO_ENTER_MS = 420;
 const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || '';
 
@@ -285,6 +285,7 @@ function PortfolioLayout() {
   const prefersReducedMotion = usePrefersReducedMotion();
   const leftPanelRef = useRef(null);
   const mainContentRef = useRef(null);
+  const rightPanelRef = useRef(null);
   const previousPathRef = useRef(location.pathname);
   const lastLeftScrollRef = useRef(0);
   const [displayedRoute, setDisplayedRoute] = useState(actualRoute);
@@ -396,11 +397,14 @@ function PortfolioLayout() {
 
   useEffect(() => {
     const panel = leftPanelRef.current;
+    const rightPanel = rightPanelRef.current;
 
     if (!panel) {
       return;
     }
 
+    panel.scrollTo({ top: 0 });
+    rightPanel?.scrollTo({ top: 0 });
     lastLeftScrollRef.current = panel.scrollTop;
     setShowStickyNav(false);
   }, [displayedRoute.key]);
@@ -410,6 +414,7 @@ function PortfolioLayout() {
       return;
     }
 
+    window.scrollTo({ top: 0 });
     mainContentRef.current?.focus({ preventScroll: true });
     previousPathRef.current = location.pathname;
   }, [location.pathname]);
@@ -436,10 +441,21 @@ function PortfolioLayout() {
         />
         <section
           aria-label="Portfolio details"
-          className="portfolio-copy relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 py-10 max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-7 max-[980px]:py-8"
+          className={`portfolio-copy relative flex h-dvh min-h-dvh flex-col overflow-y-auto overflow-x-hidden bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,250,250,0.98))] px-12 ${
+            displayedRoute.type === 'project' ? 'pt-10 pb-0' : 'py-10'
+          } max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-5 ${
+            displayedRoute.type === 'project'
+              ? 'max-[980px]:pt-6 max-[980px]:pb-0'
+              : 'max-[980px]:py-6'
+          } max-[640px]:px-4 ${
+            displayedRoute.type === 'project'
+              ? 'max-[640px]:pt-5 max-[640px]:pb-0'
+              : 'max-[640px]:py-5'
+          }`}
           ref={leftPanelRef}
         >
-          <div className="relative z-30 max-[980px]:sticky max-[980px]:top-0 max-[980px]:-mx-7 max-[980px]:mb-6 max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] max-[980px]:px-7 max-[980px]:py-4 max-[980px]:backdrop-blur-sm">
+          <div className="relative z-30 max-[980px]:sticky max-[980px]:top-0 max-[980px]:-mx-5 max-[980px]:mb-5 max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] max-[980px]:px-5 max-[980px]:py-3 max-[980px]:backdrop-blur-sm max-[640px]:-mx-4 max-[640px]:px-4"
+          >
             <PortfolioHeader activeRoute={actualRoute.type} />
           </div>
           {showStickyNav ? (
@@ -450,7 +466,7 @@ function PortfolioLayout() {
             </div>
           ) : null}
           <div
-            className={`mt-10 flex-1 ${transitionState === 'exit' ? 'portfolio-left-stage-exit' : ''} ${transitionState === 'enter' ? 'portfolio-left-stage-enter' : ''}`}
+            className={`mt-10 flex-1 max-[980px]:mt-6 ${transitionState === 'exit' ? 'portfolio-left-stage-exit' : ''} ${transitionState === 'enter' ? 'portfolio-left-stage-enter' : ''}`}
             key={displayedRoute.key}
           >
             <PortfolioLeftContent route={displayedRoute} />
@@ -467,6 +483,7 @@ function PortfolioLayout() {
           }
           className={`relative h-dvh min-h-dvh ${displayedRoute.type === 'about' || displayedRoute.type === 'projects' ? 'overflow-y-auto overflow-x-hidden bg-[#fbfaf7]' : 'overflow-hidden'} ${!disableRightPanelTransition && transitionState === 'exit' ? 'portfolio-right-stage-exit' : ''} ${!disableRightPanelTransition && transitionState === 'enter' ? 'portfolio-right-stage-enter' : ''} max-[980px]:h-auto max-[980px]:overflow-visible`}
           key={`${displayedRoute.key}-panel`}
+          ref={rightPanelRef}
         >
           <PortfolioRightContent overviewGridMotion={overviewGridMotion} route={displayedRoute} />
         </section>
@@ -540,7 +557,10 @@ function PortfolioHeader({ activeRoute, isInteractive = true }) {
   }, [activeRoute]);
 
   return (
-    <nav aria-label="Primary" className="flex items-baseline gap-6 text-[0.8rem] text-slate-500">
+    <nav
+      aria-label="Primary"
+      className="flex items-baseline gap-6 text-[0.8rem] text-slate-500 max-[480px]:gap-4 max-[480px]:text-[0.76rem]"
+    >
       {isInteractive ? (
         <Link
           className="font-heading text-[1.05rem] font-bold text-slate-900 no-underline"
@@ -553,7 +573,7 @@ function PortfolioHeader({ activeRoute, isInteractive = true }) {
           Arthur.
         </span>
       )}
-      <div className="relative flex items-baseline gap-6 pb-3">
+      <div className="relative flex items-baseline gap-6 pb-3 max-[480px]:gap-4 max-[480px]:pb-2">
         <PortfolioHeaderNavLink
           active={activeRoute === 'about'}
           href={PORTFOLIO_HOME_PATH}
@@ -649,18 +669,18 @@ function PortfolioProjectDetails({ project }) {
           <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
             {project.shortMeta.label}
           </p>
-          <h1 className="mt-4 font-heading text-[clamp(2.6rem,5vw,4.7rem)] leading-[0.95] font-bold tracking-[-0.055em] text-slate-900">
+          <h1 className="mt-4 font-heading text-[clamp(2.6rem,5vw,4.7rem)] leading-[0.95] font-bold tracking-[-0.055em] text-slate-900 max-[640px]:text-[clamp(2.2rem,12vw,3.2rem)]">
             {project.name}
           </h1>
         </div>
 
-        <div className="portfolio-left-item mt-8 max-w-[28rem]">
-          <p className="text-[1.08rem] leading-[1.85] text-slate-500">
+        <div className="portfolio-left-item mt-8 max-w-[28rem] max-[640px]:mt-6">
+          <p className="text-[1.08rem] leading-[1.85] text-slate-500 max-[640px]:text-[1rem] max-[640px]:leading-[1.72]">
             {project.shortMeta.summary}
           </p>
         </div>
 
-        <dl className="portfolio-left-item mt-8 grid gap-5 text-sm text-slate-500">
+        <dl className="portfolio-left-item mt-8 grid gap-5 text-sm text-slate-500 max-[640px]:mt-6 max-[640px]:gap-4">
           {project.shortMeta.details.map((item) => (
             <div key={item.label}>
               <dt className="text-[0.68rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
@@ -674,7 +694,7 @@ function PortfolioProjectDetails({ project }) {
         </dl>
 
         {project.caseStudySections?.length ? (
-          <div className="portfolio-left-item mt-10 grid gap-4">
+          <div className="portfolio-left-item mt-10 grid gap-4 max-[640px]:mt-8 max-[640px]:gap-3">
             {project.caseStudySections.map((section) => (
               <CaseStudySection key={section.title} section={section} />
             ))}
@@ -682,7 +702,7 @@ function PortfolioProjectDetails({ project }) {
         ) : null}
 
         {project.caseStudyTools?.length ? (
-          <div className="portfolio-left-item mt-10">
+          <div className="portfolio-left-item mt-10 max-[640px]:mt-8">
             <SectionLabel>Tools & Technologies</SectionLabel>
             <div className="mt-4 flex flex-wrap gap-2.5">
               {project.caseStudyTools.map((tool) => (
@@ -698,8 +718,11 @@ function PortfolioProjectDetails({ project }) {
         ) : null}
       </div>
 
-      <div className="portfolio-left-item -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-transparent max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-none">
-        <nav aria-label="Project navigation" className="flex items-center gap-4 text-[0.96rem]">
+      <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:mt-6 max-[640px]:py-5">
+        <nav
+          aria-label="Project navigation"
+          className="flex items-center gap-4 text-[0.96rem] max-[640px]:justify-between max-[640px]:gap-3 max-[640px]:text-[0.9rem]"
+        >
           {previousProject ? (
             <Link
               className="text-slate-500 transition-colors hover:text-slate-900"
@@ -729,20 +752,22 @@ function PortfolioProjectDetails({ project }) {
 
 function CaseStudySection({ section }) {
   return (
-    <section className="rounded-[24px] border border-slate-200 bg-white/80 p-5 shadow-[0_8px_24px_rgba(15,23,42,0.03)]">
-      <h2 className="font-heading text-[1.05rem] font-bold tracking-[-0.03em] text-slate-900">
+    <section className="rounded-[24px] border border-slate-200 bg-white/80 p-5 shadow-[0_8px_24px_rgba(15,23,42,0.03)] max-[640px]:rounded-[20px] max-[640px]:p-4">
+      <h2 className="font-heading text-[1.05rem] font-bold tracking-[-0.03em] text-slate-900 max-[640px]:text-[1rem]">
         {section.title}
       </h2>
 
       {section.body ? (
-        <p className="mt-3 text-[0.98rem] leading-[1.75] text-slate-600">{section.body}</p>
+        <p className="mt-3 text-[0.98rem] leading-[1.75] text-slate-600 max-[640px]:text-[0.94rem] max-[640px]:leading-[1.68]">
+          {section.body}
+        </p>
       ) : null}
 
       {section.items?.length ? (
-        <ul className="mt-3 grid gap-2.5 list-disc pl-5">
+        <ul className="mt-3 grid gap-2.5 list-disc pl-5 max-[640px]:gap-2 max-[640px]:pl-4">
           {section.items.map((item) => (
             <li
-              className="text-[0.96rem] leading-[1.7] text-slate-600 marker:text-slate-400"
+              className="text-[0.96rem] leading-[1.7] text-slate-600 marker:text-slate-400 max-[640px]:text-[0.93rem] max-[640px]:leading-[1.62]"
               key={item}
             >
               {item}
@@ -956,6 +981,9 @@ function PortfolioRightContent({ overviewGridMotion, route }) {
 
 function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
   const location = useLocation();
+  const [projectsSequenceStage, setProjectsSequenceStage] = useState('idle');
+  const [projectsSequenceToken, setProjectsSequenceToken] = useState(null);
+  const [projectsSequenceCompressing, setProjectsSequenceCompressing] = useState(false);
   const featuredProjectOrder = [
     'zip',
     'chronomedia',
@@ -994,7 +1022,6 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
         ];
   const remainingDesktopSlots = (3 - (orderedProjects.length % 3)) % 3;
   const isWideContactTile = remainingDesktopSlots === 2;
-  const showContactTile = mode === 'featured' || remainingDesktopSlots > 0;
   const contactTileLayoutClass =
     mode === 'featured'
       ? 'col-span-3 max-[980px]:col-span-2 max-[720px]:col-span-1'
@@ -1002,15 +1029,20 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
         ? 'portfolio-contact-tile-span-2'
         : '';
   const gridMotionClass =
-    overviewGridMotion?.to === 'projects' && mode === 'all'
-      ? 'portfolio-grid-overview-expand'
+    mode === 'all'
+      ? `${projectsSequenceStage === 'enter' ? 'portfolio-grid-projects-enter' : ''} ${
+          projectsSequenceCompressing ? 'portfolio-grid-projects-compress' : ''
+        }`.trim()
       : overviewGridMotion?.to === 'about' && mode === 'featured'
         ? 'portfolio-grid-overview-collapse'
+        : overviewGridMotion?.to === 'projects' && mode === 'featured'
+          ? 'portfolio-grid-projects-exit'
         : '';
   const leadProjects =
     mode === 'all' ? orderedProjects.slice(0, featuredProjectOrder.length) : orderedProjects;
   const trailingProjects =
     mode === 'all' ? orderedProjects.slice(featuredProjectOrder.length) : [];
+  const showContactTile = mode === 'featured' || remainingDesktopSlots > 0;
 
   useEffect(() => {
     if (location.hash !== '#projects') {
@@ -1028,6 +1060,41 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
     };
   }, [location.hash]);
 
+  useEffect(() => {
+    if (mode !== 'all') {
+      setProjectsSequenceToken(null);
+      setProjectsSequenceStage('idle');
+      setProjectsSequenceCompressing(false);
+      return undefined;
+    }
+
+    if (overviewGridMotion?.to !== 'projects' || !overviewGridMotion?.token) {
+      return undefined;
+    }
+
+    setProjectsSequenceToken(overviewGridMotion.token);
+    setProjectsSequenceStage('enter');
+  }, [mode, overviewGridMotion?.to, overviewGridMotion?.token]);
+
+  useEffect(() => {
+    if (mode !== 'all' || !projectsSequenceToken) {
+      return undefined;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setProjectsSequenceCompressing(false);
+      return undefined;
+    }
+
+    const compressFrame = window.requestAnimationFrame(() => {
+      setProjectsSequenceCompressing(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(compressFrame);
+    };
+  }, [mode, projectsSequenceToken]);
+
   return (
     <div
       className="portfolio-right-panel flex h-full min-h-full flex-col border-l border-slate-200 bg-[#fbfaf7] max-[980px]:min-h-[55vh] max-[980px]:border-l-0"
@@ -1040,12 +1107,14 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
       </div>
 
       <div
-        className={`relative grid flex-1 grid-cols-3 border-r border-b border-slate-200 bg-[#fbfaf7] max-[980px]:grid-cols-2 max-[720px]:grid-cols-1 ${gridMotionClass}`}
+        className={`relative grid flex-1 grid-cols-3 overflow-hidden border-r border-b border-slate-200 bg-[#fbfaf7] max-[980px]:grid-cols-2 max-[720px]:grid-cols-1 ${gridMotionClass}`}
         key={overviewGridMotion?.token || mode}
       >
         {leadProjects.map((project) => (
           <Link
-            className={`portfolio-project-tile group flex min-h-0 flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:p-6 ${
+            className={`portfolio-project-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4 ${
+              mode === 'all' ? 'min-h-[17.75rem] max-[980px]:min-h-[12.5rem]' : ''
+            } ${
               mode === 'all' ? 'portfolio-project-tile-shared' : ''
             }`}
             key={project.slug}
@@ -1057,16 +1126,16 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
             />
 
             <div className="relative z-10">
-              <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900">
+              <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 max-[720px]:max-w-[9ch] max-[720px]:text-[clamp(1.8rem,10vw,2.3rem)]">
                 {project.name}
               </h2>
             </div>
 
-            <div className="relative z-10 mt-8">
-              <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
+            <div className="relative z-10 mt-8 max-[720px]:mt-6">
+              <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase max-[720px]:text-[0.72rem]">
                 {project.category}
               </p>
-              <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200">
+              <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200 max-[720px]:mt-3">
                 <div
                   className="portfolio-project-bar-fill h-full origin-left rounded-full"
                   style={{ backgroundColor: project.accentColor }}
@@ -1078,11 +1147,11 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
 
         {trailingProjects.map((project, index) => (
           <Link
-            className="portfolio-project-tile portfolio-project-tile-new group flex min-h-0 flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:p-6"
+            className="portfolio-project-tile portfolio-project-tile-new group flex min-h-[15.5rem] flex-col justify-between bg-[#fbfaf7] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11rem] max-[720px]:p-4"
             key={project.slug}
             style={
               overviewGridMotion?.to === 'projects'
-                ? { animationDelay: `${80 + index * 70}ms` }
+                ? { animationDelay: `${20 + index * 60}ms` }
                 : undefined
             }
             to={getProjectPath(project.slug)}
@@ -1093,16 +1162,16 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
             />
 
             <div className="relative z-10">
-              <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900">
+              <h2 className="portfolio-project-title max-w-[11ch] font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 max-[720px]:max-w-[9ch] max-[720px]:text-[clamp(1.8rem,10vw,2.3rem)]">
                 {project.name}
               </h2>
             </div>
 
-            <div className="relative z-10 mt-8">
-              <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
+            <div className="relative z-10 mt-8 max-[720px]:mt-6">
+              <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase max-[720px]:text-[0.72rem]">
                 {project.category}
               </p>
-              <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200">
+              <div className="portfolio-project-bar mt-4 h-1.5 w-12 rounded-full bg-slate-200 max-[720px]:mt-3">
                 <div
                   className="portfolio-project-bar-fill h-full origin-left rounded-full"
                   style={{ backgroundColor: project.accentColor }}
@@ -1114,7 +1183,7 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
 
         {showContactTile ? (
           <Link
-            className={`portfolio-project-tile portfolio-contact-tile group flex min-h-0 flex-col justify-between bg-[#f3f0ea] p-8 text-inherit no-underline max-[980px]:p-6 ${
+            className={`portfolio-project-tile portfolio-contact-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#f3f0ea] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[11.5rem] max-[720px]:p-4 ${
               mode === 'all' ? 'portfolio-project-tile-new' : ''
             } ${
               mode === 'featured' ? 'portfolio-featured-cta-row' : ''
@@ -1139,7 +1208,7 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
               <>
                 <div className="relative z-10">
                   <h2
-                    className={`portfolio-project-title font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 ${
+                    className={`portfolio-project-title font-heading text-[clamp(2rem,2.2vw,2.8rem)] leading-[0.98] font-medium tracking-[-0.04em] text-slate-900 max-[720px]:text-[clamp(1.85rem,10vw,2.25rem)] ${
                       isWideContactTile ? 'max-w-[18ch]' : 'max-w-[12ch]'
                     }`}
                   >
@@ -1147,9 +1216,9 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
                   </h2>
                 </div>
 
-                <div className="relative z-10 mt-8">
+                <div className="relative z-10 mt-8 max-[720px]:mt-6">
                   <p
-                    className={`portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase ${
+                    className={`portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase max-[720px]:text-[0.72rem] ${
                       isWideContactTile ? 'max-w-none' : ''
                     }`}
                   >
@@ -1173,23 +1242,20 @@ function PortfolioProjectGrid({ mode = 'all', overviewGridMotion }) {
 
 function FeaturedProjectCtaContent() {
   return (
-    <div className="relative z-10 flex h-full flex-col justify-center gap-10 lg:flex-row lg:items-center lg:justify-between">
+    <div className="relative z-10 flex h-full flex-col justify-center gap-10 max-[720px]:gap-6 lg:flex-row lg:items-center lg:justify-between">
       <div className="max-w-[34rem]">
-        <p className="portfolio-project-category text-[0.78rem] font-bold tracking-[0.14em] text-slate-400 uppercase">
-          Start a conversation
-        </p>
-        <h2 className="mt-4 font-heading text-[clamp(2.25rem,3vw,3.5rem)] leading-[0.94] font-medium tracking-[-0.05em] text-slate-900 transition-colors duration-500 group-hover:text-white group-focus-visible:text-white">
+        <h2 className="font-heading text-[clamp(2.25rem,3vw,3.5rem)] leading-[0.94] font-medium tracking-[-0.05em] text-slate-900 transition-colors duration-500 group-hover:text-white group-focus-visible:text-white max-[720px]:text-[clamp(2rem,11vw,2.7rem)]">
           Tell me about your project.
         </h2>
-        <p className="mt-4 max-w-[30rem] text-[1rem] leading-[1.8] text-slate-600 transition-colors duration-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">
+        <p className="mt-4 max-w-[30rem] text-[1rem] leading-[1.8] text-slate-600 transition-colors duration-500 group-hover:text-slate-200 group-focus-visible:text-slate-200 max-[720px]:mt-3 max-[720px]:text-[0.96rem] max-[720px]:leading-[1.7]">
           If you need product design, UX systems, or frontend-ready execution, I can help shape
           the work and move it toward something shippable.
         </p>
       </div>
 
-      <div className="flex flex-col items-start lg:items-center">
+      <div className="flex flex-col items-start max-[720px]:w-full lg:items-center">
         <span
-          className="inline-flex min-h-14 min-w-[17rem] items-center justify-center rounded-full px-8 py-3 text-center text-[0.98rem] font-semibold text-white whitespace-nowrap transition-colors duration-300 group-hover:bg-white group-hover:text-slate-900 group-focus-visible:bg-white group-focus-visible:text-slate-900 max-[720px]:min-w-0 max-[720px]:whitespace-normal"
+          className="inline-flex min-h-14 min-w-[17rem] items-center justify-center rounded-full px-8 py-3 text-center text-[0.98rem] font-semibold text-white whitespace-nowrap transition-colors duration-300 group-hover:bg-white group-hover:text-slate-900 group-focus-visible:bg-white group-focus-visible:text-slate-900 max-[720px]:min-h-12 max-[720px]:w-full max-[720px]:min-w-0 max-[720px]:px-6 max-[720px]:text-[0.95rem] max-[720px]:whitespace-normal"
           style={{ backgroundColor: BRAND_COLOR }}
         >
           Start a conversation
@@ -1260,9 +1326,9 @@ function PortfolioContactPanel() {
   }
 
   return (
-    <div className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#f7f3ed_0%,#f2ede5_100%)] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:px-7">
+    <div className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#f7f3ed_0%,#f2ede5_100%)] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:px-5 max-[640px]:px-4 max-[640px]:py-8">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,rgba(255,255,255,0.9),transparent_26%),radial-gradient(circle_at_78%_74%,rgba(15,23,42,0.06),transparent_24%)]" />
-      <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:p-6">
+      <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:rounded-[26px] max-[980px]:p-6 max-[640px]:rounded-[22px] max-[640px]:p-4">
         <form aria-busy={isSubmitting} className="grid gap-4" onSubmit={handleSubmit}>
           <div aria-hidden="true" className="hidden">
             <label className="block">
@@ -1364,9 +1430,9 @@ function PortfolioContactPanel() {
             />
           </label>
 
-          <div className="mt-6 border-t border-slate-200 pt-6">
+          <div className="mt-6 border-t border-slate-200 pt-6 max-[640px]:mt-4 max-[640px]:pt-4">
             <button
-              className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+              className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 max-[640px]:w-full"
               style={{ backgroundColor: BRAND_COLOR }}
               disabled={isSubmitting}
               type="submit"
@@ -1511,13 +1577,13 @@ function PortfolioProjectViewer({ project }) {
 
   return (
     <div
-      className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden px-14 py-12 max-[980px]:min-h-[55vh] max-[980px]:px-6"
+      className="portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden px-14 py-12 max-[980px]:min-h-[55vh] max-[980px]:px-5 max-[640px]:px-4 max-[640px]:py-8"
       style={{ backgroundColor: project.accentColor }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(rgba(21,22,25,0.12)_0.9px,transparent_0.9px)] bg-[size:6px_6px] opacity-18" />
       <div className="relative flex h-full w-full items-center justify-center">
         <div
-          className={`portfolio-screen-frame max-w-[min(76%,820px)] overflow-hidden rounded-[24px] bg-white/35 shadow-[0_26px_60px_rgba(15,18,25,0.18)] backdrop-blur-[2px] max-[980px]:max-w-[88%] ${
+          className={`portfolio-screen-frame max-w-[min(76%,820px)] overflow-hidden rounded-[24px] bg-white/35 shadow-[0_26px_60px_rgba(15,18,25,0.18)] backdrop-blur-[2px] max-[980px]:max-w-[92%] ${
             screenTransition === 'exit'
               ? screenDirection === 'next'
                 ? 'portfolio-screen-exit-next'
@@ -1534,7 +1600,7 @@ function PortfolioProjectViewer({ project }) {
         >
           <SafeImage
             alt={currentScreen.alt}
-            className="max-h-[72vh] w-full object-contain"
+            className="max-h-[72vh] w-full object-contain max-[980px]:max-h-[46vh] max-[640px]:max-h-[42vh]"
             fetchPriority="high"
             loading="eager"
             fallbackClassName="h-[52vh] w-[min(76vw,760px)] rounded-[24px]"
@@ -1544,7 +1610,7 @@ function PortfolioProjectViewer({ project }) {
         </div>
       </div>
 
-      <div className="absolute bottom-[4%] left-1/2 z-10 flex -translate-x-1/2 items-center gap-4 rounded-full bg-white/85 px-4 py-3 text-[0.92rem] shadow-[0_18px_40px_rgba(18,20,24,0.16)] backdrop-blur-sm">
+      <div className="absolute bottom-[4%] left-1/2 z-10 flex -translate-x-1/2 items-center gap-4 rounded-full bg-white/85 px-4 py-3 text-[0.92rem] shadow-[0_18px_40px_rgba(18,20,24,0.16)] backdrop-blur-sm max-[640px]:bottom-[3%] max-[640px]:gap-2 max-[640px]:px-3 max-[640px]:py-2 max-[640px]:text-[0.82rem]">
         <button
           className={`rounded-full px-3 py-2 transition-colors ${screenIndex === 0 ? 'cursor-not-allowed text-slate-300' : 'text-slate-700 hover:bg-slate-100'}`}
           disabled={screenIndex === 0}
@@ -1553,7 +1619,7 @@ function PortfolioProjectViewer({ project }) {
         >
           Previous
         </button>
-        <span className="min-w-22 text-center font-medium text-slate-700">
+        <span className="min-w-22 text-center font-medium text-slate-700 max-[640px]:min-w-16">
           {screenIndex + 1} / {project.screens.length}
         </span>
         <button
