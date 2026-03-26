@@ -553,7 +553,17 @@ select:focus-visible,
   animation: portfolio-grid-cell-grow 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+.portfolio-sticky-header {
+  top: 0;
+}
+
 @media (min-width: 981px) {
+  .portfolio-sticky-header {
+    top: -2.5rem;
+    margin-left: -3rem;
+    margin-right: -3rem;
+  }
+
   .portfolio-contact-tile-span-2 {
     grid-column: span 2 / span 2;
   }

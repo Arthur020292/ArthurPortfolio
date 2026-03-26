@@ -1,4 +1,9 @@
-import { CONTACT_EMAIL, LINKEDIN_URL } from '../../../portfolio/constants';
+import {
+  BRAND_COLOR,
+  CAL_COM_URL,
+  CONTACT_EMAIL,
+  LINKEDIN_URL,
+} from '../../../portfolio/constants';
 import { SectionLabel } from './SectionLabel';
 
 export function PortfolioContactContent() {
@@ -12,6 +17,21 @@ export function PortfolioContactContent() {
           Tell me what you&apos;re building, where you need support, and what stage you&apos;re in.
           I work across product design, redesigns, UX systems, and frontend-ready execution.
         </p>
+
+        <div className="mt-8">
+          <a
+            className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5"
+            href={CAL_COM_URL}
+            rel="noreferrer"
+            style={{ backgroundColor: BRAND_COLOR }}
+            target="_blank"
+          >
+            Book a call
+          </a>
+          <p className="mt-3 max-w-[28rem] text-[0.95rem] leading-[1.7] text-slate-500">
+            If scheduling is easier than writing an email, pick a time directly on my calendar.
+          </p>
+        </div>
       </div>
 
       <div className="portfolio-left-item mt-10">
