@@ -68,14 +68,23 @@ export function usePortfolioTransition({ actualRoute, prefersReducedMotion }) {
       return undefined;
     }
 
-    setTransition((current) => ({
-      ...current,
-      pendingRoute: actualRoute,
-      transitionState: 'exit',
-    }));
+    setTransition((current) => {
+      if (
+        current.pendingRoute?.key === actualRoute.key &&
+        current.transitionState !== 'idle'
+      ) {
+        return current;
+      }
+
+      return {
+        ...current,
+        pendingRoute: actualRoute,
+        transitionState: 'exit',
+      };
+    });
 
     return undefined;
-  }, [actualRoute, displayedRoute.key, prefersReducedMotion, setTransition]);
+  }, [actualRoute, actualRoute.key, displayedRoute.key, prefersReducedMotion, setTransition]);
 
   const handleStageAnimationEnd = useCallback(
     (event) => {
