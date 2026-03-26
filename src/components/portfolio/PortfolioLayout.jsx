@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { PortfolioHeader } from './PortfolioHeader';
 import { PortfolioLeftContent } from './PortfolioCopy';
@@ -52,7 +52,7 @@ function PortfolioRightContent({
 
 export function PortfolioLayout() {
   const location = useLocation();
-  const actualRoute = parsePortfolioRoute(location.pathname);
+  const actualRoute = useMemo(() => parsePortfolioRoute(location.pathname), [location.pathname]);
   const prefersReducedMotion = usePrefersReducedMotion();
   const leftPanelRef = useRef(null);
   const mainContentRef = useRef(null);
