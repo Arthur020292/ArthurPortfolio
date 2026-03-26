@@ -71,49 +71,63 @@ export const baseProjects = [
     metaTitle: 'ContractsRx | Arthur Baduyen',
     metaDescription:
       'ContractsRx case study by Arthur Baduyen covering a B2B website built around clearer messaging, hierarchy, and conversion flow.',
-    cardImage: '/assets/work/contractsrx.png',
-    cardAlt: 'ContractsRx website design preview',
+    cardImage: '/assets/work/contractsrx/contractsrx-solution.png',
+    cardAlt: 'ContractsRx solutions overview preview',
     cardSummary:
-      'B2B website experience that simplified contract risk messaging for buyers.',
+      'B2B website and workflow experience for simplifying contract risk and guided deal processing.',
     overview:
-      'A website experience designed to make contract risk services easier for enterprise buyers to understand, while creating a stronger path from awareness to inquiry.',
-    heroImage: '/assets/work/contractsrx.png',
-    heroAlt: 'ContractsRx B2B website redesign screens',
+      'ContractsRx pairs a marketing website with a practical workflow layer so enterprise buyers can understand contract risk, explore solution modules, and move into a structured AI-assisted process.',
+    heroImage: '/assets/work/contractsrx/contractsrx-solution.png',
+    heroAlt: 'ContractsRx solutions overview screens',
     role: 'Web Designer UI/UX',
     duration: '2 months',
-    focus: 'Messaging hierarchy, wireframes, responsive website design',
+    focus: 'Messaging hierarchy, responsive website design, AI workflow screens',
     challenge:
-      'The product offering involved specialized contract risk topics that needed clearer structure, better readability, and a stronger sense of value for decision-makers.',
+      'The product had to explain a complex contract-risk offering clearly while also supporting a separate workflow for batch processing, deal review, and model selection.',
     approach:
-      'I created wireframes and high-fidelity layouts that simplified the story, improved mobile readability, and guided users from problem framing to solution pages.',
+      'I organized the story around a buyer journey: surface the problem, explain the solution, reinforce credibility through resources, and then hand users into the workflow tool when they were ready to act.',
     selectedWork: [
-      'Designed wireframes and polished prototypes for key pages.',
-      'Created supporting iconography and modular content blocks.',
-      'Supported plugin setup, analytics, and A/B iteration work.',
+      'Built the site structure around problem, solution, and proof.',
+      'Designed responsive pages and mobile states for the marketing experience.',
+      'Created the AI batch-processing and deal-management screens for the workflow layer.',
     ],
     outcome:
-      'The final experience improved content hierarchy and conversion flow, helping visitors understand the service faster across desktop and mobile.',
+      'Delivered a clearer B2B story that moved users from problem awareness into a more structured AI-assisted workflow.',
     gallery: [
       {
-        src: '/assets/work/contractsrx.png',
-        alt: 'ContractsRx homepage and service screen layouts',
+        src: '/assets/work/contractsrx/contractsrx-problem.png',
+        alt: 'ContractsRx problem statement homepage',
+        display: 'screen',
       },
       {
-        src: '/assets/work/contractsrx-screens.png',
-        alt: 'ContractsRx supporting page design collection',
+        src: '/assets/work/contractsrx/contractsrx-solution.png',
+        alt: 'ContractsRx solutions overview',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/contractsrx/contractsrx-resources.png',
+        alt: 'ContractsRx resources and credibility page',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/contractsrx/contractsrx-mobile-problem.png',
+        alt: 'ContractsRx mobile problem statement',
+        display: 'screen',
       },
       {
         src: '/assets/work/contractsrx/AI Feature - Batch Process - Select Model - Uploading.png',
         alt: 'ContractsRx AI batch processing upload flow',
+        display: 'screen',
       },
       {
         src: '/assets/work/contractsrx/Screenshot 2026-03-21 at 3.41.25 PM.png',
-        alt: 'ContractsRx workflow detail screen',
+        alt: 'ContractsRx deal management workflow',
+        display: 'screen',
       },
     ],
     ctaTitle: 'Need clearer product messaging?',
     ctaBody:
-      'I help teams turn dense service offerings into website experiences that feel easier to scan, trust, and act on.',
+      'I help teams turn complex offers into website and workflow experiences that are easier to scan, trust, and use.',
   },
   {
     slug: 'chromedia',
