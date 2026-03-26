@@ -15,6 +15,7 @@ export const browseProjectOrder = [
   'workrite',
   'harvest21',
   'portlandpedalpower',
+  'chromedia-talent-intelligence',
   'msp',
   'spokehealth',
   'chromedia',
@@ -26,6 +27,9 @@ export const browseProjectOrder = [
 export const portfolioProjectColors = {
   chromedia: {
     color: '#88c8c5',
+  },
+  'chromedia-talent-intelligence': {
+    color: '#5f8aa8',
   },
   chronomedia: {
     color: '#1079ac',

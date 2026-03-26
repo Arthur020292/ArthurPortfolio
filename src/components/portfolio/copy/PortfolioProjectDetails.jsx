@@ -1,15 +1,48 @@
 import { Link } from 'react-router-dom';
 import { projects } from '../../../data';
+import { BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../../portfolio/constants';
 import { getProjectPath } from '../../../portfolio/routes';
 import { CaseStudySection } from './CaseStudySection';
 import { SectionLabel } from './SectionLabel';
 
-export function PortfolioProjectRouteNav({ className = '', project }) {
+function getAdjacentProjects(project) {
   const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
-  const previousProject =
-    currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1];
-  const nextProject =
-    currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0];
+
+  return {
+    nextProject: currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0],
+    previousProject:
+      currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1],
+  };
+}
+
+function PortfolioRouteNavLabel({ align = 'left', expandedLabel, showProjectNames, summaryLabel }) {
+  return (
+    <span
+      className={`relative inline-grid ${align === 'right' ? 'justify-items-end text-right' : ''}`}
+    >
+      <span
+        className={`col-start-1 row-start-1 transition-all duration-220 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          showProjectNames ? 'translate-y-[-4px] opacity-0' : 'translate-y-0 opacity-100'
+        }`}
+      >
+        {summaryLabel}
+      </span>
+      <span
+        className={`col-start-1 row-start-1 transition-all duration-220 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          showProjectNames ? 'translate-y-0 opacity-100' : 'translate-y-[4px] opacity-0'
+        }`}
+      >
+        {expandedLabel}
+      </span>
+    </span>
+  );
+}
+
+export function PortfolioProjectRouteNav({
+  className = '',
+  project,
+}) {
+  const { nextProject, previousProject } = getAdjacentProjects(project);
 
   return (
     <nav
@@ -88,6 +121,21 @@ export function PortfolioProjectDetails({ project }) {
             </div>
           </div>
         ) : null}
+
+        <div className="portfolio-left-item mt-10 rounded-[18px] border border-slate-200 bg-[#fbfaf7] px-6 py-6 max-[640px]:hidden">
+          <h2 className="font-heading text-[1.55rem] leading-[1.05] font-semibold tracking-[-0.04em] text-slate-900 max-[640px]:text-[1.35rem]">
+            Need this kind of work?
+          </h2>
+          <div className="mt-4">
+            <Link
+              className="inline-flex items-center text-[0.98rem] font-semibold no-underline transition-opacity hover:opacity-80"
+              style={{ color: BRAND_COLOR }}
+              to={PORTFOLIO_CONTACT_PATH}
+            >
+              Get in touch
+            </Link>
+          </div>
+        </div>
       </div>
 
       <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">

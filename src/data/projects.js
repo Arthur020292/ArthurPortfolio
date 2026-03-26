@@ -25,6 +25,7 @@ function createScreens(project) {
 
   return sourceScreens.map((screen, index) => ({
     alt: screen.alt || `${project.name} screen ${index + 1}`,
+    display: screen.display || 'screen',
     src: screen.src,
   }));
 }
