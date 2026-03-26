@@ -734,14 +734,14 @@ export const baseProjects = [
     metaTitle: 'Nester | Arthur Baduyen',
     metaDescription:
       'Nester case study by Arthur Baduyen covering a multi-role real estate decision platform.',
-    cardImage: '/assets/work/nester.png',
-    cardAlt: 'Nester real estate platform preview',
+    cardImage: '/assets/work/nester/nester-dashboard-seller.png',
+    cardAlt: 'Nester seller dashboard platform preview',
     cardSummary:
       'Real estate platform simplifying property evaluation and reporting.',
     overview:
       'Nester is a real estate platform designed to help home buyers, sellers, and realtors make better property decisions through structured property analysis and reporting.',
-    heroImage: '/assets/work/nester.png',
-    heroAlt: 'Nester platform design screens',
+    heroImage: '/assets/work/nester/nester-dashboard-seller.png',
+    heroAlt: 'Nester seller dashboard platform screen',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UI/UX design, full user flows, scalable design system',
@@ -796,10 +796,50 @@ export const baseProjects = [
     outcome:
       'Delivered intuitive workflows for multiple user types and standardized the product UI through a unified design system.',
     gallery: [
-      { src: '/assets/work/nester.png', alt: 'Nester platform layouts' },
       {
-        src: '/assets/work/nester-screens.png',
-        alt: 'Nester supporting screens',
+        src: '/assets/work/nester/nester-landing-home.png',
+        alt: 'Nester landing page overview and buyer value proposition',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/nester/nester-dashboard-seller.png',
+        alt: 'Nester seller dashboard and reporting workspace',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/nester/nester-dashboard-buyer.png',
+        alt: 'Nester buyer dashboard and property decision workspace',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/nester/nester-buyers-v2.png',
+        alt: 'Nester buyer workflow and comparison detail view',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/nester/nester-dashboard-home-owner.png',
+        alt: 'Nester homeowner dashboard and maintenance planning workspace',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/nester/nester-roof.png',
+        alt: 'Nester roof analysis and maintenance planning screen',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/nester/nester-owner-report-inventory.png',
+        alt: 'Nester homeowner report inventory and asset planning view',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/nester/nester-landing-seller.png',
+        alt: 'Nester landing page seller-focused overview',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/nester/nester-landing-owner.png',
+        alt: 'Nester landing page owner-focused overview',
+        display: 'longform',
       },
     ],
     ctaTitle: 'Building a data-driven service?',
@@ -1100,111 +1140,54 @@ export const baseProjects = [
     outcome:
       'Delivered an engaging educational tool supported by a scalable design system for both guardians and children learning responsible finance.',
     gallery: [
-      { src: '/assets/work/kidough/Checking v1.png', alt: 'Kidough checking' },
-      { src: '/assets/work/kidough/Color.png', alt: 'Kidough colors' },
       {
-        src: '/assets/work/kidough/Dashboard - Child Information.png',
-        alt: 'Kidough child information',
+        src: '/assets/work/kidough/Screen Shot 2022-03-22 at 1.48 2.png',
+        alt: 'Kidough concept board and early product direction',
+      },
+      {
+        src: '/assets/work/kidough/Dashboard - Parent.png',
+        alt: 'Kidough parent dashboard',
       },
       {
         src: '/assets/work/kidough/Dashboard - Child.png',
         alt: 'Kidough child dashboard',
       },
       {
-        src: '/assets/work/kidough/Dashboard - Parent.png',
-        alt: 'Kidough parent dashboard',
-      },
-      { src: '/assets/work/kidough/Goal.png', alt: 'Kidough goals' },
-      {
-        src: '/assets/work/kidough/Icon=Good Job, Size=LG.png',
-        alt: 'Kidough icon set',
+        src: '/assets/work/kidough/Dashboard - Child Information.png',
+        alt: 'Kidough child profile and activity details',
       },
       {
-        src: '/assets/work/kidough/Icon=Good Job, Size=SM.png',
-        alt: 'Kidough icon set small',
-      },
-      { src: '/assets/work/kidough/Icon=Home, Size=LG.png', alt: 'Kidough home icon' },
-      { src: '/assets/work/kidough/Icon=Home, Size=SM.png', alt: 'Kidough home icon small' },
-      { src: '/assets/work/kidough/Icon=Icon5, Size=XL.png', alt: 'Kidough icon xl' },
-      {
-        src: '/assets/work/kidough/Icon=Information, Size=LG.png',
-        alt: 'Kidough information icon',
+        src: '/assets/work/kidough/Checking v1.png',
+        alt: 'Kidough checking account view',
       },
       {
-        src: '/assets/work/kidough/Icon=Information, Size=SM.png',
-        alt: 'Kidough information icon small',
+        src: '/assets/work/kidough/Goal.png',
+        alt: 'Kidough goals and progress view',
       },
       {
-        src: '/assets/work/kidough/Icon=holding coin, Size=LG.png',
-        alt: 'Kidough coin icon',
+        src: '/assets/work/kidough/Savings v3.2.png',
+        alt: 'Kidough savings account view',
       },
       {
-        src: '/assets/work/kidough/Icon=holding coin, Size=SM.png',
-        alt: 'Kidough coin icon small',
+        src: '/assets/work/kidough/Wishlist.png',
+        alt: 'Kidough wishlist view',
       },
-      {
-        src: '/assets/work/kidough/Icon=holding coin, Size=XL.png',
-        alt: 'Kidough coin icon xl',
-      },
-      { src: '/assets/work/kidough/Icon=idea, Size=LG.png', alt: 'Kidough idea icon' },
-      { src: '/assets/work/kidough/Icon=idea, Size=SM.png', alt: 'Kidough idea icon small' },
-      { src: '/assets/work/kidough/Kidough_logo.png', alt: 'Kidough logo' },
       {
         src: '/assets/work/kidough/Loan Information _ Reject.png',
-        alt: 'Kidough loan flow',
-      },
-      { src: '/assets/work/kidough/Net Worth.png', alt: 'Kidough net worth' },
-      { src: '/assets/work/kidough/Savings v3.2.png', alt: 'Kidough savings' },
-      {
-        src: '/assets/work/kidough/Screen Shot 2022-03-22 at 1.48 2.png',
-        alt: 'Kidough onboarding',
+        alt: 'Kidough loan rejection flow',
       },
       {
-        src: '/assets/work/kidough/Screenshot 2026-03-21 at 3.44.26 PM.png',
-        alt: 'Kidough parent controls',
+        src: '/assets/work/kidough/Nav.png',
+        alt: 'Kidough navigation system overview',
       },
       {
-        src: '/assets/work/kidough/Screenshot 2026-03-21 at 3.46.47 PM.png',
-        alt: 'Kidough activity view',
+        src: '/assets/work/kidough/Characters.png',
+        alt: 'Kidough mascot and character system',
       },
       {
-        src: '/assets/work/kidough/Screenshot 2026-03-21 at 3.47.47 PM.png',
-        alt: 'Kidough account summary',
+        src: '/assets/work/kidough/Loading.png',
+        alt: 'Kidough loading state sequence',
       },
-      {
-        src: '/assets/work/kidough/Signup Child + Value-1.png',
-        alt: 'Kidough signup step one',
-      },
-      {
-        src: '/assets/work/kidough/Signup Child + Value-2.png',
-        alt: 'Kidough signup step two',
-      },
-      {
-        src: '/assets/work/kidough/Signup Child + Value.png',
-        alt: 'Kidough signup step three',
-      },
-      {
-        src: '/assets/work/kidough/Sub-nav=Allowance.png',
-        alt: 'Kidough allowance subnav',
-      },
-      {
-        src: '/assets/work/kidough/Sub-nav=Banking.png',
-        alt: 'Kidough banking subnav',
-      },
-      {
-        src: '/assets/work/kidough/Sub-nav=General.png',
-        alt: 'Kidough general subnav',
-      },
-      {
-        src: '/assets/work/kidough/Sub-nav=Goals.png',
-        alt: 'Kidough goals subnav',
-      },
-      {
-        src: '/assets/work/kidough/Sub-nav=Loans.png',
-        alt: 'Kidough loans subnav',
-      },
-      { src: '/assets/work/kidough/Wishlist.png', alt: 'Kidough wishlist' },
-      { src: '/assets/work/kidough/image 14.png', alt: 'Kidough additional screen' },
     ],
     ctaTitle: 'Building an educational app?',
     ctaBody:

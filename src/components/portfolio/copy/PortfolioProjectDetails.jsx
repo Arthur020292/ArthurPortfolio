@@ -1,41 +1,31 @@
 import { Link } from 'react-router-dom';
-import { projects } from '../../../data';
+import { getBrowseProjects } from '../../../data';
 import { BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../../portfolio/constants';
 import { getProjectPath } from '../../../portfolio/routes';
 import { CaseStudySection } from './CaseStudySection';
 import { SectionLabel } from './SectionLabel';
 
 function getAdjacentProjects(project) {
-  const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
+  const orderedProjects = getBrowseProjects();
+  const currentIndex = orderedProjects.findIndex((entry) => entry.slug === project.slug);
+
+  if (currentIndex === -1) {
+    return {
+      nextProject: orderedProjects[0] ?? project,
+      previousProject: orderedProjects[orderedProjects.length - 1] ?? project,
+    };
+  }
 
   return {
-    nextProject: currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0],
+    nextProject:
+      currentIndex < orderedProjects.length - 1
+        ? orderedProjects[currentIndex + 1]
+        : orderedProjects[0],
     previousProject:
-      currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1],
+      currentIndex > 0
+        ? orderedProjects[currentIndex - 1]
+        : orderedProjects[orderedProjects.length - 1],
   };
-}
-
-function PortfolioRouteNavLabel({ align = 'left', expandedLabel, showProjectNames, summaryLabel }) {
-  return (
-    <span
-      className={`relative inline-grid ${align === 'right' ? 'justify-items-end text-right' : ''}`}
-    >
-      <span
-        className={`col-start-1 row-start-1 transition-all duration-220 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          showProjectNames ? 'translate-y-[-4px] opacity-0' : 'translate-y-0 opacity-100'
-        }`}
-      >
-        {summaryLabel}
-      </span>
-      <span
-        className={`col-start-1 row-start-1 transition-all duration-220 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          showProjectNames ? 'translate-y-0 opacity-100' : 'translate-y-[4px] opacity-0'
-        }`}
-      >
-        {expandedLabel}
-      </span>
-    </span>
-  );
 }
 
 export function PortfolioProjectRouteNav({
