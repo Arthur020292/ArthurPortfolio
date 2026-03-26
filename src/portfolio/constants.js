@@ -5,6 +5,7 @@ export const PORTFOLIO_CONTACT_PATH = '/contact';
 export const PORTFOLIO_PROJECTS_PATH = '/projects';
 
 export const BRAND_COLOR = '#eb6e51';
+export const CAL_COM_URL = 'https://cal.com/arthur-baduyen';
 export const CONTACT_EMAIL = 'arthur.baduyen@gmail.com';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/arthurbaduyenf/';
 export const SITE_NAME = 'Arthur Baduyen';

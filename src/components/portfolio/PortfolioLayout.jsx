@@ -198,8 +198,8 @@ export function PortfolioLayout() {
               <PortfolioHeader activeRoute={actualRoute.type} />
             </div>
             {showStickyNav ? (
-              <div className="pointer-events-none sticky -top-10 z-30 -mx-12 mb-0 pt-0 pb-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] translate-y-0 opacity-100 max-[980px]:hidden">
-                <div className="pointer-events-auto border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-12 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm">
+              <div className="portfolio-sticky-header pointer-events-none sticky z-30 mb-0 pt-0 pb-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] translate-y-0 opacity-100 max-[980px]:hidden">
+                <div className="pointer-events-auto border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-12 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:-mx-5 max-[980px]:px-5 max-[980px]:py-3 max-[640px]:-mx-4 max-[640px]:px-4">
                   <PortfolioHeader activeRoute={actualRoute.type} />
                 </div>
               </div>
