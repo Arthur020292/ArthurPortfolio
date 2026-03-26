@@ -1,8 +1,24 @@
-export const DEFAULT_TO_EMAIL = 'arthur.baduyen@gmail.com';
-export const DEFAULT_FROM_EMAIL = 'Arthur Portfolio <onboarding@resend.dev>';
-
 function normalizeField(value) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+export function getRequiredEmailConfig(config) {
+  const from = normalizeField(config?.RESEND_FROM_EMAIL);
+  const to = normalizeField(config?.CONTACT_TO_EMAIL);
+
+  if (!from || !to) {
+    return {
+      message: 'Email service is not configured yet.',
+      ok: false,
+      status: 500,
+    };
+  }
+
+  return {
+    from,
+    ok: true,
+    to,
+  };
 }
 
 function isValidEmail(email) {
