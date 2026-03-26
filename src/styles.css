@@ -555,11 +555,12 @@ select:focus-visible,
 
 .portfolio-sticky-header {
   top: 0;
+  will-change: transform, opacity;
 }
 
 @media (min-width: 981px) {
   .portfolio-sticky-header {
-    top: -2.5rem;
+    top: -40px;
     margin-left: -3rem;
     margin-right: -3rem;
   }

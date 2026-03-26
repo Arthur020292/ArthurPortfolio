@@ -30,12 +30,34 @@ export const baseProjects = [
       'The result was a clearer and more credible website experience that helped users understand services faster and gave the client better visibility into conversion behavior.',
     gallery: [
       {
-        src: '/assets/work/mrioa.jpg',
-        alt: 'MRIOA website homepage and content layouts',
+        src: '/assets/work/mrioa/mrioa-desktop-01.png',
+        alt: 'MRIOA homepage hero and service overview',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/mrioa/mrioa-desktop-06.png',
+        alt: 'MRIOA services and care-cost messaging section',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/mrioa/mrioa-desktop-08.png',
+        alt: 'MRIOA compliance and trust-focused content section',
+        display: 'longform',
       },
       {
         src: '/assets/work/mrioa-screens.jpg',
         alt: 'MRIOA supporting website screen collection',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/mrioa/mrioa-mobile-07.png',
+        alt: 'MRIOA mobile homepage hero',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/mrioa/mrioa-mobile-04.png',
+        alt: 'MRIOA mobile services section',
+        display: 'screen',
       },
     ],
     ctaTitle: 'Need a product or website simplified?',
@@ -80,6 +102,14 @@ export const baseProjects = [
         src: '/assets/work/contractsrx-screens.png',
         alt: 'ContractsRx supporting page design collection',
       },
+      {
+        src: '/assets/work/contractsrx/AI Feature - Batch Process - Select Model - Uploading.png',
+        alt: 'ContractsRx AI batch processing upload flow',
+      },
+      {
+        src: '/assets/work/contractsrx/Screenshot 2026-03-21 at 3.41.25 PM.png',
+        alt: 'ContractsRx workflow detail screen',
+      },
     ],
     ctaTitle: 'Need clearer product messaging?',
     ctaBody:
@@ -116,12 +146,39 @@ export const baseProjects = [
       'The final site balanced personality with practical service communication, helping the agency present complex offerings in a more structured and memorable way.',
     gallery: [
       {
-        src: '/assets/work/chromedia.jpg',
-        alt: 'Chromedia homepage and service page layouts',
+        src: '/assets/work/chromedia/chromedia-desktop-01.png',
+        alt: 'Chromedia homepage hero and staff augmentation section',
+        display: 'longform',
       },
       {
         src: '/assets/work/chromedia-screens.jpg',
         alt: 'Chromedia supporting website screen collection',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/chromedia/chromedia-desktop-05.png',
+        alt: 'Chromedia culture and innovation content section',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/chromedia/chromedia-desktop-06.png',
+        alt: 'Chromedia service capability comparison section',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/chromedia/chromedia-desktop-08.png',
+        alt: 'Chromedia tools and remote-team messaging section',
+        display: 'longform',
+      },
+      {
+        src: '/assets/work/chromedia/chromedia-mobile-homepage.png',
+        alt: 'Chromedia mobile homepage',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/chromedia/chromedia-mobile-04.png',
+        alt: 'Chromedia mobile service capability section',
+        display: 'screen',
       },
     ],
     ctaTitle: 'Need a sharper product or service story?',
@@ -161,15 +218,128 @@ export const baseProjects = [
       {
         src: '/assets/work/portlandpedalpower-thumb.jpg',
         alt: 'Portland Pedal Power homepage hero and introduction',
+        display: 'screen',
       },
       {
         src: '/assets/work/portlandpedalpower/portlandpedalpower-home-full.jpg',
         alt: 'Portland Pedal Power full homepage layout',
+        display: 'longform',
       },
     ],
     ctaTitle: 'Need a service website with a clearer story?',
     ctaBody:
       'I design websites that help service businesses communicate what makes them different and move visitors toward action.',
+  },
+  {
+    slug: 'chromedia-talent-intelligence',
+    name: 'Talent Intelligence',
+    category: 'Talent Operations Platform',
+    metaTitle: 'Talent Intelligence | Arthur Baduyen',
+    metaDescription:
+      'Talent Intelligence case study by Arthur Baduyen covering an admin-led talent operations platform for candidate profiles, skills taxonomy, and secure client sharing.',
+    cardImage: '/assets/work/cti/Employee Profile - Employee.png',
+    cardAlt: 'Talent Intelligence platform preview',
+    cardSummary:
+      'Talent operations platform for candidate profiles, skills taxonomy, and secure client sharing.',
+    overview:
+      'Chromedia Talent Intelligence is an admin-led platform for managing candidate profiles, maintaining a reusable skills taxonomy, and sharing shortlisted talent with clients through secure expiring links. It connects backoffice workflows with tokenized candidate and client experiences, turning fragmented profile data into a structured, auditable system.',
+    heroImage: '/assets/work/cti/Employee Profile - Employee.png',
+    heroAlt: 'Talent Intelligence candidate profile screen',
+    role: 'Lead Product Designer / Frontend Designer',
+    duration: 'N/A',
+    focus: 'Information architecture, role-based workflows, frontend-ready product design',
+    challenge:
+      'The platform had to balance a data-heavy admin experience with clarity and speed, while also supporting secure token-based candidate and client journeys outside the standard authenticated application shell.',
+    approach:
+      'I structured the product around role-based navigation, reusable admin patterns, and minimal tokenized public flows so admins, candidates, and clients each saw only the workflows relevant to them.',
+    selectedWork: [
+      'Designed admin dashboards, candidate management, profile editing, and skills taxonomy workflows.',
+      'Created tokenized candidate skill-assessment and client-sharing experiences.',
+      'Collaborated on resilient loading, empty, error, and retry states across operational flows.',
+    ],
+    caseStudySections: [
+      {
+        title: 'Responsibilities',
+        items: [
+          'Defined the information architecture and role-based navigation across admin, candidate, client, and authentication flows.',
+          'Designed the dashboard, candidate management, profile editor, skills taxonomy, shared profiles, and audit log experiences.',
+          'Simplified dense tables and form-heavy workflows with filters, deep links, reusable components, and progressive disclosure.',
+          'Designed the tokenized candidate skill-assessment flow to support autosave, resume state, and accessible navigation.',
+          'Shaped the read-only shared profile experience for clients, with clear visibility into link status and expiration.',
+          'Collaborated on loading, empty, error, and retry states to make operational workflows resilient.',
+        ],
+      },
+      {
+        title: 'Key Challenges',
+        items: [
+          'Balancing a data-heavy admin interface with clarity, speed, and low-friction editing.',
+          'Supporting multiple user roles and permissions without fragmenting the experience.',
+          'Designing secure public flows that work without standard login while still protecting candidate data.',
+          'Making candidate skill submission reliable across interruptions, refreshes, and session recovery.',
+          'Keeping the product scalable as the skills taxonomy, profile sections, and sharing workflows expand.',
+        ],
+      },
+      {
+        title: 'Key Design Decisions',
+        items: [
+          'Used a persistent admin shell with deep-linkable pages so users can move quickly between tasks.',
+          'Prioritized dashboard metrics, filters, and tables to make candidate health and sharing activity immediately visible.',
+          'Structured candidate profiles into clear modules for about, experience, education, projects, skills, and media.',
+          'Kept candidate and client journeys intentionally minimal, removing admin controls and unnecessary navigation.',
+          'Added explicit loading, empty, and error states so teams can trust the system during day-to-day use.',
+          'Designed around secure token-based workflows to support shared access without exposing full application access.',
+        ],
+      },
+      {
+        title: 'Impact',
+        items: [
+          'Created a single, structured workflow for candidate data, skills, and sharing.',
+          'Improved operational visibility through dashboard metrics, filters, and auditability.',
+          'Reduced friction in candidate self-assessment with a guided, resumable flow.',
+          'Enabled safe client sharing through expiring, revocable links.',
+        ],
+      },
+    ],
+    caseStudyTools: [
+      'ChatGPT',
+      'Codex',
+      'Figma',
+      'React',
+      'TypeScript',
+      'Vite',
+      'React Router',
+      'Tailwind CSS',
+      'Express',
+      'PostgreSQL',
+      'Prisma',
+    ],
+    outcome:
+      'The result was a structured talent operations system that improved admin visibility, reduced candidate submission friction, and enabled secure client sharing through expiring links.',
+    gallery: [
+      {
+        src: '/assets/work/cti/Employee Profile - Employee.png',
+        alt: 'Talent Intelligence employee profile screen',
+      },
+      {
+        src: '/assets/work/cti/Config - Candidates.png',
+        alt: 'Talent Intelligence candidate configuration screen',
+      },
+      {
+        src: '/assets/work/cti/Config - Skill Capability.png',
+        alt: 'Talent Intelligence skill capability configuration',
+      },
+      {
+        src: '/assets/work/cti/Config - Skill Category.png',
+        alt: 'Talent Intelligence skill category configuration',
+      },
+      {
+        src: '/assets/work/cti/Config - Skill Category 2.png',
+        alt: 'Talent Intelligence skill category detail configuration',
+      },
+    ],
+    ctaTitle: 'Need an operations platform made clearer?',
+    ctaBody:
+      'I design internal products and role-based workflows that stay usable as data, permissions, and operational complexity grow.',
   },
   {
     slug: 'nlrp',
@@ -251,6 +421,38 @@ export const baseProjects = [
       {
         src: '/assets/work/spokehealth-screens.jpg',
         alt: 'SpokeHealth detailed admin interface screen collection',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists.png',
+        alt: 'SpokeHealth admin members screen 1',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy.png',
+        alt: 'SpokeHealth admin members screen 2',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 2.png',
+        alt: 'SpokeHealth admin members screen 3',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 3.png',
+        alt: 'SpokeHealth admin members screen 4',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 4.png',
+        alt: 'SpokeHealth admin members screen 5',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 5.png',
+        alt: 'SpokeHealth admin members screen 6',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 6.png',
+        alt: 'SpokeHealth admin members screen 7',
+      },
+      {
+        src: '/assets/work/spokehealth/admin-members.lists copy 7.png',
+        alt: 'SpokeHealth admin members screen 8',
       },
     ],
     ctaTitle: 'Need long-term product design support?',
@@ -678,34 +880,45 @@ export const baseProjects = [
         src: '/assets/work/harvest21/Information Architecture.png',
         alt: 'Harvest21 information architecture',
       },
-      { src: '/assets/work/harvest21/Landing Page.jpg', alt: 'Harvest21 landing page' },
+      {
+        src: '/assets/work/harvest21/Landing Page.jpg',
+        alt: 'Harvest21 landing page',
+        display: 'longform',
+      },
       {
         src: '/assets/work/harvest21/LoggedOut Continent - Mobile.png',
         alt: 'Harvest21 mobile map',
+        display: 'screen',
       },
       {
         src: '/assets/work/harvest21/LoggedOut Continent Scroll - Mobile.png',
         alt: 'Harvest21 mobile exploration',
+        display: 'screen',
       },
       {
         src: '/assets/work/harvest21/Mission Agency.jpg',
         alt: 'Harvest21 mission agency page',
+        display: 'longform',
       },
       {
         src: '/assets/work/harvest21/Missionary Profile.jpg',
         alt: 'Harvest21 missionary profile',
+        display: 'longform',
       },
       {
         src: '/assets/work/harvest21/Screenshot 2026-03-21 at 3.18.02 PM.png',
         alt: 'Harvest21 support flow',
+        display: 'screen',
       },
       {
         src: '/assets/work/harvest21/Screenshot 2026-03-21 at 3.20.37 PM.png',
         alt: 'Harvest21 donor journey',
+        display: 'screen',
       },
       {
         src: '/assets/work/harvest21/Screenshot 2026-03-21 at 3.21.45 PM.png',
         alt: 'Harvest21 activity page',
+        display: 'screen',
       },
     ],
     ctaTitle: 'Looking to boost community support?',
@@ -1064,12 +1277,10 @@ export const baseProjects = [
     outcome:
       'Significantly enhanced efficiency and reduced friction for administrative staff handling significant photographic workflows on a daily basis.',
     gallery: [
-      { src: '/assets/work/msp/Frame 176.svg', alt: 'MSP frame' },
       {
         src: '/assets/work/msp/Franchise - Photography.png',
         alt: 'MSP franchise photography',
       },
-      { src: '/assets/work/msp/Info.svg', alt: 'MSP info icon' },
       { src: '/assets/work/msp/MSP Portal Logo 1.svg', alt: 'MSP portal logo' },
       { src: '/assets/work/msp/MSP-Logo-sm 1.svg', alt: 'MSP small logo' },
       {
@@ -1081,7 +1292,6 @@ export const baseProjects = [
         alt: 'MSP empty state',
       },
       { src: '/assets/work/msp/Photography - Others.png', alt: 'MSP photo listing' },
-      { src: '/assets/work/msp/Portrait.png', alt: 'MSP portrait view' },
       {
         src: '/assets/work/msp/School Admin - Manage Users.png',
         alt: 'MSP manage users',
