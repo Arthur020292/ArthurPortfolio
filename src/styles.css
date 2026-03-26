@@ -376,49 +376,72 @@ select:focus-visible,
   transition: transform 1440ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.portfolio-project-tile:hover,
 .portfolio-project-tile:focus-visible,
-.portfolio-project-tile:hover .portfolio-project-overlay,
 .portfolio-project-tile:focus-visible .portfolio-project-overlay,
-.portfolio-project-tile:hover .portfolio-project-title,
 .portfolio-project-tile:focus-visible .portfolio-project-title,
-.portfolio-project-tile:hover .portfolio-project-category,
 .portfolio-project-tile:focus-visible .portfolio-project-category,
-.portfolio-project-tile:hover .portfolio-project-bar,
 .portfolio-project-tile:focus-visible .portfolio-project-bar,
-.portfolio-project-tile:hover .portfolio-project-bar-fill,
 .portfolio-project-tile:focus-visible .portfolio-project-bar-fill {
   transition-duration: 480ms;
 }
 
-.portfolio-project-tile:hover,
 .portfolio-project-tile:focus-visible {
   color: #ffffff;
 }
 
-.portfolio-project-tile:hover .portfolio-project-overlay,
 .portfolio-project-tile:focus-visible .portfolio-project-overlay {
   opacity: 1;
 }
 
-.portfolio-project-tile:hover .portfolio-project-title,
 .portfolio-project-tile:focus-visible .portfolio-project-title {
   color: #ffffff;
 }
 
-.portfolio-project-tile:hover .portfolio-project-category,
 .portfolio-project-tile:focus-visible .portfolio-project-category {
   color: rgba(255, 255, 255, 0.68);
 }
 
-.portfolio-project-tile:hover .portfolio-project-bar,
 .portfolio-project-tile:focus-visible .portfolio-project-bar {
   background-color: rgba(255, 255, 255, 0.14);
 }
 
-.portfolio-project-tile:hover .portfolio-project-bar-fill,
 .portfolio-project-tile:focus-visible .portfolio-project-bar-fill {
   transform: scaleX(1.1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .portfolio-project-tile:hover,
+  .portfolio-project-tile:hover .portfolio-project-overlay,
+  .portfolio-project-tile:hover .portfolio-project-title,
+  .portfolio-project-tile:hover .portfolio-project-category,
+  .portfolio-project-tile:hover .portfolio-project-bar,
+  .portfolio-project-tile:hover .portfolio-project-bar-fill {
+    transition-duration: 480ms;
+  }
+
+  .portfolio-project-tile:hover {
+    color: #ffffff;
+  }
+
+  .portfolio-project-tile:hover .portfolio-project-overlay {
+    opacity: 1;
+  }
+
+  .portfolio-project-tile:hover .portfolio-project-title {
+    color: #ffffff;
+  }
+
+  .portfolio-project-tile:hover .portfolio-project-category {
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .portfolio-project-tile:hover .portfolio-project-bar {
+    background-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .portfolio-project-tile:hover .portfolio-project-bar-fill {
+    transform: scaleX(1.1);
+  }
 }
 
 @keyframes portfolio-grid-cell-settle {

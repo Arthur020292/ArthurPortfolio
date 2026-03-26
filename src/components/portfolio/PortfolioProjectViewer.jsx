@@ -130,14 +130,23 @@ export function PortfolioProjectViewer({ project }) {
   }, [displayedScreenIndex, project.screens]);
 
   useEffect(() => {
-    const activeThumbnail = thumbnailStripRef.current?.querySelector(
+    const thumbnailStrip = thumbnailStripRef.current;
+    const activeThumbnail = thumbnailStrip?.querySelector(
       `[data-screen-index="${screenIndex}"]`
     );
 
-    activeThumbnail?.scrollIntoView({
+    if (!thumbnailStrip || !activeThumbnail) {
+      return;
+    }
+
+    const targetLeft =
+      activeThumbnail.offsetLeft -
+      thumbnailStrip.clientWidth / 2 +
+      activeThumbnail.clientWidth / 2;
+
+    thumbnailStrip.scrollTo({
       behavior: disableScreenTransitions ? 'auto' : 'smooth',
-      block: 'nearest',
-      inline: 'center',
+      left: Math.max(0, targetLeft),
     });
   }, [disableScreenTransitions, screenIndex]);
 
