@@ -915,7 +915,6 @@ export const baseProjects = [
     outcome:
       'Provided an easy-to-use platform enabling simplified content updates and frictionless financial support.',
     gallery: [
-      { src: '/assets/work/harvest21/H21_logo.png', alt: 'Harvest21 logo' },
       {
         src: '/assets/work/harvest21/Information Architecture.png',
         alt: 'Harvest21 information architecture',
@@ -924,16 +923,6 @@ export const baseProjects = [
         src: '/assets/work/harvest21/Landing Page.jpg',
         alt: 'Harvest21 landing page',
         display: 'longform',
-      },
-      {
-        src: '/assets/work/harvest21/LoggedOut Continent - Mobile.png',
-        alt: 'Harvest21 mobile map',
-        display: 'screen',
-      },
-      {
-        src: '/assets/work/harvest21/LoggedOut Continent Scroll - Mobile.png',
-        alt: 'Harvest21 mobile exploration',
-        display: 'screen',
       },
       {
         src: '/assets/work/harvest21/Mission Agency.jpg',
@@ -946,8 +935,13 @@ export const baseProjects = [
         display: 'longform',
       },
       {
-        src: '/assets/work/harvest21/Screenshot 2026-03-21 at 3.18.02 PM.png',
-        alt: 'Harvest21 support flow',
+        src: '/assets/work/harvest21/LoggedOut Continent - Mobile.png',
+        alt: 'Harvest21 mobile map',
+        display: 'screen',
+      },
+      {
+        src: '/assets/work/harvest21/LoggedOut Continent Scroll - Mobile.png',
+        alt: 'Harvest21 mobile exploration',
         display: 'screen',
       },
       {
@@ -975,101 +969,97 @@ export const baseProjects = [
     cardImage: '/assets/work/workrite-thumb.png',
     cardAlt: 'Workrite process improvement platform preview',
     cardSummary:
-      'Digital toolset mapping workflows and generating improvement observations.',
+      'Lean process-improvement platform for setup, observation, and work analysis.',
     overview:
-      'Workrite provides tools that help organizations improve operational performance using Lean and Six Sigma principles, replacing manual documentation methods.',
+      'Workrite turns Lean and Six Sigma process studies into a guided digital workflow, moving teams from project setup through observation, analysis, and reporting without relying on manual forms and spreadsheets.',
     heroImage: '/assets/work/workrite-thumb.png',
     heroAlt: 'Workrite platform design screens',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
-    focus: 'UI design, observation dashboards, reporting interfaces',
+    focus: 'Lean workflow design, observation analysis, reporting interfaces',
     challenge:
-      'Translating complex Lean operations data into an interface that allows for intuitive capture and insight generation.',
+      'The platform had to explain a specialized process-improvement methodology while staying usable for people who just needed to create a project, capture observations, and move on.',
     approach:
-      'Structured the interface to naturally follow observation steps while designing clear visual layouts for analysis and recommendations.',
+      'I organized the interface around the lifecycle of a study: create the project, define the process, compare work elements, review training references, and surface improvement opportunities in one system.',
     selectedWork: [
-      'Created a digital platform replacing manual documentation.',
-      'Designed workflows for process recording and observations.',
-      'Developed reporting layouts and action item generators.',
+      'Mapped the full flow from project setup to process analysis.',
+      'Designed the work-combination and observation screens for side-by-side comparison.',
+      'Brought training and legacy materials into the product story without making the interface feel heavy.',
     ],
     caseStudySections: [
       {
-        title: 'Responsibilities',
+        title: 'Workflow Foundation',
         items: [
-          'Led the overall UI and UX design of the platform.',
-          'Designed the complete product interface from concept to final implementation.',
-          'Created the platform design system and reusable UI components.',
-          'Designed workflows for recording process steps and operational observations.',
-          'Designed dashboards and reporting interfaces for analysis and recommendations.',
+          'Led the UI/UX direction for the full process-improvement platform.',
+          'Designed the setup flow that starts a new project and defines the process context.',
+          'Created reusable patterns for dense forms, tables, and step-driven workflows.',
         ],
       },
       {
-        title: 'Key Challenges',
+        title: 'Observation and Analysis',
         items: [
-          'Turning Lean and Six Sigma process concepts into a UI that felt clear and intuitive.',
-          'Replacing manual documentation methods without overwhelming users.',
-          'Helping teams capture observations, analyze results, and identify improvements in one flow.',
+          'Structured the experience around work observation, work combination, and cycle-time comparison.',
+          'Designed views that made manual, machine, and walking time easier to scan.',
+          'Kept the data-heavy screens readable enough for quick review in the field or office.',
         ],
       },
       {
-        title: 'Design Decisions',
+        title: 'Training and Legacy',
         items: [
-          'Simplified the process-recording workflow so teams could document steps more easily.',
-          'Structured the interface around observation, analysis, and reporting.',
-          'Designed report layouts that made improvement recommendations easier to scan and act on.',
-          'Created a scalable design system for consistency across the platform.',
+          'Used training and SOP material to connect the software to the Lean methodology.',
+          'Kept older manual views in the product story so teams could compare the new system to the previous workflow.',
+          'Designed iterative updates that could evolve without breaking the main study flow.',
         ],
       },
       {
         title: 'Impact',
         items: [
-          'Replaced manual process documentation with a centralized digital platform.',
-          'Enabled users to record and analyze operational processes in one system.',
-          'Generated automated work observations and improvement action items.',
-          'Made complex process-improvement workflows easier for organizations to adopt.',
+          'Replaced paper-heavy documentation with a guided digital sequence.',
+          'Made process studies easier to repeat and review consistently.',
+          'Gave teams a clearer path from observation to improvement action items.',
         ],
       },
     ],
     outcome:
-      'Streamlined process improvement recording for organizations, bringing complex data capture into a centralized digital realm.',
+      'Workrite replaced manual documentation with a guided digital system for running process studies, making observation, comparison, and reporting easier to repeat.',
     gallery: [
-      { src: '/assets/work/workrite/Add New.png', alt: 'Workrite add new' },
       {
         src: '/assets/work/workrite/Create Project.png',
-        alt: 'Workrite create project',
+        alt: 'Workrite project setup screen',
       },
       {
         src: '/assets/work/workrite/Project_Process.png',
-        alt: 'Workrite process flow',
+        alt: 'Workrite process configuration screen',
       },
-      { src: '/assets/work/workrite/Table Row.png', alt: 'Workrite table row' },
       {
         src: '/assets/work/workrite/Work Combination.png',
-        alt: 'Workrite work combination',
-      },
-      {
-        src: '/assets/work/workrite/Work Observation Training.pptx.pdf - Page 2 of 27.png',
-        alt: 'Workrite training page 2',
+        alt: 'Workrite work combination analysis screen',
       },
       {
         src: '/assets/work/workrite/Work Observation Training.pptx.pdf - Page 3 of 27.png',
-        alt: 'Workrite training page 3',
+        alt: 'Workrite work observation training overview',
       },
       {
         src: '/assets/work/workrite/Work Observation.png',
-        alt: 'Workrite observation',
+        alt: 'Workrite work observation workflow screen',
       },
-      { src: '/assets/work/workrite/Workrite_logo.png', alt: 'Workrite logo' },
       {
         src: '/assets/work/workrite/eNVISION IT! - Process step removed + icons as column header.png',
-        alt: 'Workrite process update',
+        alt: 'Workrite iterative process update screen',
+        display: 'longform',
       },
-      { src: '/assets/work/workrite/image 2.jpg', alt: 'Workrite screenshot one' },
-      { src: '/assets/work/workrite/image 3.png', alt: 'Workrite screenshot two' },
+      {
+        src: '/assets/work/workrite/image 2.png',
+        alt: 'Workrite manual legacy workflow screen',
+      },
+      {
+        src: '/assets/work/workrite/image 3.png',
+        alt: 'Workrite manual legacy work combination table',
+      },
     ],
     ctaTitle: 'Dealing with complex process data?',
     ctaBody:
-      'I map data-heavy workflows and transform them into digital platforms designed for operational efficiency.',
+      'I help teams turn manual operational workflows into clearer digital systems that are easier to use, repeat, and improve.',
   },
   {
     slug: 'kidough',
