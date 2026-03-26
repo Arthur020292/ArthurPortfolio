@@ -1,9 +1,14 @@
 import {
   createEmailContent,
-  DEFAULT_FROM_EMAIL,
-  DEFAULT_TO_EMAIL,
+  getRequiredEmailConfig,
   parseContactPayload,
 } from '../../shared/contact.js';
+import {
+  enforceContactRateLimit,
+  getAllowedOrigins,
+  isAllowedRequestOrigin,
+  verifyTurnstileToken,
+} from '../../shared/contactSecurity.js';
 
 function jsonResponse(body, init = {}) {
   return new Response(JSON.stringify(body), {
@@ -16,11 +21,38 @@ function jsonResponse(body, init = {}) {
 
 export async function onRequestPost(context) {
   const resendApiKey = context.env.RESEND_API_KEY;
+  const allowedOrigins = getAllowedOrigins(context.env.CONTACT_ALLOWED_ORIGINS);
+  const requestOrigin = new URL(context.request.url).origin;
+  const origin = context.request.headers.get('Origin');
+  const remoteIp = context.request.headers.get('CF-Connecting-IP');
+
+  if (!isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin })) {
+    return jsonResponse({ message: 'Origin not allowed.' }, { status: 403 });
+  }
 
   if (!resendApiKey) {
     return jsonResponse(
       { message: 'Email service is not configured yet.' },
       { status: 500 }
+    );
+  }
+
+  const emailConfig = getRequiredEmailConfig(context.env);
+
+  if (!emailConfig.ok) {
+    return jsonResponse({ message: emailConfig.message }, { status: emailConfig.status });
+  }
+
+  const rateLimitResult = enforceContactRateLimit({
+    key: remoteIp,
+    maxRequests: Number(context.env.CONTACT_RATE_LIMIT_MAX || 5),
+    windowMs: Number(context.env.CONTACT_RATE_LIMIT_WINDOW_MS || 600000),
+  });
+
+  if (!rateLimitResult.ok) {
+    return jsonResponse(
+      { message: rateLimitResult.message },
+      { status: rateLimitResult.status }
     );
   }
 
@@ -30,6 +62,19 @@ export async function onRequestPost(context) {
     payload = await context.request.json();
   } catch {
     return jsonResponse({ message: 'Invalid request body.' }, { status: 400 });
+  }
+
+  const turnstileResult = await verifyTurnstileToken({
+    remoteIp,
+    secretKey: context.env.TURNSTILE_SECRET_KEY,
+    token: payload?.turnstileToken,
+  });
+
+  if (!turnstileResult.ok) {
+    return jsonResponse(
+      { message: turnstileResult.message },
+      { status: turnstileResult.status }
+    );
   }
 
   let parsedPayload;
@@ -49,8 +94,7 @@ export async function onRequestPost(context) {
     return jsonResponse({ message: 'Thanks, your message has been sent.' }, { status: 200 });
   }
 
-  const from = context.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL;
-  const to = context.env.CONTACT_TO_EMAIL || DEFAULT_TO_EMAIL;
+  const { from, to } = emailConfig;
   const subject = `Portfolio inquiry from ${parsedPayload.name}`;
   const { html, text } = createEmailContent(parsedPayload);
 

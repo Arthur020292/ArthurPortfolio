@@ -2,6 +2,12 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { sendContactEmail } from './api/_lib/contact.js';
+import {
+  enforceContactRateLimit,
+  getAllowedOrigins,
+  isAllowedRequestOrigin,
+  verifyTurnstileToken,
+} from './shared/contactSecurity.js';
 
 async function readJsonBody(req) {
   const chunks = [];
@@ -43,6 +49,43 @@ function contactApiPlugin() {
           Object.assign(process.env, loadEnv(server.config.mode, process.cwd(), ''));
 
           const payload = await readJsonBody(req);
+          const allowedOrigins = getAllowedOrigins(process.env.CONTACT_ALLOWED_ORIGINS);
+          const requestOrigin = `http://${req.headers.host}`;
+          const origin = req.headers.origin;
+
+          if (!isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin })) {
+            res.statusCode = 403;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: 'Origin not allowed.' }));
+            return;
+          }
+
+          const rateLimitResult = enforceContactRateLimit({
+            key: req.socket.remoteAddress,
+            maxRequests: Number(process.env.CONTACT_RATE_LIMIT_MAX || 5),
+            windowMs: Number(process.env.CONTACT_RATE_LIMIT_WINDOW_MS || 600000),
+          });
+
+          if (!rateLimitResult.ok) {
+            res.statusCode = rateLimitResult.status;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: rateLimitResult.message }));
+            return;
+          }
+
+          const turnstileResult = await verifyTurnstileToken({
+            remoteIp: req.socket.remoteAddress,
+            secretKey: process.env.TURNSTILE_SECRET_KEY,
+            token: payload?.turnstileToken,
+          });
+
+          if (!turnstileResult.ok) {
+            res.statusCode = turnstileResult.status;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ message: turnstileResult.message }));
+            return;
+          }
+
           const result = await sendContactEmail(payload);
 
           res.statusCode = result.status;

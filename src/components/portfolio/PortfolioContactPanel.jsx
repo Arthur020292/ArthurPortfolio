@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BRAND_COLOR, CONTACT_EMAIL } from '../../portfolio/constants';
 
 export function PortfolioContactPanel({ motionState = 'idle' }) {
+  const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY?.trim();
   const [formState, setFormState] = useState({
     company: '',
     email: '',
@@ -9,11 +10,80 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
     name: '',
     projectType: '',
   });
+  const [turnstileToken, setTurnstileToken] = useState('');
   const [submitState, setSubmitState] = useState({
     message: '',
     status: 'idle',
   });
+  const turnstileContainerRef = useRef(null);
+  const turnstileWidgetIdRef = useRef(null);
   const isSubmitting = submitState.status === 'submitting';
+  const requiresTurnstile = Boolean(turnstileSiteKey);
+  const isSubmitDisabled = isSubmitting || (requiresTurnstile && !turnstileToken);
+
+  useEffect(() => {
+    if (
+      !turnstileSiteKey ||
+      typeof window === 'undefined' ||
+      !turnstileContainerRef.current
+    ) {
+      return undefined;
+    }
+
+    const renderWidget = () => {
+      if (
+        !window.turnstile ||
+        !turnstileContainerRef.current ||
+        turnstileWidgetIdRef.current !== null
+      ) {
+        return;
+      }
+
+      turnstileWidgetIdRef.current = window.turnstile.render(turnstileContainerRef.current, {
+        callback: (token) => setTurnstileToken(token),
+        'error-callback': () => setTurnstileToken(''),
+        'expired-callback': () => setTurnstileToken(''),
+        sitekey: turnstileSiteKey,
+      });
+    };
+
+    const existingScript = document.querySelector(
+      'script[data-portfolio-turnstile="true"]'
+    );
+
+    if (existingScript) {
+      if (window.turnstile) {
+        renderWidget();
+      } else {
+        existingScript.addEventListener('load', renderWidget, { once: true });
+      }
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+      script.async = true;
+      script.defer = true;
+      script.dataset.portfolioTurnstile = 'true';
+      script.addEventListener('load', renderWidget, { once: true });
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      setTurnstileToken('');
+
+      if (turnstileWidgetIdRef.current !== null && window.turnstile?.remove) {
+        window.turnstile.remove(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
+      }
+    };
+  }, [turnstileSiteKey]);
+
+  function resetTurnstile() {
+    setTurnstileToken('');
+
+    if (turnstileWidgetIdRef.current !== null && window.turnstile?.reset) {
+      window.turnstile.reset(turnstileWidgetIdRef.current);
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -25,7 +95,10 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
 
     try {
       const response = await fetch('/api/contact', {
-        body: JSON.stringify(formState),
+        body: JSON.stringify({
+          ...formState,
+          turnstileToken,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -35,6 +108,10 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
       const result = await response.json();
 
       if (!response.ok) {
+        if (requiresTurnstile) {
+          resetTurnstile();
+        }
+
         setSubmitState({
           message: result.message || 'I could not send your message right now.',
           status: 'error',
@@ -49,11 +126,18 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
         name: '',
         projectType: '',
       });
+      if (requiresTurnstile) {
+        resetTurnstile();
+      }
       setSubmitState({
         message: result.message || 'Thanks, your message has been sent.',
         status: 'success',
       });
     } catch {
+      if (requiresTurnstile) {
+        resetTurnstile();
+      }
+
       setSubmitState({
         message: 'I could not send your message right now. Please try again later.',
         status: 'error',
@@ -174,15 +258,27 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
             />
           </label>
 
+          {requiresTurnstile ? (
+            <div className="mt-1">
+              <div ref={turnstileContainerRef} />
+            </div>
+          ) : null}
+
           <div className="mt-3 pt-2 max-[640px]:mt-2 max-[640px]:pt-1">
             <button
               className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 max-[640px]:w-full"
-              disabled={isSubmitting}
+              disabled={isSubmitDisabled}
               style={{ backgroundColor: BRAND_COLOR }}
               type="submit"
             >
               {isSubmitting ? 'Sending...' : 'Send message'}
             </button>
+
+            {requiresTurnstile && !turnstileToken ? (
+              <p className="mt-3 text-[0.9rem] text-slate-500">
+                Complete the security check before sending your message.
+              </p>
+            ) : null}
 
             <p
               aria-atomic="true"

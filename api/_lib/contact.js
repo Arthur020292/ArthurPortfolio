@@ -1,8 +1,7 @@
 import { Resend } from 'resend';
 import {
   createEmailContent,
-  DEFAULT_FROM_EMAIL,
-  DEFAULT_TO_EMAIL,
+  getRequiredEmailConfig,
   parseContactPayload,
 } from '../../shared/contact.js';
 
@@ -15,6 +14,12 @@ export async function sendContactEmail(payload) {
       ok: false,
       status: 500,
     };
+  }
+
+  const emailConfig = getRequiredEmailConfig(process.env);
+
+  if (!emailConfig.ok) {
+    return emailConfig;
   }
 
   let parsedPayload;
@@ -38,8 +43,7 @@ export async function sendContactEmail(payload) {
   }
 
   const resend = new Resend(resendApiKey);
-  const from = process.env.RESEND_FROM_EMAIL || DEFAULT_FROM_EMAIL;
-  const to = process.env.CONTACT_TO_EMAIL || DEFAULT_TO_EMAIL;
+  const { from, to } = emailConfig;
   const subject = `Portfolio inquiry from ${parsedPayload.name}`;
   const { html, text } = createEmailContent(parsedPayload);
 
