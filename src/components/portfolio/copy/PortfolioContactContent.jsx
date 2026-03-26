@@ -9,18 +9,18 @@ import { SectionLabel } from './SectionLabel';
 export function PortfolioContactContent() {
   return (
     <div className="flex h-full flex-col">
-      <div className="portfolio-left-item">
+      <div className="portfolio-left-item max-[980px]:hidden">
         <h1 className="font-heading text-[clamp(2.3rem,4vw,4rem)] leading-[0.96] font-bold tracking-[-0.05em] text-slate-900">
           Let&apos;s talk about your next product.
         </h1>
-        <p className="mt-6 max-w-[29rem] text-[1.02rem] leading-[1.8] text-slate-500">
+        <p className="mt-6 max-w-[29rem] text-[1.02rem] leading-[1.8] text-slate-500 max-[980px]:hidden">
           Tell me what you&apos;re building, where you need support, and what stage you&apos;re in.
           I work across product design, redesigns, UX systems, and frontend-ready execution.
         </p>
 
         <div className="mt-8">
           <a
-            className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5"
+            className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5 max-[640px]:w-full"
             href={CAL_COM_URL}
             rel="noreferrer"
             style={{ backgroundColor: BRAND_COLOR }}
@@ -28,13 +28,10 @@ export function PortfolioContactContent() {
           >
             Book a call
           </a>
-          <p className="mt-3 max-w-[28rem] text-[0.95rem] leading-[1.7] text-slate-500">
-            If scheduling is easier than writing an email, pick a time directly on my calendar.
-          </p>
         </div>
       </div>
 
-      <div className="portfolio-left-item mt-10">
+      <div className="portfolio-left-item mt-10 max-[980px]:hidden">
         <SectionLabel>Quick Contact</SectionLabel>
         <div className="mt-4 grid gap-3">
           <a

@@ -4,11 +4,36 @@ import { getProjectPath } from '../../../portfolio/routes';
 import { CaseStudySection } from './CaseStudySection';
 import { SectionLabel } from './SectionLabel';
 
-export function PortfolioProjectDetails({ project }) {
+export function PortfolioProjectRouteNav({ className = '', project }) {
   const currentIndex = projects.findIndex((entry) => entry.slug === project.slug);
-  const previousProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
-  const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+  const previousProject =
+    currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1];
+  const nextProject =
+    currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0];
 
+  return (
+    <nav
+      aria-label="Project navigation"
+      className={`flex items-center gap-4 text-[0.96rem] max-[640px]:justify-between max-[640px]:gap-3 max-[640px]:text-[0.9rem] ${className}`}
+    >
+      <Link
+        className="text-slate-500 transition-colors hover:text-slate-900"
+        to={getProjectPath(previousProject.slug)}
+      >
+        Previous project
+      </Link>
+      <span className="text-slate-300">|</span>
+      <Link
+        className="text-slate-500 transition-colors hover:text-slate-900"
+        to={getProjectPath(nextProject.slug)}
+      >
+        Next project
+      </Link>
+    </nav>
+  );
+}
+
+export function PortfolioProjectDetails({ project }) {
   return (
     <div className="flex min-h-full flex-col">
       <div className="flex-1">
@@ -65,33 +90,8 @@ export function PortfolioProjectDetails({ project }) {
         ) : null}
       </div>
 
-      <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:mt-6 max-[640px]:py-5">
-        <nav
-          aria-label="Project navigation"
-          className="flex items-center gap-4 text-[0.96rem] max-[640px]:justify-between max-[640px]:gap-3 max-[640px]:text-[0.9rem]"
-        >
-          {previousProject ? (
-            <Link
-              className="text-slate-500 transition-colors hover:text-slate-900"
-              to={getProjectPath(previousProject.slug)}
-            >
-              Previous project
-            </Link>
-          ) : (
-            <span className="cursor-not-allowed text-slate-300">Previous project</span>
-          )}
-          <span className="text-slate-300">|</span>
-          {nextProject ? (
-            <Link
-              className="text-slate-500 transition-colors hover:text-slate-900"
-              to={getProjectPath(nextProject.slug)}
-            >
-              Next project
-            </Link>
-          ) : (
-            <span className="cursor-not-allowed text-slate-300">Next project</span>
-          )}
-        </nav>
+      <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
+        <PortfolioProjectRouteNav project={project} />
       </div>
     </div>
   );

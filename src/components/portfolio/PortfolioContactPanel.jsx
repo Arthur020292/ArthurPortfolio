@@ -63,7 +63,7 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
 
   return (
     <div
-      className={`portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden border-l border-slate-200 bg-[#fbfaf7] px-14 py-12 max-[980px]:min-h-[48vh] max-[980px]:border-l-0 max-[980px]:px-5 max-[640px]:px-4 max-[640px]:py-8 ${
+      className={`portfolio-right-panel relative flex min-h-dvh items-center justify-center overflow-hidden border-l border-slate-200 bg-[#fbfaf7] px-14 py-12 max-[980px]:min-h-0 max-[980px]:items-start max-[980px]:justify-start max-[980px]:border-l-0 max-[980px]:px-5 max-[980px]:py-5 max-[640px]:px-4 max-[640px]:py-4 ${
         motionState === 'enter'
           ? 'portfolio-contact-panel-enter'
           : motionState === 'exit'
@@ -72,7 +72,7 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
       }`}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,rgba(255,255,255,0.9),transparent_26%),radial-gradient(circle_at_78%_74%,rgba(15,23,42,0.06),transparent_24%)]" />
-      <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:rounded-[26px] max-[980px]:p-6 max-[640px]:rounded-[22px] max-[640px]:p-4">
+      <div className="relative z-10 w-full max-w-[36rem] rounded-[32px] border border-white/65 bg-white/78 p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-md max-[980px]:rounded-[24px] max-[980px]:p-5 max-[640px]:rounded-[20px] max-[640px]:p-4">
         <form aria-busy={isSubmitting} className="grid gap-4" onSubmit={handleSubmit}>
           <div aria-hidden="true" className="hidden">
             <label className="block">
@@ -160,7 +160,7 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
               Message
             </span>
             <textarea
-              className="min-h-44 rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-slate-900 outline-none transition-colors focus:border-slate-400"
+              className="min-h-44 rounded-[24px] border border-slate-200 bg-white px-5 py-4 text-slate-900 outline-none transition-colors focus:border-slate-400 max-[640px]:min-h-32"
               name="message"
               onChange={(event) =>
                 setFormState((current) => ({
@@ -174,7 +174,7 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
             />
           </label>
 
-          <div className="mt-4 pt-3 max-[640px]:mt-3 max-[640px]:pt-2">
+          <div className="mt-3 pt-2 max-[640px]:mt-2 max-[640px]:pt-1">
             <button
               className="inline-flex min-h-13 items-center justify-center rounded-full px-5 py-4 text-center text-[1rem] font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 max-[640px]:w-full"
               disabled={isSubmitting}
@@ -197,7 +197,7 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
           </div>
         </form>
 
-        <div className="mt-4">
+        <div className="mt-3">
           <a
             className="text-[0.95rem] text-slate-600 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-900"
             href={`mailto:${CONTACT_EMAIL}`}
