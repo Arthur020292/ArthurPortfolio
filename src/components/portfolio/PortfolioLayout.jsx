@@ -6,6 +6,7 @@ import { PortfolioProjectGrid } from './PortfolioProjectGrid';
 import { PortfolioContactPanel } from './PortfolioContactPanel';
 import { PortfolioProjectViewer } from './PortfolioProjectViewer';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
+import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { usePortfolioTransition } from '../../hooks/usePortfolioTransition';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import {
@@ -53,7 +54,9 @@ function PortfolioRightContent({
 export function PortfolioLayout() {
   const location = useLocation();
   const actualRoute = useMemo(() => parsePortfolioRoute(location.pathname), [location.pathname]);
+  const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const disablePortfolioTransitions = prefersReducedMotion || isMobileViewport;
   const leftPanelRef = useRef(null);
   const mainContentRef = useRef(null);
   const rightPanelRef = useRef(null);
@@ -63,13 +66,14 @@ export function PortfolioLayout() {
   const { displayedRoute, handleStageAnimationEnd, overviewGridMotion, transitionState } =
     usePortfolioTransition({
       actualRoute,
-      prefersReducedMotion,
+      prefersReducedMotion: disablePortfolioTransitions,
     });
   const contactPanelTransitionState =
     displayedRoute.type === 'contact' && transitionState !== 'idle' ? transitionState : 'idle';
   const contactExitState = actualRoute.type === 'contact' && transitionState === 'exit';
   const contactTransitionActive =
     actualRoute.type === 'contact' || displayedRoute.type === 'contact';
+  const mobileContactSinglePanel = displayedRoute.type === 'contact';
   const disableRightPanelTransition =
     (isOverviewRoute(actualRoute.type) && isOverviewRoute(displayedRoute.type)) ||
     contactTransitionActive;
@@ -117,12 +121,30 @@ export function PortfolioLayout() {
     const handleScroll = () => {
       const currentScrollTop = panel.scrollTop;
       const previousScrollTop = lastLeftScrollRef.current;
+      const scrollDelta = currentScrollTop - previousScrollTop;
       const isScrollingUp = currentScrollTop < previousScrollTop;
-      const shouldShowStickyNav = currentScrollTop > 140 && isScrollingUp;
+      const crossedHideThreshold = currentScrollTop < 120;
+      const crossedShowThreshold = currentScrollTop > 180;
 
-      setShowStickyNav((current) =>
-        current === shouldShowStickyNav ? current : shouldShowStickyNav
-      );
+      if (Math.abs(scrollDelta) < 8) {
+        return;
+      }
+
+      setShowStickyNav((current) => {
+        if (crossedHideThreshold) {
+          return false;
+        }
+
+        if (isScrollingUp && crossedShowThreshold) {
+          return true;
+        }
+
+        if (!isScrollingUp) {
+          return false;
+        }
+
+        return current;
+      });
 
       lastLeftScrollRef.current = currentScrollTop;
     };
@@ -168,13 +190,16 @@ export function PortfolioLayout() {
       <a className="skip-link" href="#portfolio-main-content">
         Skip to main content
       </a>
+      <div className="sticky top-0 z-40 hidden border-b border-[#ece7df] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-5 py-3 backdrop-blur-sm max-[980px]:block max-[640px]:px-4">
+        <PortfolioHeader activeRoute={actualRoute.type} />
+      </div>
       <main
-        className="min-h-dvh overflow-hidden bg-white"
+        className="min-h-dvh overflow-hidden bg-white max-[980px]:min-h-0"
         id="portfolio-main-content"
         ref={mainContentRef}
         tabIndex={-1}
       >
-        <div className="relative grid min-h-dvh grid-cols-[minmax(360px,0.9fr)_minmax(0,1.1fr)] overflow-hidden bg-white max-[980px]:grid-cols-1">
+        <div className="relative grid min-h-dvh grid-cols-[minmax(360px,0.9fr)_minmax(0,1.1fr)] overflow-hidden bg-white max-[980px]:min-h-0 max-[980px]:grid-cols-1">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-y-0 left-[45%] z-20 hidden w-px -translate-x-1/2 bg-[linear-gradient(180deg,rgba(223,218,210,0.35),rgba(223,218,210,0.8),rgba(223,218,210,0.35))] shadow-[0_0_18px_rgba(255,255,255,0.55)] max-[980px]:hidden"
@@ -185,16 +210,20 @@ export function PortfolioLayout() {
               displayedRoute.type === 'project' ? 'pt-10 pb-0' : 'py-10'
             } max-[980px]:h-auto max-[980px]:min-h-0 max-[980px]:overflow-visible max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:px-5 ${
               displayedRoute.type === 'project'
-                ? 'max-[980px]:pt-6 max-[980px]:pb-0'
+                ? 'max-[980px]:pt-0 max-[980px]:pb-0'
                 : 'max-[980px]:py-6'
             } max-[640px]:px-4 ${
               displayedRoute.type === 'project'
-                ? 'max-[640px]:pt-5 max-[640px]:pb-0'
+                ? 'max-[640px]:pt-0 max-[640px]:pb-0'
                 : 'max-[640px]:py-5'
+            } ${
+              mobileContactSinglePanel
+                ? 'max-[980px]:order-2 max-[980px]:hidden max-[980px]:border-b-0'
+                : ''
             }`}
             ref={leftPanelRef}
           >
-            <div className="relative z-30 max-[980px]:sticky max-[980px]:top-0 max-[980px]:-mx-5 max-[980px]:mb-5 max-[980px]:border-b max-[980px]:border-[#ece7df] max-[980px]:bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] max-[980px]:px-5 max-[980px]:py-3 max-[980px]:backdrop-blur-sm max-[640px]:-mx-4 max-[640px]:px-4">
+            <div className="relative z-30 max-[980px]:hidden">
               <PortfolioHeader activeRoute={actualRoute.type} />
             </div>
             {showStickyNav ? (
@@ -235,7 +264,11 @@ export function PortfolioLayout() {
               !disableRightPanelTransition && transitionState === 'enter'
                 ? 'portfolio-right-stage-enter'
                 : ''
-            } max-[980px]:h-auto max-[980px]:overflow-visible`}
+            } max-[980px]:h-auto max-[980px]:overflow-visible ${
+              mobileContactSinglePanel
+                ? 'max-[980px]:order-1'
+                : ''
+            }`}
             key={`${displayedRoute.key}-panel`}
             ref={rightPanelRef}
           >

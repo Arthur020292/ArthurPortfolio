@@ -1,6 +1,12 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BRAND_COLOR, PORTFOLIO_CONTACT_PATH, PORTFOLIO_HOME_PATH, PORTFOLIO_PROJECTS_PATH } from '../../portfolio/constants';
+import {
+  BRAND_COLOR,
+  CAL_COM_URL,
+  PORTFOLIO_CONTACT_PATH,
+  PORTFOLIO_HOME_PATH,
+  PORTFOLIO_PROJECTS_PATH,
+} from '../../portfolio/constants';
 
 function PortfolioHeaderNavLink({
   active,
@@ -99,7 +105,7 @@ export function PortfolioHeader({ activeRoute, isInteractive = true }) {
   return (
     <nav
       aria-label="Primary"
-      className="flex items-baseline gap-6 text-[0.8rem] text-slate-500 max-[480px]:gap-4 max-[480px]:text-[0.76rem]"
+      className="flex w-full items-baseline gap-6 text-[0.8rem] text-slate-500 max-[640px]:gap-4 max-[480px]:text-[0.76rem]"
     >
       {isInteractive ? (
         <Link
@@ -113,7 +119,7 @@ export function PortfolioHeader({ activeRoute, isInteractive = true }) {
           Arthur.
         </span>
       )}
-      <div className="relative flex items-baseline gap-6 pb-3 max-[480px]:gap-4 max-[480px]:pb-2">
+      <div className="relative flex items-baseline gap-6 self-baseline pb-3 max-[640px]:gap-4 max-[480px]:pb-2">
         <PortfolioHeaderNavLink
           active={activeRoute === 'about'}
           href={PORTFOLIO_HOME_PATH}
@@ -146,6 +152,24 @@ export function PortfolioHeader({ activeRoute, isInteractive = true }) {
           }}
         />
       </div>
+      {isInteractive ? (
+        <a
+          className="ml-auto inline-flex min-h-11 items-center justify-center self-center rounded-full px-4 py-2 text-center text-[0.86rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5 max-[640px]:min-h-10 max-[640px]:px-3 max-[640px]:text-[0.8rem]"
+          href={CAL_COM_URL}
+          rel="noreferrer"
+          style={{ backgroundColor: BRAND_COLOR }}
+          target="_blank"
+        >
+          Book a Call
+        </a>
+      ) : (
+        <span
+          className="ml-auto inline-flex min-h-11 items-center justify-center self-center rounded-full px-4 py-2 text-center text-[0.86rem] font-semibold text-white max-[640px]:min-h-10 max-[640px]:px-3 max-[640px]:text-[0.8rem]"
+          style={{ backgroundColor: BRAND_COLOR }}
+        >
+          Book a Call
+        </span>
+      )}
     </nav>
   );
 }
