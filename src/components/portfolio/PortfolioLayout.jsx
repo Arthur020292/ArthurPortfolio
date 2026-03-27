@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { PortfolioHeader } from './PortfolioHeader';
 import { PortfolioLeftContent } from './PortfolioCopy';
@@ -78,6 +78,19 @@ export function PortfolioLayout() {
     (isOverviewRoute(actualRoute.type) && isOverviewRoute(displayedRoute.type)) ||
     contactTransitionActive;
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('scrollRestoration' in window.history)) {
+      return undefined;
+    }
+
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
+
   useDocumentMeta(
     actualRoute.type === 'project'
       ? {
@@ -111,7 +124,7 @@ export function PortfolioLayout() {
             }
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const panel = leftPanelRef.current;
 
     if (!panel) {
@@ -157,7 +170,7 @@ export function PortfolioLayout() {
     };
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const panel = leftPanelRef.current;
     const rightPanel = rightPanelRef.current;
 
@@ -171,14 +184,38 @@ export function PortfolioLayout() {
     setShowStickyNav(false);
   }, [displayedRoute.key]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (previousPathRef.current === location.pathname) {
       return;
     }
 
-    window.scrollTo({ top: 0 });
-    mainContentRef.current?.focus({ preventScroll: true });
+    const body = document.body;
+    const bodyWasLocked = body.style.position === 'fixed';
+    const root = document.documentElement;
+    const previousRootScrollBehavior = root.style.scrollBehavior;
+    const previousBodyScrollBehavior = body.style.scrollBehavior;
+
+    root.style.scrollBehavior = 'auto';
+    body.style.scrollBehavior = 'auto';
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if (!isMobileViewport) {
+      mainContentRef.current?.focus({ preventScroll: true });
+    }
+    if (bodyWasLocked) {
+      body.style.position = '';
+      body.style.top = '';
+      body.style.left = '';
+      body.style.right = '';
+      body.style.width = '';
+      body.style.overflow = '';
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    }
     previousPathRef.current = location.pathname;
+
+    requestAnimationFrame(() => {
+      root.style.scrollBehavior = previousRootScrollBehavior;
+      body.style.scrollBehavior = previousBodyScrollBehavior;
+    });
   }, [location.pathname]);
 
   if (actualRoute.type === 'missing') {

@@ -1,7 +1,11 @@
-import { Link } from 'react-router-dom';
 import { getBrowseProjects } from '../../../data';
-import { BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../../portfolio/constants';
+import {
+  BRAND_COLOR,
+  PORTFOLIO_CONTACT_PATH,
+  PORTFOLIO_PROJECTS_PATH,
+} from '../../../portfolio/constants';
 import { getProjectPath } from '../../../portfolio/routes';
+import { PortfolioNavLink } from '../PortfolioNavLink';
 import { CaseStudySection } from './CaseStudySection';
 import { SectionLabel } from './SectionLabel';
 
@@ -12,7 +16,6 @@ function getAdjacentProjects(project) {
   if (currentIndex === -1) {
     return {
       nextProject: orderedProjects[0] ?? project,
-      previousProject: orderedProjects[orderedProjects.length - 1] ?? project,
     };
   }
 
@@ -21,10 +24,6 @@ function getAdjacentProjects(project) {
       currentIndex < orderedProjects.length - 1
         ? orderedProjects[currentIndex + 1]
         : orderedProjects[0],
-    previousProject:
-      currentIndex > 0
-        ? orderedProjects[currentIndex - 1]
-        : orderedProjects[orderedProjects.length - 1],
   };
 }
 
@@ -32,26 +31,31 @@ export function PortfolioProjectRouteNav({
   className = '',
   project,
 }) {
-  const { nextProject, previousProject } = getAdjacentProjects(project);
+  const { nextProject } = getAdjacentProjects(project);
 
   return (
     <nav
-      aria-label="Project navigation"
-      className={`flex items-center gap-4 text-[0.96rem] max-[640px]:justify-between max-[640px]:gap-3 max-[640px]:text-[0.9rem] ${className}`}
+      aria-label="Next project"
+      className={`flex items-start justify-between gap-5 max-[980px]:flex-col max-[980px]:items-start ${className}`}
     >
-      <Link
-        className="text-slate-500 transition-colors hover:text-slate-900"
-        to={getProjectPath(previousProject.slug)}
+      <PortfolioNavLink
+        className="inline-flex items-center font-medium text-slate-500 transition-colors hover:text-slate-900 max-[980px]:hidden"
+        to={PORTFOLIO_PROJECTS_PATH}
       >
-        Previous project
-      </Link>
-      <span className="text-slate-300">|</span>
-      <Link
-        className="text-slate-500 transition-colors hover:text-slate-900"
+        All Projects
+      </PortfolioNavLink>
+      <PortfolioNavLink
+        className="group ml-auto flex flex-col items-start text-left max-[980px]:ml-0 max-[980px]:items-start"
         to={getProjectPath(nextProject.slug)}
       >
-        Next project
-      </Link>
+        <span className="inline-flex items-center gap-2 text-[0.74rem] font-bold tracking-[0.16em] text-slate-400 uppercase transition-colors group-hover:text-slate-500">
+          Next Project
+          <span aria-hidden="true">→</span>
+        </span>
+        <span className="mt-1 text-[1.02rem] font-semibold leading-[1.35] text-slate-900 transition-colors group-hover:text-slate-700 sm:mt-2 sm:text-[1.08rem]">
+          {nextProject.name}
+        </span>
+      </PortfolioNavLink>
     </nav>
   );
 }
@@ -117,18 +121,18 @@ export function PortfolioProjectDetails({ project }) {
             Need this kind of work?
           </h2>
           <div className="mt-4">
-            <Link
+            <PortfolioNavLink
               className="inline-flex items-center text-[0.98rem] font-semibold no-underline transition-opacity hover:opacity-80"
               style={{ color: BRAND_COLOR }}
               to={PORTFOLIO_CONTACT_PATH}
             >
               Get in touch
-            </Link>
+            </PortfolioNavLink>
           </div>
         </div>
       </div>
 
-      <div className="portfolio-left-item sticky bottom-0 z-20 -mx-12 -mb-10 mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mx-0 max-[980px]:mb-0 max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
+      <div className="portfolio-left-item mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
         <PortfolioProjectRouteNav project={project} />
       </div>
     </div>

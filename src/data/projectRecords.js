@@ -333,6 +333,7 @@ export const baseProjects = [
       {
         src: '/assets/work/cti/Employee Profile - Employee.png',
         alt: 'Talent Intelligence employee profile screen',
+        display: 'longform',
       },
       {
         src: '/assets/work/cti/Config - Candidates.png',
