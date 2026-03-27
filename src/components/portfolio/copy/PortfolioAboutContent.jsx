@@ -6,7 +6,7 @@ export function PortfolioAboutContent() {
   return (
     <div className="flex h-full flex-col">
       <div className="portfolio-left-item">
-        <h1 className="mt-4 font-heading text-[clamp(2.4rem,4vw,4.1rem)] leading-[0.95] font-bold tracking-[-0.05em] text-slate-900">
+        <h1 className="mt-4 font-heading text-[clamp(2.4rem,4vw,4.1rem)] leading-[1] font-bold tracking-[-0.05em] text-slate-900">
           {aboutContent.title.split('\n').map((line, index) => (
             <Fragment key={line}>
               {index > 0 ? <br /> : null}

@@ -92,23 +92,73 @@ export function createEmailContent({ email, message, name, projectType }) {
   const escapedEmail = escapeHtml(email);
   const escapedMessage = escapeHtml(message).replaceAll('\n', '<br />');
   const escapedProjectType = projectType ? escapeHtml(projectType) : '';
+  const projectTypeRow = escapedProjectType
+    ? `
+          <tr>
+            <td style="padding: 0 0 12px; color: #667085; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;">
+              Project type
+            </td>
+            <td style="padding: 0 0 12px; color: #101828; font-size: 16px; font-weight: 500;">
+              ${escapedProjectType}
+            </td>
+          </tr>
+      `
+    : '';
 
   return {
     html: `
-      <div style="font-family: Arial, sans-serif; color: #0f172a; line-height: 1.6;">
-        <h1 style="margin: 0 0 16px; font-size: 24px;">New portfolio inquiry</h1>
-        <p style="margin: 0 0 8px;"><strong>Name:</strong> ${escapedName}</p>
-        <p style="margin: 0 0 8px;"><strong>Email:</strong> ${escapedEmail}</p>
-        ${
-          escapedProjectType
-            ? `<p style="margin: 0 0 8px;"><strong>Project type:</strong> ${escapedProjectType}</p>`
-            : ''
-        }
-        <p style="margin: 20px 0 8px;"><strong>Message:</strong></p>
-        <p style="margin: 0;">${escapedMessage}</p>
+      <div style="margin: 0; background: #f4f4f5; padding: 32px 16px; font-family: Arial, sans-serif; color: #101828;">
+        <div style="margin: 0 auto; max-width: 680px; overflow: hidden; border: 1px solid #e4e7ec; border-radius: 24px; background: #ffffff;">
+          <div style="background: linear-gradient(135deg, #111827 0%, #1f2937 100%); padding: 32px 32px 28px; color: #ffffff;">
+            <p style="margin: 0 0 10px; color: #f2f4f7; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;">
+              Arthur Baduyen Portfolio
+            </p>
+            <h1 style="margin: 0; font-size: 30px; line-height: 1.1; font-weight: 700;">
+              New contact form inquiry
+            </h1>
+            <p style="margin: 14px 0 0; color: #d0d5dd; font-size: 15px; line-height: 1.6;">
+              Someone filled out your portfolio contact form. Reply directly to continue the conversation.
+            </p>
+          </div>
+
+          <div style="padding: 32px;">
+            <table role="presentation" style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 0 0 12px; color: #667085; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; width: 160px;">
+                  Name
+                </td>
+                <td style="padding: 0 0 12px; color: #101828; font-size: 16px; font-weight: 500;">
+                  ${escapedName}
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 0 0 12px; color: #667085; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;">
+                  Email
+                </td>
+                <td style="padding: 0 0 12px; color: #101828; font-size: 16px; font-weight: 500;">
+                  <a href="mailto:${escapedEmail}" style="color: #1d4ed8; text-decoration: none;">${escapedEmail}</a>
+                </td>
+              </tr>
+              ${projectTypeRow}
+            </table>
+
+            <div style="margin-top: 28px;">
+              <p style="margin: 0 0 12px; color: #667085; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
+                Message
+              </p>
+              <div style="border: 1px solid #e4e7ec; border-radius: 18px; background: #fcfcfd; padding: 22px; color: #101828; font-size: 16px; line-height: 1.75;">
+                ${escapedMessage}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     `,
-    text: `New portfolio inquiry
+    text: `Arthur Baduyen Portfolio
+
+New contact form inquiry
+
+Reply to: ${email}
 
 Name: ${name}
 Email: ${email}
