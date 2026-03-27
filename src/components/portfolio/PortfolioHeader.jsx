@@ -1,5 +1,4 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   BRAND_COLOR,
   CAL_COM_URL,
@@ -7,6 +6,7 @@ import {
   PORTFOLIO_HOME_PATH,
   PORTFOLIO_PROJECTS_PATH,
 } from '../../portfolio/constants';
+import { PortfolioNavLink } from './PortfolioNavLink';
 
 function PortfolioHeaderNavLink({
   active,
@@ -28,14 +28,14 @@ function PortfolioHeaderNavLink({
   }
 
   return (
-    <Link
+    <PortfolioNavLink
       aria-current={active ? 'page' : undefined}
       className={className}
       ref={linkRef}
       to={href}
     >
       {label}
-    </Link>
+    </PortfolioNavLink>
   );
 }
 
@@ -108,12 +108,12 @@ export function PortfolioHeader({ activeRoute, isInteractive = true }) {
       className="flex w-full items-baseline gap-6 text-[0.8rem] text-slate-500 max-[640px]:gap-4 max-[480px]:text-[0.76rem]"
     >
       {isInteractive ? (
-        <Link
+        <PortfolioNavLink
           className="font-heading text-[1.05rem] font-bold text-slate-900 no-underline"
           to={PORTFOLIO_HOME_PATH}
         >
           Arthur.
-        </Link>
+        </PortfolioNavLink>
       ) : (
         <span className="font-heading text-[1.05rem] font-bold text-slate-900">
           Arthur.

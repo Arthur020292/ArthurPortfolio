@@ -1,9 +1,29 @@
-import { Link } from 'react-router-dom';
 import { BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../portfolio/constants';
+import { PortfolioNavLink } from './PortfolioNavLink';
+
+function PortfolioContactFooterCtaShell({
+  as: Component = 'div',
+  children,
+  className = '',
+  ...props
+}) {
+  return (
+    <Component
+      className={`group relative block overflow-hidden border-t border-slate-200 bg-[#f3f0ea] px-5 py-10 text-inherit no-underline max-[720px]:px-6 max-[720px]:py-12 ${className}`}
+      {...props}
+    >
+      <span
+        aria-hidden="true"
+        className="portfolio-project-overlay absolute inset-0"
+      />
+      {children}
+    </Component>
+  );
+}
 
 export function PortfolioContactFooterCtaContent() {
   return (
-    <div className="relative z-10 flex h-full flex-col justify-center gap-10 max-[720px]:gap-6 lg:flex-row lg:items-center lg:justify-between">
+    <div className="relative z-10 flex h-full flex-col justify-center gap-12 max-[720px]:gap-8 lg:flex-row lg:items-center lg:justify-between">
       <div className="max-w-[34rem]">
         <h2 className="font-heading text-[clamp(2.25rem,3vw,3.5rem)] leading-[0.94] font-medium tracking-[-0.05em] text-slate-900 transition-colors duration-500 group-hover:text-white group-focus-visible:text-white max-[720px]:text-[clamp(2rem,11vw,2.7rem)]">
           Tell me about your project.
@@ -28,15 +48,8 @@ export function PortfolioContactFooterCtaContent() {
 
 export function PortfolioContactFooterCtaSection({ className = '' }) {
   return (
-    <Link
-      className={`group relative block overflow-hidden border-t border-slate-200 bg-[#f3f0ea] px-4 py-8 text-inherit no-underline ${className}`}
-      to={PORTFOLIO_CONTACT_PATH}
-    >
-      <span
-        aria-hidden="true"
-        className="portfolio-project-overlay absolute inset-0"
-      />
+    <PortfolioContactFooterCtaShell as={PortfolioNavLink} className={className} to={PORTFOLIO_CONTACT_PATH}>
       <PortfolioContactFooterCtaContent />
-    </Link>
+    </PortfolioContactFooterCtaShell>
   );
 }

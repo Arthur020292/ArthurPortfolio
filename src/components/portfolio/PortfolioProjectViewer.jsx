@@ -259,10 +259,7 @@ export function PortfolioProjectViewer({ project }) {
 
           <div className="flex w-full items-center justify-between gap-4 rounded-[18px] border border-white/45 bg-[rgba(255,255,255,0.86)] px-5 py-4 shadow-[0_18px_44px_rgba(18,20,24,0.14)] backdrop-blur-md max-[640px]:rounded-[14px] max-[640px]:px-4 max-[640px]:py-3">
             <div className="min-w-0 flex-1 max-[640px]:hidden">
-              <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-                Screen {screenIndex + 1}
-              </p>
-              <p className="mt-1 truncate text-[0.98rem] font-medium text-slate-800 max-[640px]:text-[0.92rem]">
+              <p className="truncate text-[0.98rem] font-medium text-slate-800 max-[640px]:text-[0.92rem]">
                 {currentScreen.alt}
               </p>
             </div>

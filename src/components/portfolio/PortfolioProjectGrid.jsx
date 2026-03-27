@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getBrowseProjects, getFeaturedProjects } from '../../data';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { PROJECTS_SEQUENCE_ENTER_MS, BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../portfolio/constants';
 import { PortfolioContactFooterCtaContent } from './PortfolioContactFooterCta';
+import { PortfolioNavLink } from './PortfolioNavLink';
 import { getProjectPath } from '../../portfolio/routes';
 
 function ProjectTile({
@@ -13,7 +14,7 @@ function ProjectTile({
   to,
 }) {
   return (
-    <Link
+    <PortfolioNavLink
       className={className}
       style={animationDelay != null ? { animationDelay: `${animationDelay}ms` } : undefined}
       to={to}
@@ -40,7 +41,7 @@ function ProjectTile({
           />
         </div>
       </div>
-    </Link>
+    </PortfolioNavLink>
   );
 }
 
@@ -190,7 +191,7 @@ export function PortfolioProjectGrid({
         ))}
 
         {showContactTile ? (
-          <Link
+          <PortfolioNavLink
             className={`portfolio-project-tile portfolio-contact-tile group flex min-h-[15.5rem] flex-col justify-between bg-[#f3f0ea] p-8 text-inherit no-underline max-[980px]:min-h-[12.5rem] max-[980px]:p-5 max-[720px]:min-h-[14.25rem] max-[720px]:px-6 max-[720px]:py-20 ${
               mode === 'all' ? 'portfolio-project-tile-new' : ''
             } ${mode === 'featured' ? 'portfolio-featured-cta-row' : ''} ${contactTileLayoutClass}`}
@@ -243,7 +244,7 @@ export function PortfolioProjectGrid({
                 </div>
               </>
             )}
-          </Link>
+          </PortfolioNavLink>
         ) : null}
       </div>
     </div>
