@@ -78,11 +78,25 @@ describe('portfolio route choreography', () => {
 
     await user.click(projectLink);
 
+    const exitingHomeStage = container.querySelector('.portfolio-left-stage-exit');
+
+    expect(exitingHomeStage).toBeTruthy();
+    fireEvent.animationEnd(exitingHomeStage);
+
     const projectsRegion = await screen.findByRole('region', { name: 'Projects' });
     const projectLinks = within(projectsRegion).getAllByRole('link');
 
     expect(projectLinks.length).toBe(getBrowseProjects().length + 1);
     expect(within(projectsRegion).getByRole('link', { name: 'ContractsRx' })).toBeTruthy();
+
+    const enteringProjectsStage = container.querySelector('.portfolio-left-stage-enter');
+
+    if (enteringProjectsStage) {
+      fireEvent.animationEnd(enteringProjectsStage);
+      await waitFor(() => {
+        expect(container.querySelector('.portfolio-left-stage-enter')).toBeNull();
+      });
+    }
 
     await user.click(contactLink);
 
@@ -96,14 +110,5 @@ describe('portfolio route choreography', () => {
 
     await screen.findByRole('textbox', { name: 'Name' });
     expect(screen.queryByRole('region', { name: 'Projects' })).toBeNull();
-
-    const enteringStage = container.querySelector('.portfolio-left-stage-enter');
-
-    if (enteringStage) {
-      fireEvent.animationEnd(enteringStage);
-      await waitFor(() => {
-        expect(container.querySelector('.portfolio-left-stage-enter')).toBeNull();
-      });
-    }
   });
 });
