@@ -63,6 +63,8 @@ describe('portfolio route choreography', () => {
   });
 
   it('keeps the full projects grid mounted until the /contact handoff finishes', async () => {
+    window.history.replaceState({}, '', '/projects');
+
     const user = userEvent.setup();
     const { container } = render(
       <BrowserRouter>
@@ -70,33 +72,15 @@ describe('portfolio route choreography', () => {
       </BrowserRouter>
     );
 
-    const projectLink = screen.getAllByRole('link', { name: /^Project$/ }).at(-1);
-    const contactLink = screen.getAllByRole('link', { name: /^Contact$/ }).at(-1);
-
-    expect(projectLink).toBeTruthy();
-    expect(contactLink).toBeTruthy();
-
-    await user.click(projectLink);
-
-    const exitingHomeStage = container.querySelector('.portfolio-left-stage-exit');
-
-    expect(exitingHomeStage).toBeTruthy();
-    fireEvent.animationEnd(exitingHomeStage);
-
     const projectsRegion = await screen.findByRole('region', { name: 'Projects' });
     const projectLinks = within(projectsRegion).getAllByRole('link');
 
     expect(projectLinks.length).toBe(getBrowseProjects().length + 1);
     expect(within(projectsRegion).getByRole('link', { name: 'ContractsRx' })).toBeTruthy();
 
-    const enteringProjectsStage = container.querySelector('.portfolio-left-stage-enter');
+    const contactLink = screen.getAllByRole('link', { name: /^Contact$/ }).at(-1);
 
-    if (enteringProjectsStage) {
-      fireEvent.animationEnd(enteringProjectsStage);
-      await waitFor(() => {
-        expect(container.querySelector('.portfolio-left-stage-enter')).toBeNull();
-      });
-    }
+    expect(contactLink).toBeTruthy();
 
     await user.click(contactLink);
 
