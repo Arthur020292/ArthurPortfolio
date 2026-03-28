@@ -70,7 +70,13 @@ describe('portfolio route choreography', () => {
       </BrowserRouter>
     );
 
-    await user.click(screen.getByRole('link', { name: /^Project$/ }));
+    const projectLink = screen.getAllByRole('link', { name: /^Project$/ }).at(-1);
+    const contactLink = screen.getAllByRole('link', { name: /^Contact$/ }).at(-1);
+
+    expect(projectLink).toBeTruthy();
+    expect(contactLink).toBeTruthy();
+
+    await user.click(projectLink);
 
     const projectsRegion = await screen.findByRole('region', { name: 'Projects' });
     const projectLinks = within(projectsRegion).getAllByRole('link');
@@ -78,7 +84,7 @@ describe('portfolio route choreography', () => {
     expect(projectLinks.length).toBe(getBrowseProjects().length + 1);
     expect(within(projectsRegion).getByRole('link', { name: 'ContractsRx' })).toBeTruthy();
 
-    await user.click(screen.getByRole('link', { name: /^Contact$/ }));
+    await user.click(contactLink);
 
     const exitingStage = container.querySelector('.portfolio-left-stage-exit');
 
