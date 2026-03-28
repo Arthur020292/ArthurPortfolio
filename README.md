@@ -24,12 +24,20 @@ React + Tailwind portfolio site for Arthur Baduyen.
    `npm run dev`
 3. Build for production:
    `npm run build`
+4. Run the local verification gate:
+   `npm run verify`
 
 ## CI/CD
 
 GitHub Actions runs CI for pull requests into `main` and for direct pushes to `main`.
 The workflow installs dependencies with `npm ci`, runs the test suite with `npm test`, and
 validates the production build with `npm run build`.
+
+For local pre-push safety, this repo includes a committed git hook in `.githooks/pre-push`
+that runs `npm run verify`. After cloning or pulling this change, point your checkout at the
+hook directory once with:
+
+`git config core.hooksPath .githooks`
 
 Deployment can stay in Cloudflare Pages:
 

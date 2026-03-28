@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+echo "Running npm run verify before push..."
+npm run verify
