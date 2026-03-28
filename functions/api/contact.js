@@ -6,6 +6,7 @@ import {
 import {
   enforceContactRateLimit,
   getAllowedOrigins,
+  isAllowedFetchMetadata,
   isAllowedRequestOrigin,
   verifyTurnstileToken,
 } from '../../shared/contactSecurity.js';
@@ -25,8 +26,13 @@ export async function onRequestPost(context) {
   const requestOrigin = new URL(context.request.url).origin;
   const origin = context.request.headers.get('Origin');
   const remoteIp = context.request.headers.get('CF-Connecting-IP');
+  const secFetchMode = context.request.headers.get('Sec-Fetch-Mode');
+  const secFetchSite = context.request.headers.get('Sec-Fetch-Site');
 
-  if (!isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin })) {
+  if (
+    !isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin }) ||
+    !isAllowedFetchMetadata({ secFetchMode, secFetchSite })
+  ) {
     return jsonResponse({ message: 'Origin not allowed.' }, { status: 403 });
   }
 

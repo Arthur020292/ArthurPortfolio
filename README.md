@@ -24,12 +24,20 @@ React + Tailwind portfolio site for Arthur Baduyen.
    `npm run dev`
 3. Build for production:
    `npm run build`
+4. Run the local verification gate:
+   `npm run verify`
 
 ## CI/CD
 
 GitHub Actions runs CI for pull requests into `main` and for direct pushes to `main`.
-The workflow installs dependencies with `npm ci` and validates the production build with
-`npm run build`.
+The workflow installs dependencies with `npm ci`, runs the test suite with `npm test`, and
+validates the production build with `npm run build`.
+
+For local pre-push safety, this repo includes a committed git hook in `.githooks/pre-push`
+that runs `npm run verify`. After cloning or pulling this change, point your checkout at the
+hook directory once with:
+
+`git config core.hooksPath .githooks`
 
 Deployment can stay in Cloudflare Pages:
 
@@ -109,13 +117,15 @@ The contact endpoint supports:
 
 - optional Turnstile verification before email is sent
 - origin checks for incoming form submissions
+- Fetch Metadata checks for same-origin browser requests
 - best-effort per-IP rate limiting in the application layer
 - stricter response headers via `public/_headers`
 
 ### Production rate limiting in Cloudflare
 
 For stronger production protection, add a Cloudflare WAF rate limiting rule for the contact
-endpoint. This is configured in Cloudflare, not in the repo.
+endpoint. This is configured in Cloudflare, not in the repo, and should sit in front of the
+application-layer checks above.
 
 Recommended rule:
 
@@ -140,3 +150,7 @@ Where to configure it:
 
 This complements the in-app limiter. The in-app limiter is useful, but Cloudflare edge rate
 limiting is the stronger production control.
+
+If you want an extra edge guard, you can also add a WAF rule that blocks requests to
+`/api/contact` unless the request method is `POST` and the `Origin` header matches the site.
+That keeps obvious cross-site spam away before it ever reaches the app.

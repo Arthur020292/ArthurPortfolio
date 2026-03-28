@@ -5,6 +5,7 @@ import { sendContactEmail } from './api/_lib/contact.js';
 import {
   enforceContactRateLimit,
   getAllowedOrigins,
+  isAllowedFetchMetadata,
   isAllowedRequestOrigin,
   verifyTurnstileToken,
 } from './shared/contactSecurity.js';
@@ -52,8 +53,13 @@ function contactApiPlugin() {
           const allowedOrigins = getAllowedOrigins(process.env.CONTACT_ALLOWED_ORIGINS);
           const requestOrigin = `http://${req.headers.host}`;
           const origin = req.headers.origin;
+          const secFetchMode = req.headers['sec-fetch-mode'];
+          const secFetchSite = req.headers['sec-fetch-site'];
 
-          if (!isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin })) {
+          if (
+            !isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin }) ||
+            !isAllowedFetchMetadata({ secFetchMode, secFetchSite })
+          ) {
             res.statusCode = 403;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ message: 'Origin not allowed.' }));
