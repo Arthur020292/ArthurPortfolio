@@ -18,12 +18,19 @@ function createMatchMediaMock(matches = false) {
   }));
 }
 
+let scrollToDescriptor;
+
 describe('portfolio route choreography', () => {
   beforeEach(() => {
     window.history.replaceState({}, '', '/');
 
     vi.stubGlobal('matchMedia', createMatchMediaMock(false));
     vi.stubGlobal('scrollTo', vi.fn());
+    scrollToDescriptor = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollTo');
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+      configurable: true,
+      value: vi.fn(),
+    });
     vi.stubGlobal(
       'requestAnimationFrame',
       (callback) => {
@@ -45,6 +52,13 @@ describe('portfolio route choreography', () => {
   });
 
   afterEach(() => {
+    if (scrollToDescriptor) {
+      Object.defineProperty(HTMLElement.prototype, 'scrollTo', scrollToDescriptor);
+      scrollToDescriptor = undefined;
+    } else {
+      delete HTMLElement.prototype.scrollTo;
+    }
+
     vi.unstubAllGlobals?.();
   });
 
