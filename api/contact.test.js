@@ -64,4 +64,15 @@ describe('contact api handler', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.payload).toEqual({ message: 'Thanks, your message has been sent.' });
   });
+
+  it('rejects invalid JSON request bodies', async () => {
+    const { default: handler } = await import('./contact.js');
+    const res = createMockResponse();
+
+    await handler({ body: '{invalid json', method: 'POST' }, res);
+
+    expect(sendContactEmail).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.payload).toEqual({ message: 'Invalid request body.' });
+  });
 });

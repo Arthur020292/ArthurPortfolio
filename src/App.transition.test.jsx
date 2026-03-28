@@ -1,0 +1,89 @@
+// @vitest-environment jsdom
+
+import { BrowserRouter } from 'react-router-dom';
+import { fireEvent, render, screen, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import App from './App';
+import { getBrowseProjects } from './data/projects';
+
+function createMatchMediaMock(matches = false) {
+  return vi.fn().mockImplementation(() => ({
+    addEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+    matches,
+    media: '',
+    onchange: null,
+    removeEventListener: vi.fn(),
+  }));
+}
+
+describe('portfolio route choreography', () => {
+  beforeEach(() => {
+    window.history.replaceState({}, '', '/');
+
+    vi.stubGlobal('matchMedia', createMatchMediaMock(false));
+    vi.stubGlobal('scrollTo', vi.fn());
+    vi.stubGlobal(
+      'requestAnimationFrame',
+      (callback) => {
+        callback(0);
+        return 1;
+      }
+    );
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        disconnect() {}
+
+        observe() {}
+
+        unobserve() {}
+      }
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals?.();
+  });
+
+  it('keeps the full projects grid mounted until the /contact handoff finishes', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    );
+
+    await user.click(screen.getByRole('link', { name: /^Project$/ }));
+
+    const projectsRegion = await screen.findByRole('region', { name: 'Projects' });
+    const projectLinks = within(projectsRegion).getAllByRole('link');
+
+    expect(projectLinks.length).toBe(getBrowseProjects().length + 1);
+    expect(within(projectsRegion).getByRole('link', { name: 'ContractsRx' })).toBeTruthy();
+
+    await user.click(screen.getByRole('link', { name: /^Contact$/ }));
+
+    const exitingStage = container.querySelector('.portfolio-left-stage-exit');
+
+    expect(exitingStage).toBeTruthy();
+    expect(screen.queryByRole('textbox', { name: 'Name' })).toBeNull();
+    expect(within(projectsRegion).getByRole('link', { name: 'ContractsRx' })).toBeTruthy();
+
+    fireEvent.animationEnd(exitingStage);
+
+    await screen.findByRole('textbox', { name: 'Name' });
+    expect(screen.queryByRole('region', { name: 'Projects' })).toBeNull();
+
+    const enteringStage = container.querySelector('.portfolio-left-stage-enter');
+
+    if (enteringStage) {
+      fireEvent.animationEnd(enteringStage);
+      await waitFor(() => {
+        expect(container.querySelector('.portfolio-left-stage-enter')).toBeNull();
+      });
+    }
+  });
+});

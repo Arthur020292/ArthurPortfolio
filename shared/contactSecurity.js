@@ -10,6 +10,14 @@ function normalizeOrigin(value) {
   }
 }
 
+function normalizeHeaderToken(value) {
+  if (typeof value !== 'string' || !value.trim()) {
+    return null;
+  }
+
+  return value.trim().toLowerCase();
+}
+
 export function getAllowedOrigins(configuredOrigins) {
   if (typeof configuredOrigins !== 'string') {
     return [];
@@ -29,7 +37,7 @@ export function isAllowedRequestOrigin({
   const normalizedOrigin = normalizeOrigin(origin);
 
   if (!normalizedOrigin) {
-    return true;
+    return false;
   }
 
   const normalizedRequestOrigin = normalizeOrigin(requestOrigin);
@@ -39,6 +47,24 @@ export function isAllowedRequestOrigin({
   }
 
   return allowedOrigins.includes(normalizedOrigin);
+}
+
+const allowedFetchSites = new Set(['same-origin', 'same-site']);
+const allowedFetchModes = new Set(['cors', 'same-origin']);
+
+export function isAllowedFetchMetadata({ secFetchMode, secFetchSite }) {
+  const normalizedFetchSite = normalizeHeaderToken(secFetchSite);
+  const normalizedFetchMode = normalizeHeaderToken(secFetchMode);
+
+  if (normalizedFetchSite && !allowedFetchSites.has(normalizedFetchSite)) {
+    return false;
+  }
+
+  if (normalizedFetchMode && !allowedFetchModes.has(normalizedFetchMode)) {
+    return false;
+  }
+
+  return true;
 }
 
 const rateLimitStore = new Map();
