@@ -12,13 +12,15 @@ export const baseProjects = [
       'Healthcare website redesign focused on clarity, trust, and conversion flow.',
     overview:
       'A website redesign for Medical Review Institute of America focused on making services easier to understand, strengthening trust signals, and improving how prospective clients move through the site.',
+    problem:
+      'Prospective clients needed a faster way to understand the service offering and trust the organization enough to reach out.',
     heroImage: '/assets/work/mrioa.jpg',
     heroAlt: 'MRIOA healthcare website redesign screens',
     role: 'Web Designer UI/UX',
     duration: '4 months',
     focus: 'Information architecture, responsive UI, analytics integration',
     challenge:
-      'The site needed to explain complex healthcare services clearly while also supporting trust, lead generation, and content discovery for multiple audience types.',
+      'The site needed to explain complex healthcare services clearly while still building trust and supporting multiple browsing intentions.',
     approach:
       'I restructured the information architecture, designed responsive layouts, and improved conversion pathways across service, resource, and contact areas.',
     selectedWork: [
@@ -26,8 +28,14 @@ export const baseProjects = [
       'Connected Salesforce and website journeys through Zapier.',
       'Implemented Google Analytics, Facebook Pixel, and Pardot tracking.',
     ],
+    responsibilities: [
+      'Aligned stakeholder input with the site structure, service clarity, and conversion goals.',
+      'Organized the information architecture around the questions prospective clients needed answered first.',
+      'Designed responsive service, resource, and contact experiences that supported trust and lead generation.',
+      'Collaborated on analytics and CRM integrations to support tracking and follow-up.',
+    ],
     outcome:
-      'The result was a clearer and more credible website experience that helped users understand services faster and gave the client better visibility into conversion behavior.',
+      'The site became easier to scan and trust, which helped prospective clients understand the service offering faster and gave the team clearer insight into conversion behavior.',
     gallery: [
       {
         src: '/assets/work/mrioa/mrioa-desktop-01.png',
@@ -77,6 +85,8 @@ export const baseProjects = [
       'B2B website and workflow experience for simplifying contract risk and guided deal processing.',
     overview:
       'ContractsRx pairs a marketing website with a practical workflow layer so enterprise buyers can understand contract risk, explore solution modules, and move into a structured AI-assisted process.',
+    problem:
+      'Enterprise buyers needed a clearer way to understand contract risk before entering the workflow.',
     heroImage: '/assets/work/contractsrx/contractsrx-solution.png',
     heroAlt: 'ContractsRx solutions overview screens',
     role: 'Web Designer UI/UX',
@@ -91,8 +101,14 @@ export const baseProjects = [
       'Designed responsive pages and mobile states for the marketing experience.',
       'Created the AI batch-processing and deal-management screens for the workflow layer.',
     ],
+    responsibilities: [
+      'Aligned stakeholder input with contract-risk messaging and enterprise buyer needs.',
+      'Structured the site and workflow around a clear problem, solution, proof, and action sequence.',
+      'Designed responsive marketing pages and the AI-assisted workflow screens.',
+      'Connected the marketing site to the deal-processing experience so buyers could move forward without losing context.',
+    ],
     outcome:
-      'Delivered a clearer B2B story that moved users from problem awareness into a more structured AI-assisted workflow.',
+      'The site now guides buyers from first understanding the risk problem into a more structured workflow experience without dropping credibility.',
     gallery: [
       {
         src: '/assets/work/contractsrx/contractsrx-problem.png',
@@ -142,13 +158,16 @@ export const baseProjects = [
       'Agency site and visual system built to present complex digital services clearly.',
     overview:
       'A website and supporting visual system for a digital product engineering agency, built to make its service offering feel more modern, credible, and easy to navigate.',
+    websiteUrl: 'https://chromedia.com/',
+    problem:
+      'The agency needed a clearer way to present technical services to prospective clients.',
     heroImage: '/assets/work/chromedia.jpg',
     heroAlt: 'Chromedia agency website redesign screens',
     role: 'Web Designer UI/UX',
     duration: '3 months',
     focus: 'Website design, information architecture, responsive storytelling',
     challenge:
-      'The agency needed a site that presented technical capabilities with more clarity while still feeling approachable and visually differentiated.',
+      'The site had to present technical capabilities with more clarity while still feeling approachable and visually differentiated from a standard agency template.',
     approach:
       'I designed the website structure and interface system, collaborated on visual assets, and translated service-heavy content into a more engaging narrative experience.',
     selectedWork: [
@@ -156,8 +175,14 @@ export const baseProjects = [
       'Collaborated on vectors and interface assets.',
       'Supported motion design using After Effects and Lottie.',
     ],
+    responsibilities: [
+      'Synthesized product and stakeholder input to align the agency story with client expectations.',
+      'Structured the site and visual system around service clarity, credibility, and approachability.',
+      'Designed responsive layouts that could carry technical messaging without feeling heavy.',
+      'Collaborated on supporting motion and interface assets to strengthen the overall presentation.',
+    ],
     outcome:
-      'The final site balanced personality with practical service communication, helping the agency present complex offerings in a more structured and memorable way.',
+      'The agency could present technical services in a way that felt more credible, easier to scan, and more memorable for prospects.',
     gallery: [
       {
         src: '/assets/work/chromedia/chromedia-desktop-01.png',
@@ -209,25 +234,34 @@ export const baseProjects = [
     cardImage: '/assets/work/portlandpedalpower-thumb.jpg',
     cardAlt: 'Portland Pedal Power website preview',
     cardSummary:
-      'Service website and operations platform supporting sustainable catering, delivery, and vendor coordination.',
+      'Internal order management platform for a sustainable Portland catering and delivery business.',
     overview:
-      'Work for Portland Pedal Power spanning both the public-facing website and the internal operations platform used to coordinate sustainable catering, bike-powered delivery, and local vendor logistics.',
+      'Portland Pedal Power is a service business with a public website and an internal platform for managing orders, menus, customers, restaurant partners, and invoices.',
+    websiteUrl: 'https://www.portlandpedalpower.com/',
+    problem:
+      'The team needed a dependable internal platform to manage orders, menus, customers, restaurant partners, and invoices while the public site kept the service story clear.',
     heroImage: '/assets/work/portlandpedalpower-thumb.jpg',
     heroAlt: 'Portland Pedal Power website homepage preview',
     role: 'Product Designer & Frontend Developer',
     duration: 'N/A',
     focus: 'Website design, operations workflows, frontend implementation',
     challenge:
-      'The work needed to support both external communication and internal execution: the public site had to explain several connected services clearly, while the operations platform had to help the team manage delivery, catering coordination, and vendor-related workflows efficiently.',
+      'The internal platform had to keep orders, menus, customers, restaurant partners, and invoices organized without slowing down the team, while still staying connected to the public service story.',
     approach:
-      'I contributed to the team building the operations platform while also shaping the public website experience, focusing on clearer service framing, stronger workflow support, and frontend-ready execution across both surfaces.',
+      'I focused most of my work on the internal operations platform, shaping the order, menu, customer, restaurant, and invoice workflows while also helping the public site stay aligned with the business story.',
     selectedWork: [
-      'Contributed to the development of the internal operations platform.',
-      'Clarified the relationship between catering, advertising, and partner offerings on the public site.',
-      'Strengthened structure and frontend execution across customer-facing and operational experiences.',
+      'Designed and refined the internal platform for managing orders, menus, customers, restaurants, and invoices.',
+      'Supported the public website so it matched the business story behind the operations layer.',
+      'Strengthened the connection between the marketing site and the back-office workflow.',
+    ],
+    responsibilities: [
+      'Synthesized business and operational input into the internal platform requirements and supporting website story.',
+      'Designed and refined the order, menu, customer, restaurant, and invoice workflows.',
+      'Contributed to the public site where needed so the marketing story matched the operational reality.',
+      'Helped connect the customer-facing site with the team’s day-to-day workflow.',
     ],
     outcome:
-      'The result was a more cohesive digital presence, with the public-facing experience better communicating the brand and the internal platform supporting the team’s day-to-day operational workflows.',
+      'The team got a more dependable platform for running orders, menus, customers, restaurants, and invoices, while the public site still supported the broader service story.',
     gallery: [
       {
         src: '/assets/work/portlandpedalpower-thumb.jpg',
@@ -257,13 +291,15 @@ export const baseProjects = [
       'Talent operations platform for candidate profiles, skills taxonomy, and secure client sharing.',
     overview:
       'Chromedia Talent Intelligence is an admin-led platform for managing candidate profiles, maintaining a reusable skills taxonomy, and sharing shortlisted talent with clients through secure expiring links. It connects backoffice workflows with tokenized candidate and client experiences, turning fragmented profile data into a structured, auditable system.',
+    problem:
+      'Recruiters, candidates, and clients needed one system for talent data without fragmenting the workflows.',
     heroImage: '/assets/work/cti/Employee Profile - Employee.png',
     heroAlt: 'Talent Intelligence candidate profile screen',
     role: 'Lead Product Designer / Frontend Designer',
     duration: 'N/A',
     focus: 'Information architecture, role-based workflows, frontend-ready product design',
     challenge:
-      'The platform had to balance a data-heavy admin experience with clarity and speed, while also supporting secure token-based candidate and client journeys outside the standard authenticated application shell.',
+      'The platform had to balance a data-heavy admin experience with secure, lightweight external journeys outside the standard authenticated application shell.',
     approach:
       'I structured the product around role-based navigation, reusable admin patterns, and minimal tokenized public flows so admins, candidates, and clients each saw only the workflows relevant to them.',
     selectedWork: [
@@ -275,6 +311,7 @@ export const baseProjects = [
       {
         title: 'Responsibilities',
         items: [
+          'Synthesized stakeholder and user input to align candidate, client, and admin workflows with business goals and product constraints.',
           'Defined the information architecture and role-based navigation across admin, candidate, client, and authentication flows.',
           'Designed the dashboard, candidate management, profile editor, skills taxonomy, shared profiles, and audit log experiences.',
           'Simplified dense tables and form-heavy workflows with filters, deep links, reusable components, and progressive disclosure.',
@@ -328,7 +365,7 @@ export const baseProjects = [
       'Prisma',
     ],
     outcome:
-      'The result was a structured talent operations system that improved admin visibility, reduced candidate submission friction, and enabled secure client sharing through expiring links.',
+      'The team gained a structured talent workflow with better admin visibility, easier candidate submission, and secure client sharing through expiring links.',
     gallery: [
       {
         src: '/assets/work/cti/Employee Profile - Employee.png',
@@ -369,13 +406,16 @@ export const baseProjects = [
       'Mobile warehouse UX for faster barcode-driven workflows in real conditions.',
     overview:
       'A warehouse workflow app designed to reduce manual work and speed up barcode-based tasks for teams operating in fast, real-world conditions.',
+    websiteUrl: 'https://www.nlrp.com/',
+    problem:
+      'Warehouse staff were losing time handling barcode-driven tasks on laptops or by writing things down manually.',
     heroImage: '/assets/work/nlrp.png',
     heroAlt: 'NLRP warehouse mobile app design screens',
     role: 'UI/UX Designer',
     duration: '2 months',
     focus: 'Mobile workflows, barcode scanning, usability refinement',
     challenge:
-      'Warehouse staff were losing time by writing down barcodes manually or switching to laptops for tasks that should have been handled directly on mobile devices.',
+      'The interface had to stay fast and readable in bright warehouse conditions while supporting several scan types and very little room for error.',
     approach:
       'I designed and iterated Android flows for scanning boxes, containers, and locations, with strong attention to speed, readability, and usability in bright environments.',
     selectedWork: [
@@ -383,8 +423,14 @@ export const baseProjects = [
       'Tested lo-fi and hi-fi concepts for key inventory actions.',
       'Improved accessibility through larger type and stronger navigation cues.',
     ],
+    responsibilities: [
+      'Mapped workflow input to how warehouse teams actually scan and move through tasks.',
+      'Mapped barcode-driven actions into mobile-first flows that could work directly in the field.',
+      'Tested lo-fi and hi-fi concepts for the highest-friction inventory actions.',
+      'Refined readability and accessibility for bright warehouse environments and fast-paced use.',
+    ],
     outcome:
-      'The app experience supported faster execution and reduced operational friction by letting workers complete barcode-driven tasks directly in the field.',
+      'Workers could complete barcode-driven tasks directly in the field with less friction and faster execution.',
     gallery: [
       {
         src: '/assets/work/nlrp.png',
@@ -412,13 +458,15 @@ export const baseProjects = [
       'Long-term product design for a healthcare admin platform and design system.',
     overview:
       'Long-term product design for a healthcare administration platform, focused on improving consistency, delivery speed, and usability across a growing product surface.',
+    problem:
+      'The team needed to keep shipping features without consistency slipping as the product grew.',
     heroImage: '/assets/work/spokehealth.png',
     heroAlt: 'SpokeHealth admin platform design screens',
     role: 'UI/UX Designer',
     duration: '3 years',
     focus: 'Product UX, design systems, research, handoff collaboration',
     challenge:
-      'The platform needed to support ongoing feature delivery without losing consistency, usability, or clarity across a complex healthcare administration experience.',
+      'The challenge was maintaining a reusable system and clear interaction patterns across a long-lived, expanding healthcare platform.',
     approach:
       'I supported research, IA, wireframes, prototyping, interface design, and design-to-dev collaboration while building reusable components for a stronger shared system.',
     selectedWork: [
@@ -426,17 +474,15 @@ export const baseProjects = [
       'Supported feature work across multiple years of releases.',
       'Improved consistency and delivery speed through shared design assets.',
     ],
+    responsibilities: [
+      'Synthesized product and stakeholder input to keep long-term feature work aligned with consistency goals.',
+      'Supported research, IA, and wireframes across multiple releases.',
+      'Built reusable design patterns and shared assets that could scale with the platform.',
+      'Collaborated closely with developers to protect handoff quality as the product evolved.',
+    ],
     outcome:
-      'The product became more cohesive over time, with clearer patterns for users and a more reliable handoff process for the broader product team.',
+      'The product stayed more consistent as it grew, with clearer patterns for users and a smoother handoff process for the team.',
     gallery: [
-      {
-        src: '/assets/work/spokehealth.png',
-        alt: 'SpokeHealth platform dashboard and workflow screens',
-      },
-      {
-        src: '/assets/work/spokehealth-screens.jpg',
-        alt: 'SpokeHealth detailed admin interface screen collection',
-      },
       {
         src: '/assets/work/spokehealth/admin-members.lists.png',
         alt: 'SpokeHealth admin members screen 1',
@@ -484,27 +530,30 @@ export const baseProjects = [
     cardImage: '/assets/work/zip-thumb.png',
     cardAlt: 'ZIP healthcare platform preview',
     cardSummary:
-      'AI-augmented healthcare operations and care coordination platform.',
+      'Healthcare platform built to align care spend with actual usage through patient engagement and care coordination.',
     overview:
-      'A healthcare operations platform built around two connected products: an internal admin application used by operations teams and a mobile-first external app used by patients, providers, pharmacies, and logistics partners.',
+      'ZIP is a healthcare platform that helps employers align care spend with actual usage while giving members, providers, and care teams a clearer way to navigate benefits, provider selection, and care coordination.',
+    problem:
+      'Employers were paying for broad healthcare coverage across every employee, even when only a small share of the workforce needed care or high-cost treatment, which made the cost model feel disconnected from real usage.',
     heroImage: '/assets/work/zip-thumb.png',
     heroAlt: 'ZIP platform design screens',
     role: 'Lead Product Engineer',
     duration: 'N/A',
     focus: 'Product design, UX architecture, frontend implementation',
     challenge:
-      'Designing for multiple user groups with very different goals and constraints while separating internal and external access clearly without fragmenting the product.',
+      'The challenge was explaining a new healthcare model clearly while keeping internal and external experiences separated, trustworthy, and usable for sensitive decisions.',
     approach:
-      'Split the platform into distinct product surfaces, standardized shared interaction patterns, and designed the AI care journey as a structured workflow instead of a free-form chatbot.',
+      'Split the platform into distinct product surfaces and designed structured care journeys around benefits navigation, provider selection, and care coordination so companies could manage coverage and spend more intentionally instead of defaulting to one-size-fits-all insurance behavior.',
     selectedWork: [
       'Split the platform into distinct internal and external surfaces.',
-      'Designed a structured workflow for AI care journeys.',
-      'Treated external experience as mobile-first from the start.',
+      'Designed structured workflows for benefits navigation and care journeys.',
+      'Treated the external experience as mobile-first from the start.',
     ],
     caseStudySections: [
       {
         title: 'Responsibilities',
         items: [
+          'Aligned product and stakeholder input with backend rules, permissions, and healthcare workflow constraints.',
           'Worked across product design, UX architecture, frontend implementation, and platform hardening.',
           'Structured the product into separate internal and external surfaces with clear role boundaries.',
           'Designed and built key journeys across onboarding, care coordination, analytics, and AI-guided care flows.',
@@ -534,7 +583,7 @@ export const baseProjects = [
         title: 'Impact',
         items: [
           'Established a clearer two-app architecture with stronger audience boundaries.',
-          'Turned the external experience into a true mobile-first care product.',
+          'Turned the external experience into a mobile-first care product with clearer navigation and engagement.',
           'Made the admin platform more consistent across dashboards, tables, dialogs, and management flows.',
           'Improved reliability and performance through stronger validation, startup behavior, caching, and runtime hardening.',
           'Strengthened security through clearer auth boundaries, safer route policies, and more deliberate handling of sensitive workflows.',
@@ -561,20 +610,8 @@ export const baseProjects = [
       'Pino',
     ],
     outcome:
-      'The product gained a more intentional two-app architecture with clear audience boundaries, structured AI journeys, and a more consistent admin platform.',
+      'The platform now gives teams a clearer way to separate internal administration from external care journeys while supporting a model that better reflects actual usage and care engagement.',
     gallery: [
-      {
-        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.50.20 PM.png',
-        alt: 'ZIP dashboard overview',
-      },
-      {
-        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.50.40 PM.png',
-        alt: 'ZIP workflow details',
-      },
-      {
-        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.51.23 PM.png',
-        alt: 'ZIP activity summary',
-      },
       {
         src: '/assets/work/zip/screencapture-localhost-5173-dashboard-2026-03-22-15_35_33.png',
         alt: 'ZIP dashboard detail',
@@ -590,6 +627,18 @@ export const baseProjects = [
       {
         src: '/assets/work/zip/screencapture-localhost-5173-partners-2026-03-21-23_52_49.png',
         alt: 'ZIP partner activity',
+      },
+      {
+        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.50.20 PM.png',
+        alt: 'ZIP button components',
+      },
+      {
+        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.50.40 PM.png',
+        alt: 'ZIP color palette',
+      },
+      {
+        src: '/assets/work/zip/Screenshot 2026-03-21 at 11.51.23 PM.png',
+        alt: 'ZIP checkbox component',
       },
     ],
     ctaTitle: 'Need a multi-role platform designed?',
@@ -608,25 +657,32 @@ export const baseProjects = [
     cardSummary:
       'Internal company management platform supporting admin and employee workflows.',
     overview:
-      'Chronomedia is a company management platform built to support internal operations across time logging, employee management, payroll, reimbursements, invoicing, and account administration.',
+      'Chronomedia is an internal operations platform for time logging, employee management, payroll, reimbursements, invoicing, leave, rate cards, and reporting.',
+    problem:
+      'Core operations were spread across Jira, Confluence, spreadsheets, and third-party tools, which made payroll, reimbursements, leave, invoicing, and time tracking slow, inconsistent, and hard to trust.',
     heroImage: '/assets/work/chronomedia-thumb.png',
     heroAlt: 'Chronomedia operations platform screens',
     role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'Product design, frontend implementation, user research',
     challenge:
-      'Replacing long-standing manual processes with a single system that manages complex workflows involving payroll, reimbursements, invoicing, and project tracking.',
+      'The platform had to bring together employee, finance, and operations workflows without making the system harder to use than the tools it was replacing.',
     approach:
       'Created a consistent navigation system across modules and designed separate but connected experiences for administrators and employees.',
     selectedWork: [
-      'Designed consistent navigation across time logging and payroll.',
-      'Redesigned payroll processes to simplify verification.',
-      'Contributed to frontend development implementation.',
+      'Designed employee time logging, calendar views, and worklog import flows.',
+      'Redesigned payroll, reimbursement, leave, and invoice workflows around shared data.',
+      'Built employee management, rate cards, and reporting tools for admins.',
     ],
     caseStudySections: [
       {
+        title: 'Problem',
+        body: 'Core operations were spread across Jira, Confluence, spreadsheets, and third-party tools, which made payroll, reimbursements, leave, invoicing, and time tracking slow, inconsistent, and hard to trust.',
+      },
+      {
         title: 'Responsibilities',
         items: [
+          'Synthesized stakeholder and user input to align payroll, reimbursements, leave, invoicing, and time-tracking workflows with business rules and team needs.',
           'Led the overall product design from discovery to delivery.',
           'Conducted stakeholder and user interviews to gather requirements and validate workflows.',
           'Designed the full product UI, UX, and design system.',
@@ -637,27 +693,27 @@ export const baseProjects = [
       {
         title: 'Key Challenges',
         items: [
-          'Supporting detailed workflows across payroll, reimbursements, invoicing, and project-based time tracking.',
-          'Replacing long-standing spreadsheet and Jira processes with a system users would trust enough to adopt daily.',
+          'Supporting detailed workflows across payroll, reimbursements, leave, invoicing, and project-based time tracking.',
+          'Replacing long-standing spreadsheet, Jira, and Confluence processes with a system users would trust enough to adopt daily.',
         ],
       },
       {
         title: 'Design Decisions',
         items: [
-          'Created a consistent navigation system across time logging, payroll, invoicing, and employee management.',
+          'Created a consistent navigation system across time logging, payroll, invoicing, leave, and employee management.',
           'Designed separate but connected admin and employee experiences so each role saw the right tools.',
-          'Restructured payroll and invoicing into clearer verification, approval, and record-review flows.',
+          'Restructured payroll, reimbursements, and invoicing into clearer verification, approval, and review flows.',
           'Established reusable patterns for tables, forms, dialogs, and status indicators to reduce the learning curve.',
         ],
       },
       {
         title: 'Impact',
         items: [
-          'Replaced spreadsheet- and Jira-based workflows with a centralized internal platform.',
-          'Automated payroll processing and client invoicing workflows that were previously manual.',
-          'Simplified employee time logging by allowing work across projects in one interface.',
+          'Replaced spreadsheet-, Jira-, and Confluence-based workflows with a centralized internal platform.',
+          'Automated payroll processing and invoice workflows that had previously been assembled by hand.',
+          'Simplified employee time logging, leave requests, and worklog review in one interface.',
           'Reduced missed time logs through clearer summary views of completed and missing entries.',
-          'Gave admins a single operational system instead of forcing them across multiple tools.',
+          'Gave admins a single operational system for employee data, rates, and reporting instead of forcing them across multiple tools.',
         ],
       },
     ],
@@ -675,7 +731,7 @@ export const baseProjects = [
       'Docker',
     ],
     outcome:
-      'Replaced manual workflows with a centralized digital system, automated payroll processing, and simplified employee time logging.',
+      'Chronomedia brought time logging, payroll, reimbursements, leave, invoicing, rate data, and reporting into one system, making the work faster to run and easier to trust.',
     gallery: [
       {
         src: '/assets/work/chronomedia/Admin Salary Data.png',
@@ -755,13 +811,16 @@ export const baseProjects = [
       'Real estate platform simplifying property evaluation and reporting.',
     overview:
       'Nester is a real estate platform designed to help home buyers, sellers, and realtors make better property decisions through structured property analysis and reporting.',
+    websiteUrl: 'https://nester.app/',
+    problem:
+      'Multiple user roles needed to interpret the same property data without getting lost in technical reporting.',
     heroImage: '/assets/work/nester/nester-dashboard-seller.png',
     heroAlt: 'Nester seller dashboard platform screen',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UI/UX design, full user flows, scalable design system',
     challenge:
-      'Supporting multiple user roles with different goals while translating complex property analysis workflows into easy-to-understand experiences.',
+      'The challenge was translating a complex property-analysis workflow into something each role could navigate confidently.',
     approach:
       'Simplified multi-role user flows, created a clear onboarding journey, and focused on making report pages clear, structured, and easy to interpret.',
     selectedWork: [
@@ -773,6 +832,7 @@ export const baseProjects = [
       {
         title: 'Responsibilities',
         items: [
+          'Aligned stakeholder input with property workflows and the needs of buyers, sellers, and realtors.',
           'Led the overall UI and UX design for the platform.',
           'Designed the landing page, product interface, and complete multi-role user flows.',
           'Created a scalable design system for consistent UI across the product.',
@@ -809,7 +869,7 @@ export const baseProjects = [
       },
     ],
     outcome:
-      'Delivered intuitive workflows for multiple user types and standardized the product UI through a unified design system.',
+      'The product now gives each user type a clearer path through property analysis and reporting, supported by a unified UI system.',
     gallery: [
       {
         src: '/assets/work/nester/nester-landing-home.png',
@@ -874,13 +934,16 @@ export const baseProjects = [
       'Global platform connecting missionaries with their supporters.',
     overview:
       'Harvest21 is a platform designed to help missionaries share their mission work, progress updates, and receive financial support globally.',
+    websiteUrl: 'https://info.harvest21.com/',
+    problem:
+      'Missionaries lacked a centralized platform that let them share their work, build visibility with potential supporters, and receive financial support in a way that felt trustworthy and easy to use. Existing solutions were fragmented, unintuitive, or not designed around missionary needs.',
     heroImage: '/assets/work/harvest21-thumb.png',
     heroAlt: 'Harvest21 platform design screens',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UI/UX design, user flows, donation workflow design',
     challenge:
-      'Designing a highly intuitive interface for users with varying levels of digital literacy while supporting robust donation and sharing workflows.',
+      'The challenge was making a multi-role support platform intuitive enough for users with very different levels of digital literacy.',
     approach:
       'Focused on reducing friction in donation processes, enabling a mobile-first design for field work, and maintaining clear navigation patterns.',
     selectedWork: [
@@ -892,6 +955,7 @@ export const baseProjects = [
       {
         title: 'Responsibilities',
         items: [
+          'Synthesized stakeholder and user input to align donation and sharing workflows with the needs of missionaries and supporters.',
           'Designed the complete UI and UX for the platform.',
           'Created the design system used across the product.',
           'Developed wireframes, high-fidelity mockups, and interactive prototypes.',
@@ -928,7 +992,7 @@ export const baseProjects = [
       },
     ],
     outcome:
-      'Provided an easy-to-use platform enabling simplified content updates and frictionless financial support.',
+      'Missionaries and supporters got a platform that made content updates easier, reduced friction in the donation flow, and helped missions reach a wider audience.',
     gallery: [
       {
         src: '/assets/work/harvest21/Information Architecture.png',
@@ -980,32 +1044,41 @@ export const baseProjects = [
     category: 'Process Improvement',
     metaTitle: 'Workrite | Arthur Baduyen',
     metaDescription:
-      'Workrite case study by Arthur Baduyen covering a Lean/Six Sigma process improvement platform.',
+      'Workrite case study by Arthur Baduyen covering a Lean work-observation and line-balance platform.',
     cardImage: '/assets/work/workrite-thumb.png',
     cardAlt: 'Workrite process improvement platform preview',
     cardSummary:
-      'Lean process-improvement platform for setup, observation, and work analysis.',
+      'Work observation and line-balance tool for Lean design and implementation projects.',
     overview:
-      'Workrite turns Lean and Six Sigma process studies into a guided digital workflow, moving teams from project setup through observation, analysis, and reporting without relying on manual forms and spreadsheets.',
+      'Workrite is a Lean work-observation and line-balance tool for setup, capture, comparison, and reporting.',
+    websiteUrl: 'https://www.lean-logic.com/',
+    problem:
+      'Lean teams needed a repeatable way to run work-observation and line-balance studies without paper forms.',
     heroImage: '/assets/work/workrite-thumb.png',
     heroAlt: 'Workrite platform design screens',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'Lean workflow design, observation analysis, reporting interfaces',
     challenge:
-      'The platform had to explain a specialized process-improvement methodology while staying usable for people who just needed to create a project, capture observations, and move on.',
+      'The challenge was keeping dense operational data, training references, and step-by-step analysis readable in one workflow.',
     approach:
-      'I organized the interface around the lifecycle of a study: create the project, define the process, compare work elements, review training references, and surface improvement opportunities in one system.',
+      'I organized the interface around the lifecycle of a study: create the project, capture observations, compare work elements, review training references, and surface improvement opportunities in one system.',
     selectedWork: [
       'Mapped the full flow from project setup to process analysis.',
-      'Designed the work-combination and observation screens for side-by-side comparison.',
+      'Designed the work-observation and line-balance screens for side-by-side comparison.',
       'Brought training and legacy materials into the product story without making the interface feel heavy.',
+    ],
+    responsibilities: [
+      'Mapped workflow input to Lean study requirements and on-the-floor usability.',
+      'Led the UI/UX direction for the full Lean work-observation platform.',
+      'Designed the setup flow that starts a new project and defines the process context.',
+      'Created reusable patterns for dense forms, tables, and step-driven workflows.',
     ],
     caseStudySections: [
       {
         title: 'Workflow Foundation',
         items: [
-          'Led the UI/UX direction for the full process-improvement platform.',
+          'Led the UI/UX direction for the full Lean work-observation platform.',
           'Designed the setup flow that starts a new project and defines the process context.',
           'Created reusable patterns for dense forms, tables, and step-driven workflows.',
         ],
@@ -1013,7 +1086,7 @@ export const baseProjects = [
       {
         title: 'Observation and Analysis',
         items: [
-          'Structured the experience around work observation, work combination, and cycle-time comparison.',
+          'Structured the experience around work observation, line balance, and cycle-time comparison.',
           'Designed views that made manual, machine, and walking time easier to scan.',
           'Kept the data-heavy screens readable enough for quick review in the field or office.',
         ],
@@ -1029,19 +1102,15 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Replaced paper-heavy documentation with a guided digital sequence.',
-          'Made process studies easier to repeat and review consistently.',
+          'Replaced paper-heavy documentation with a guided digital sequence that teams could reuse.',
+          'Made work observation and line-balance studies easier to repeat, compare, and review consistently.',
           'Gave teams a clearer path from observation to improvement action items.',
         ],
       },
     ],
     outcome:
-      'Workrite replaced manual documentation with a guided digital system for running process studies, making observation, comparison, and reporting easier to repeat.',
+      'Lean teams could run work-observation and line-balance studies in one repeatable digital flow, with clearer comparisons and easier review.',
     gallery: [
-      {
-        src: '/assets/work/workrite/Create Project.png',
-        alt: 'Workrite project setup screen',
-      },
       {
         src: '/assets/work/workrite/Project_Process.png',
         alt: 'Workrite process configuration screen',
@@ -1086,28 +1155,36 @@ export const baseProjects = [
     cardImage: '/assets/work/kidough-thumb.png',
     cardAlt: 'Kidough financial platform preview',
     cardSummary:
-      'Financial learning platform balancing childhood engagement with parent supervision.',
+      'Allowance app that helps kids and teens learn money habits through hands-on practice.',
     overview:
-      'Kidough introduces real-world financial concepts such as saving and budgeting in a kid-friendly environment while parents guide their choices.',
+      'Kidough is an allowance app for kids and teens that supports hands-on practice with money habits.',
+    websiteUrl: 'https://kidough.org/',
+    problem:
+      'Families wanted kids to learn money habits through practical experience without turning it into lectures.',
     heroImage: '/assets/work/kidough-thumb.png',
     heroAlt: 'Kidough platform design screens',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UI/UX design, parent supervision workflows, educational interface',
     challenge:
-      'Balancing simplicity and educational engagement for children against the necessity for oversight and trust for parents within the same unified product.',
+      'The challenge was keeping the kid and parent flows connected while preserving a playful learning experience that still felt trustworthy to adults.',
     approach:
-      'Designed split, role-specific experiences with simplified financial constructs and high visual clarity.',
+      'Designed split, role-specific experiences with simplified financial concepts, clear navigation, and a learning flow centered on practice rather than instruction.',
     selectedWork: [
-      'Designed interactive, child-friendly financial features.',
-      'Created parent dashboards supporting financial supervision.',
-      'Unified both roles under a clear design system.',
+      'Designed interactive, child-friendly financial features tied to allowance and responsibility.',
+      'Created parent dashboards that made setup and oversight straightforward.',
+      'Unified both roles under a clear design system and shared learning flow.',
     ],
     caseStudySections: [
       {
+        title: 'Problem',
+        body: 'Families wanted kids to learn money habits through practical experience without turning it into lectures.',
+      },
+      {
         title: 'Responsibilities',
         items: [
-          'Led the overall UI and UX design of the platform.',
+          'Aligned product input with the kid and parent experiences and the goals of financial education and family trust.',
+          'Owned the overall UI and UX direction for the platform.',
           'Designed the complete product experience from concept to final interface.',
           'Created the product design system.',
           'Designed user flows for both children and parents.',
@@ -1117,33 +1194,33 @@ export const baseProjects = [
       {
         title: 'Key Challenges',
         items: [
-          'Balancing simplicity and education for children while maintaining trust and control for parents.',
+          'Balancing hands-on learning for children with a setup flow that parents could trust and complete quickly.',
           'Designing two connected but distinct user experiences inside the same product.',
-          'Making financial concepts feel approachable without losing clarity or usefulness.',
+          'Making financial concepts feel approachable without losing the learning that comes from mistakes and responsibility.',
         ],
       },
       {
         title: 'Design Decisions',
         items: [
           'Designed separate but connected experiences for kids and parents.',
-          'Simplified financial concepts into child-friendly interactions.',
+          'Simplified financial concepts into child-friendly interactions built around practice and responsibility.',
           'Focused on strong visual clarity and intuitive navigation.',
-          'Structured financial information so it worked for both children and parents.',
+          'Structured financial information so it worked for both children and parents and made learning progress easy to review.',
           'Used a shared design system to keep the product cohesive.',
         ],
       },
       {
         title: 'Impact',
         items: [
-          'Created a product that helps children learn financial responsibility through real-world money habits.',
-          'Enabled parents to supervise and guide their children’s financial activity.',
-          'Turned financial education into an engaging digital experience.',
+          'Created a product that helps children learn financial responsibility through hands-on allowance practice.',
+          'Enabled parents to set up the experience once, then guide learning with minimal effort.',
+          'Turned financial education into an engaging digital experience centered on practice and responsibility.',
           'Delivered a scalable interface that supported both user roles clearly.',
         ],
       },
     ],
     outcome:
-      'Delivered an engaging educational tool supported by a scalable design system for both guardians and children learning responsible finance.',
+      'Kids can now practice saving and budgeting through their allowance in a kid-friendly interface, while parents can guide the learning in the same system.',
     gallery: [
       {
         src: '/assets/work/kidough/Screen Shot 2022-03-22 at 1.48 2.png',
@@ -1211,13 +1288,16 @@ export const baseProjects = [
       'Admin platform for large-scale photo management and logistics.',
     overview:
       'MSP Photography supports large-scale photo management workflows across Australia. My work focused on improving the internal platform handling thousands of visual assets.',
+    websiteUrl: 'https://www.msp.com.au/',
+    problem:
+      'Admins were sorting through large photo libraries across events, schools, and teams and needed faster access to specific items.',
     heroImage: '/assets/work/msp-thumb.png',
     heroAlt: 'MSP Photography design screens',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UX/UI design for internal interfaces, asset workflow optimization',
     challenge:
-      'The platform contained confusing architecture due to high volumes of images across events, schools, and teams. The challenge was simplifying access to specific items rapidly.',
+      'The challenge was untangling a dense information architecture without removing the tools admins still needed every day.',
     approach:
       'Simplified the navigation setup, introduced familiar layout patterns, and restructured photo management workflows into orderly sequences.',
     selectedWork: [
@@ -1229,6 +1309,7 @@ export const baseProjects = [
       {
         title: 'Responsibilities',
         items: [
+          'Aligned stakeholder input with photo-management workflows, admin needs, and operational constraints.',
           'Designed the UX and UI for the internal admin interface used to manage photos.',
           'Simplified workflows for organizing and managing image assets.',
           'Created high-fidelity UI mockups and prototypes.',
@@ -1263,14 +1344,13 @@ export const baseProjects = [
       },
     ],
     outcome:
-      'Significantly enhanced efficiency and reduced friction for administrative staff handling significant photographic workflows on a daily basis.',
+      'Admins could handle large photo libraries with less friction and noticeably better day-to-day efficiency.',
     gallery: [
       {
         src: '/assets/work/msp/Franchise - Photography.png',
         alt: 'MSP franchise photography',
       },
       { src: '/assets/work/msp/MSP Portal Logo 1.svg', alt: 'MSP portal logo' },
-      { src: '/assets/work/msp/MSP-Logo-sm 1.svg', alt: 'MSP small logo' },
       {
         src: '/assets/work/msp/Photography - Others - Select Photo.png',
         alt: 'MSP photo selection',
