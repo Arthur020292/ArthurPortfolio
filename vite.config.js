@@ -3,6 +3,13 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { sendContactEmail } from './api/_lib/contact.js';
 import {
+  buildPortfolioStructuredData,
+  getPortfolioPageMeta,
+  resolveSiteUrl,
+  toAbsoluteUrl,
+} from './src/portfolio/seo.js';
+import { replacePortfolioTemplate } from './src/portfolio/htmlTemplate.js';
+import {
   enforceContactRateLimit,
   getAllowedOrigins,
   isAllowedFetchMetadata,
@@ -126,13 +133,45 @@ function stripCrossoriginPlugin() {
   };
 }
 
+function portfolioMetaPlugin(siteUrl) {
+  return {
+    apply: 'serve',
+    name: 'portfolio-meta-template',
+    transformIndexHtml: {
+      handler(html) {
+        const homeMeta = getPortfolioPageMeta({ type: 'about' });
+        const structuredData = buildPortfolioStructuredData(homeMeta, siteUrl);
+
+        return replacePortfolioTemplate(html, {
+          canonicalUrl: toAbsoluteUrl(homeMeta.path, siteUrl),
+          description: homeMeta.description,
+          imageUrl: toAbsoluteUrl(homeMeta.imagePath, siteUrl),
+          jsonLd: structuredData,
+          title: homeMeta.title,
+        });
+      },
+      order: 'post',
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
+  const siteUrl = resolveSiteUrl(
+    process.env.VITE_SITE_URL,
+    'http://127.0.0.1:8082'
+  );
 
   const plugins =
     mode === 'test'
       ? [react()]
-      : [react(), tailwindcss(), stripCrossoriginPlugin(), contactApiPlugin()];
+      : [
+          react(),
+          tailwindcss(),
+          portfolioMetaPlugin(siteUrl),
+          stripCrossoriginPlugin(),
+          contactApiPlugin(),
+        ];
 
   return {
     plugins,

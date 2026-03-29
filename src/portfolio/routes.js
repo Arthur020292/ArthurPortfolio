@@ -1,9 +1,9 @@
-import { getProjectBySlug } from '../data';
+import { getProjectBySlug, projects } from '../data.js';
 import {
   PORTFOLIO_CONTACT_PATH,
   PORTFOLIO_HOME_PATH,
   PORTFOLIO_PROJECTS_PATH,
-} from './constants';
+} from './constants.js';
 
 export function getProjectPath(slug) {
   return `${PORTFOLIO_PROJECTS_PATH}/${slug}`;
@@ -46,4 +46,13 @@ export function parsePortfolioRoute(pathname) {
 
 export function isOverviewRoute(type) {
   return type === 'about' || type === 'projects';
+}
+
+export function getIndexableRoutes() {
+  return [
+    PORTFOLIO_HOME_PATH,
+    PORTFOLIO_PROJECTS_PATH,
+    PORTFOLIO_CONTACT_PATH,
+    ...projects.map((project) => getProjectPath(project.slug)),
+  ];
 }

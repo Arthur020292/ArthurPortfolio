@@ -62,6 +62,9 @@ need to resolve to `index.html` on direct visits. That is already configured via
 
 - `public/_redirects`
 
+Production builds also prerender the canonical public routes and generate a sitemap so
+crawlers can read meaningful HTML without waiting for React hydration.
+
 ### Static images and files
 
 All portfolio images and PDFs can stay in:
@@ -103,6 +106,7 @@ Set these variables in Cloudflare Pages under `Settings > Variables and Secrets`
 - `CONTACT_RATE_LIMIT_WINDOW_MS` - optional rate-limit window in milliseconds
 - `TURNSTILE_SECRET_KEY` - optional Cloudflare Turnstile secret for bot protection
 - `VITE_TURNSTILE_SITE_KEY` - optional Cloudflare Turnstile site key for the contact form
+- `VITE_SITE_URL` - canonical site URL used for metadata, sitemap generation, and prerendered pages
 
 If you use `onboarding@resend.dev` as the sender, Resend keeps the account in testing mode and
 only allows sending to the email address tied to the Resend account. To send to any other inbox,

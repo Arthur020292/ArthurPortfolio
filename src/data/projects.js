@@ -1,9 +1,9 @@
-import { baseProjects } from './projectRecords';
+import { baseProjects } from './projectRecords.js';
 import {
   browseProjectOrder,
   featuredProjectOrder,
   portfolioProjectColors,
-} from './projectPresentation';
+} from './projectPresentation.js';
 
 function createShortMeta(project) {
   return {

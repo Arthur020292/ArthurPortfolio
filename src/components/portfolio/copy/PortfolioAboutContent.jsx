@@ -1,8 +1,10 @@
 import { Fragment } from 'react';
 import { aboutContent } from '../../../data';
-import { BRAND_COLOR } from '../../../portfolio/constants';
+import { BRAND_COLOR, CAL_COM_URL } from '../../../portfolio/constants';
 
-export function PortfolioAboutContent() {
+export function PortfolioAboutContent({
+  mobileBookCallCtaRef,
+}) {
   return (
     <div className="flex h-full flex-col">
       <div className="portfolio-left-item">
@@ -41,6 +43,22 @@ export function PortfolioAboutContent() {
             {paragraph}
           </p>
         ))}
+
+        <div className="hidden max-[980px]:block">
+          <p className="max-w-[24rem] text-[0.95rem] leading-[1.7] text-slate-500">
+            You have a product you want to build?
+          </p>
+          <a
+            className="portfolio-mobile-cta-enter mt-4 inline-flex min-h-11 items-center justify-center rounded-full px-5 py-3 text-center text-[0.9rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5"
+            href={CAL_COM_URL}
+            rel="noreferrer"
+            ref={mobileBookCallCtaRef}
+            style={{ backgroundColor: BRAND_COLOR }}
+            target="_blank"
+          >
+            Let&apos;s Talk
+          </a>
+        </div>
       </div>
     </div>
   );

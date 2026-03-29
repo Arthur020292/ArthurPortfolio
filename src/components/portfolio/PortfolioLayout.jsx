@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
 import { PortfolioHeader } from './PortfolioHeader';
 import { PortfolioLeftContent } from './PortfolioCopy';
 import { PortfolioProjectGrid } from './PortfolioProjectGrid';
@@ -9,14 +8,10 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { usePortfolioTransition } from '../../hooks/usePortfolioTransition';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
-import {
-  DEFAULT_META_DESCRIPTION,
-  DEFAULT_SOCIAL_IMAGE_PATH,
-  PORTFOLIO_CONTACT_PATH,
-  PORTFOLIO_HOME_PATH,
-  PORTFOLIO_PROJECTS_PATH,
-} from '../../portfolio/constants';
-import { getProjectPath, isOverviewRoute, parsePortfolioRoute } from '../../portfolio/routes';
+import { PORTFOLIO_HOME_PATH } from '../../portfolio/constants';
+import { isOverviewRoute, parsePortfolioRoute } from '../../portfolio/routes';
+import { getPortfolioPageMeta } from '../../portfolio/seo';
+import { Navigate, useLocation } from '../../router-dom';
 
 function PortfolioRightContent({
   contactExitState,
@@ -54,15 +49,20 @@ function PortfolioRightContent({
 export function PortfolioLayout() {
   const location = useLocation();
   const actualRoute = useMemo(() => parsePortfolioRoute(location.pathname), [location.pathname]);
+  const pageMeta = useMemo(() => getPortfolioPageMeta(actualRoute), [actualRoute]);
   const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion = usePrefersReducedMotion();
   const disablePortfolioTransitions = prefersReducedMotion || isMobileViewport;
   const leftPanelRef = useRef(null);
   const mainContentRef = useRef(null);
   const rightPanelRef = useRef(null);
+  const mobileBookCallCtaRef = useRef(null);
   const previousPathRef = useRef(location.pathname);
   const lastLeftScrollRef = useRef(0);
   const [showStickyNav, setShowStickyNav] = useState(false);
+  const [showMobileBookCall, setShowMobileBookCall] = useState(
+    !isMobileViewport || actualRoute.type !== 'about'
+  );
   const { displayedRoute, handleStageAnimationEnd, overviewGridMotion, transitionState } =
     usePortfolioTransition({
       actualRoute,
@@ -79,6 +79,62 @@ export function PortfolioLayout() {
     contactTransitionActive;
 
   useEffect(() => {
+    if (!isMobileViewport || actualRoute.type !== 'about') {
+      setShowMobileBookCall(true);
+      return undefined;
+    }
+
+    const ctaElement = mobileBookCallCtaRef.current;
+
+    if (!ctaElement) {
+      return undefined;
+    }
+
+    const revealBookCall = () => {
+      setShowMobileBookCall(true);
+    };
+
+    const handleVisibility = () => {
+      const rect = ctaElement.getBoundingClientRect();
+
+      if (rect.top < 0) {
+        revealBookCall();
+      }
+    };
+
+    handleVisibility();
+
+    if (showMobileBookCall) {
+      return undefined;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      window.addEventListener('scroll', handleVisibility, { passive: true });
+      window.addEventListener('resize', handleVisibility);
+
+      return () => {
+        window.removeEventListener('scroll', handleVisibility);
+        window.removeEventListener('resize', handleVisibility);
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+          revealBookCall();
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(ctaElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [actualRoute.type, isMobileViewport, showMobileBookCall]);
+
+  useEffect(() => {
     if (typeof window === 'undefined' || !('scrollRestoration' in window.history)) {
       return undefined;
     }
@@ -91,38 +147,7 @@ export function PortfolioLayout() {
     };
   }, []);
 
-  useDocumentMeta(
-    actualRoute.type === 'project'
-      ? {
-          description: actualRoute.project.metaDescription,
-          imagePath: actualRoute.project.cardImage || actualRoute.project.heroImage,
-          path: getProjectPath(actualRoute.project.slug),
-          title: actualRoute.project.metaTitle,
-          type: 'article',
-        }
-      : actualRoute.type === 'contact'
-        ? {
-            description:
-              'Contact Arthur Baduyen about product design, UI/UX, design systems, and frontend-ready collaboration.',
-            imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
-            path: PORTFOLIO_CONTACT_PATH,
-            title: 'Arthur Baduyen | Contact',
-          }
-        : actualRoute.type === 'projects'
-          ? {
-              description:
-                'Browse product design, UX, web, and internal tool case studies by Arthur Baduyen.',
-              imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
-              path: PORTFOLIO_PROJECTS_PATH,
-              title: 'Arthur Baduyen | Projects',
-            }
-          : {
-              description: DEFAULT_META_DESCRIPTION,
-              imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
-              path: PORTFOLIO_HOME_PATH,
-              title: 'Arthur Baduyen | Senior Product Designer',
-            }
-  );
+  useDocumentMeta(pageMeta);
 
   useLayoutEffect(() => {
     const panel = leftPanelRef.current;
@@ -228,7 +253,10 @@ export function PortfolioLayout() {
         Skip to main content
       </a>
       <div className="sticky top-0 z-40 hidden border-b border-[#ece7df] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-5 py-3 backdrop-blur-sm max-[980px]:block max-[640px]:px-4">
-        <PortfolioHeader activeRoute={actualRoute.type} />
+        <PortfolioHeader
+          activeRoute={actualRoute.type}
+          showMobileBookCall={showMobileBookCall}
+        />
       </div>
       <main
         className="min-h-dvh overflow-hidden bg-white max-[980px]:min-h-0"
@@ -269,11 +297,17 @@ export function PortfolioLayout() {
               }`}
             >
               <div className="border-b border-slate-200/85 bg-[rgba(255,255,255,0.985)] px-12 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] backdrop-blur-md max-[980px]:-mx-5 max-[980px]:px-5 max-[980px]:py-3 max-[640px]:-mx-4 max-[640px]:px-4">
-                <PortfolioHeader activeRoute={actualRoute.type} />
+                <PortfolioHeader
+                  activeRoute={actualRoute.type}
+                  showMobileBookCall={showMobileBookCall}
+                />
               </div>
             </div>
             <div className="relative z-30 max-[980px]:hidden">
-              <PortfolioHeader activeRoute={actualRoute.type} />
+              <PortfolioHeader
+                activeRoute={actualRoute.type}
+                showMobileBookCall={showMobileBookCall}
+              />
             </div>
             <div
               className={`mt-10 flex-1 max-[980px]:mt-6 ${
@@ -284,7 +318,11 @@ export function PortfolioLayout() {
               key={displayedRoute.key}
               onAnimationEnd={handleStageAnimationEnd}
             >
-              <PortfolioLeftContent route={displayedRoute} />
+              <PortfolioLeftContent
+                mobileBookCallCtaRef={mobileBookCallCtaRef}
+                route={displayedRoute}
+                showMobileBookCall={showMobileBookCall}
+              />
             </div>
           </section>
 

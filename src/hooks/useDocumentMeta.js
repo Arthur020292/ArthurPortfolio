@@ -1,44 +1,20 @@
 import { useEffect } from 'react';
 import {
-  CONTACT_EMAIL,
   DEFAULT_META_DESCRIPTION,
   DEFAULT_SOCIAL_IMAGE_PATH,
-  LINKEDIN_URL,
   PORTFOLIO_HOME_PATH,
   SITE_NAME,
 } from '../portfolio/constants';
+import {
+  buildPortfolioStructuredData,
+  resolveSiteUrl,
+  toAbsoluteUrl,
+} from '../portfolio/seo';
 
-const ENV_SITE_URL = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '') || '';
-
-function getSiteUrl() {
-  if (ENV_SITE_URL) {
-    return ENV_SITE_URL;
-  }
-
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    return window.location.origin.replace(/\/$/, '');
-  }
-
-  return '';
-}
-
-function toAbsoluteUrl(path) {
-  if (!path) {
-    return '';
-  }
-
-  if (/^https?:\/\//.test(path)) {
-    return path;
-  }
-
-  const siteUrl = getSiteUrl();
-
-  if (!siteUrl) {
-    return path;
-  }
-
-  return `${siteUrl}${path.startsWith('/') ? path : `/${path}`}`;
-}
+const SITE_URL = resolveSiteUrl(
+  import.meta.env.VITE_SITE_URL,
+  typeof window !== 'undefined' ? window.location.origin : ''
+);
 
 function setMetaTag({ content, name, property }) {
   if (!content) {
@@ -100,8 +76,12 @@ export function useDocumentMeta({
   useEffect(() => {
     document.title = title;
 
-    const canonicalUrl = toAbsoluteUrl(path);
-    const imageUrl = toAbsoluteUrl(imagePath);
+    const canonicalUrl = toAbsoluteUrl(path, SITE_URL);
+    const imageUrl = toAbsoluteUrl(imagePath, SITE_URL);
+    const structuredData = buildPortfolioStructuredData(
+      { description, imagePath, path, title, type },
+      SITE_URL
+    );
 
     setMetaTag({ name: 'description', content: description });
     setMetaTag({ name: 'robots', content: 'index,follow,max-image-preview:large' });
@@ -120,46 +100,6 @@ export function useDocumentMeta({
       setCanonicalLink(canonicalUrl);
     }
 
-    if (type === 'article') {
-      setStructuredData({
-        '@context': 'https://schema.org',
-        '@type': 'CreativeWork',
-        author: {
-          '@type': 'Person',
-          email: CONTACT_EMAIL,
-          jobTitle: 'Senior Product Designer',
-          name: SITE_NAME,
-          sameAs: [LINKEDIN_URL],
-        },
-        description,
-        image: imageUrl ? [imageUrl] : undefined,
-        headline: title,
-        name: title,
-        url: canonicalUrl || path,
-      });
-
-      return;
-    }
-
-    setStructuredData({
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Person',
-          email: CONTACT_EMAIL,
-          jobTitle: 'Senior Product Designer',
-          name: SITE_NAME,
-          sameAs: [LINKEDIN_URL],
-          url: getSiteUrl() || undefined,
-        },
-        {
-          '@type': 'WebSite',
-          description: DEFAULT_META_DESCRIPTION,
-          image: imageUrl || imagePath,
-          name: SITE_NAME,
-          url: getSiteUrl() || canonicalUrl || path,
-        },
-      ],
-    });
+    setStructuredData(structuredData);
   }, [description, imagePath, path, title, type]);
 }
