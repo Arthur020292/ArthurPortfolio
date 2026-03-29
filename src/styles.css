@@ -186,6 +186,16 @@ select:focus-visible,
   }
 }
 
+@keyframes portfolio-recommendation-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
 .portfolio-shell {
   animation: portfolio-shell-in 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -196,6 +206,12 @@ select:focus-visible,
 
 .portfolio-badge {
   animation: portfolio-float 3.8s ease-in-out infinite;
+}
+
+.portfolio-recommendation-progress-fill {
+  animation: portfolio-recommendation-progress-fill 8000ms linear forwards;
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .portfolio-brand-underline {
@@ -421,10 +437,6 @@ select:focus-visible,
     background-color 1440ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.portfolio-contact-tile {
-  border: none;
-}
-
 .portfolio-project-overlay {
   background-color: #0f172a;
   opacity: 0;
@@ -591,56 +603,47 @@ select:focus-visible,
   }
 }
 
-.portfolio-grid-overview-expand .portfolio-project-tile-shared {
-  transform-origin: center top;
-  animation: portfolio-grid-shared-compress 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.portfolio-grid-overview-expand .portfolio-project-tile-new {
-  transform-origin: center top;
-  animation: portfolio-grid-row-rise 580ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 40ms;
-}
-
-.portfolio-grid-projects-exit .portfolio-featured-cta-row {
-  animation: portfolio-grid-projects-exit 420ms cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-
 .portfolio-grid-projects-enter .portfolio-project-tile-new {
   animation: portfolio-grid-projects-enter 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.portfolio-grid-projects-enter .portfolio-project-tile-shared {
-  min-height: 17.75rem;
+@media (min-width: 981px) {
+  .portfolio-grid-projects-enter .portfolio-project-tile-shared {
+    min-height: calc(100dvh / 3);
+    transition: none;
+  }
 }
 
-.portfolio-grid-projects-compress .portfolio-project-tile {
+.portfolio-grid-projects-compress .portfolio-project-tile-shared {
   min-height: 12rem;
   transition:
     color 1440ms cubic-bezier(0.22, 1, 0.36, 1),
-    min-height 920ms cubic-bezier(0.22, 1, 0.36, 1),
+    min-height 760ms cubic-bezier(0.22, 1, 0.36, 1),
     background-color 1440ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (min-width: 981px) {
+  .portfolio-grid-overview-collapse .portfolio-project-tile-shared {
+    min-height: 12rem;
+    transform-origin: center top;
+    animation: portfolio-grid-cell-settle 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition:
+      color 1440ms cubic-bezier(0.22, 1, 0.36, 1),
+      min-height 920ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 1440ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
 @media (max-width: 980px) {
-  .portfolio-grid-projects-compress .portfolio-project-tile {
+  .portfolio-grid-projects-compress .portfolio-project-tile-shared {
     min-height: 10.1rem;
   }
 }
 
 @media (max-width: 720px) {
-  .portfolio-grid-projects-compress .portfolio-project-tile {
+  .portfolio-grid-projects-compress .portfolio-project-tile-shared {
     min-height: 9rem;
   }
-}
-
-.portfolio-grid-overview-collapse .portfolio-project-tile:not(.portfolio-featured-cta-row) {
-  animation: portfolio-grid-cell-settle 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.portfolio-grid-overview-collapse .portfolio-featured-cta-row {
-  transform-origin: center top;
-  animation: portfolio-grid-cell-grow 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .portfolio-sticky-header {
@@ -689,8 +692,10 @@ select:focus-visible,
   .portfolio-contact-panel-exit,
   .portfolio-grid-projects-exit,
   .portfolio-grid-projects-enter,
-  .portfolio-grid-projects-compress .portfolio-project-tile,
+  .portfolio-grid-projects-compress .portfolio-project-tile-shared,
+  .portfolio-project-placeholder-dot,
   .portfolio-mobile-cta-enter,
+  .portfolio-recommendation-progress-fill,
   .portfolio-pencil-primary,
   .portfolio-pencil-secondary {
     animation: none;

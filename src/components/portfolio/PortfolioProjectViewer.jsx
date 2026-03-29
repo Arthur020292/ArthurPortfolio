@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { PortfolioContactFooterCtaSection } from './PortfolioContactFooterCta';
 import { SafeImage } from './SafeImage';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
 import { PortfolioProjectRouteNav } from './copy/PortfolioProjectDetails';
+import { PortfolioContactFooterCtaSection } from './PortfolioContactFooterCta';
 
 function hexToRgb(hexColor) {
   if (!hexColor?.startsWith('#')) {
@@ -336,7 +336,9 @@ export function PortfolioProjectViewer({ project }) {
       <div className="hidden border-t border-slate-200/80 bg-[rgba(250,250,250,0.96)] px-4 py-5 shadow-[0_-10px_20px_rgba(15,23,42,0.05)] backdrop-blur-sm max-[640px]:block">
         <PortfolioProjectRouteNav project={project} />
       </div>
+
       <PortfolioContactFooterCtaSection className="hidden max-[640px]:block" />
+
     </>
   );
 }
