@@ -9,6 +9,36 @@ import { PortfolioNavLink } from '../PortfolioNavLink';
 import { CaseStudySection } from './CaseStudySection';
 import { SectionLabel } from './SectionLabel';
 
+function renderSummaryWithLink(summary, linkText, href) {
+  if (!href || !linkText || !summary) {
+    return summary;
+  }
+
+  const index = summary.indexOf(linkText);
+
+  if (index === -1) {
+    return summary;
+  }
+
+  const before = summary.slice(0, index);
+  const after = summary.slice(index + linkText.length);
+
+  return (
+    <>
+      {before}
+      <a
+        href={href}
+        rel="noreferrer"
+        target="_blank"
+        className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-900 hover:decoration-slate-500"
+      >
+        {linkText}
+      </a>
+      {after}
+    </>
+  );
+}
+
 function getAdjacentProjects(project) {
   const orderedProjects = getBrowseProjects();
   const currentIndex = orderedProjects.findIndex((entry) => entry.slug === project.slug);
@@ -75,7 +105,7 @@ export function PortfolioProjectDetails({ project }) {
 
         <div className="portfolio-left-item mt-8 max-w-[28rem] max-[640px]:mt-6">
           <p className="text-[1.08rem] leading-[1.85] text-slate-500 max-[640px]:text-[1rem] max-[640px]:leading-[1.72]">
-            {project.shortMeta.summary}
+            {renderSummaryWithLink(project.shortMeta.summary, project.name, project.websiteUrl)}
           </p>
         </div>
 

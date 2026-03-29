@@ -21,7 +21,10 @@ function PortfolioContactFooterCtaShell({
   );
 }
 
-export function PortfolioContactFooterCtaContent() {
+export function PortfolioContactFooterCtaContent({ ctaAsLink = false }) {
+  const ctaClassName =
+    'inline-flex min-h-14 min-w-[17rem] items-center justify-center rounded-full px-8 py-3 text-center text-[0.98rem] font-semibold text-white whitespace-nowrap transition-colors duration-300 group-hover:bg-white group-hover:text-slate-900 group-focus-visible:bg-white group-focus-visible:text-slate-900 max-[720px]:min-h-12 max-[720px]:w-full max-[720px]:min-w-0 max-[720px]:px-6 max-[720px]:text-[0.95rem] max-[720px]:whitespace-normal';
+
   return (
     <div className="relative z-10 flex h-full flex-col justify-center gap-12 max-[720px]:gap-8 lg:flex-row lg:items-center lg:justify-between">
       <div className="max-w-[34rem]">
@@ -35,12 +38,19 @@ export function PortfolioContactFooterCtaContent() {
       </div>
 
       <div className="flex flex-col items-start max-[720px]:w-full lg:items-center">
-        <span
-          className="inline-flex min-h-14 min-w-[17rem] items-center justify-center rounded-full px-8 py-3 text-center text-[0.98rem] font-semibold text-white whitespace-nowrap transition-colors duration-300 group-hover:bg-white group-hover:text-slate-900 group-focus-visible:bg-white group-focus-visible:text-slate-900 max-[720px]:min-h-12 max-[720px]:w-full max-[720px]:min-w-0 max-[720px]:px-6 max-[720px]:text-[0.95rem] max-[720px]:whitespace-normal"
-          style={{ backgroundColor: BRAND_COLOR }}
-        >
-          Start a conversation
-        </span>
+        {ctaAsLink ? (
+          <PortfolioNavLink
+            className={ctaClassName}
+            style={{ backgroundColor: BRAND_COLOR }}
+            to={PORTFOLIO_CONTACT_PATH}
+          >
+            Start a conversation
+          </PortfolioNavLink>
+        ) : (
+          <span className={ctaClassName} style={{ backgroundColor: BRAND_COLOR }}>
+            Start a conversation
+          </span>
+        )}
       </div>
     </div>
   );
@@ -48,8 +58,8 @@ export function PortfolioContactFooterCtaContent() {
 
 export function PortfolioContactFooterCtaSection({ className = '' }) {
   return (
-    <PortfolioContactFooterCtaShell as={PortfolioNavLink} className={className} to={PORTFOLIO_CONTACT_PATH}>
-      <PortfolioContactFooterCtaContent />
+    <PortfolioContactFooterCtaShell className={className}>
+      <PortfolioContactFooterCtaContent ctaAsLink />
     </PortfolioContactFooterCtaShell>
   );
 }

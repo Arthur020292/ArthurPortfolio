@@ -31,11 +31,7 @@ function createScreens(project) {
 }
 
 function createCaseStudySections(project) {
-  if (project.caseStudySections?.length) {
-    return project.caseStudySections;
-  }
-
-  return [
+  const defaultSections = [
     {
       body: project.challenge,
       title: 'Challenge',
@@ -53,6 +49,28 @@ function createCaseStudySections(project) {
       title: 'Outcome',
     },
   ];
+
+  const sections = project.caseStudySections?.length ? [...project.caseStudySections] : defaultSections;
+  const hasProblemSection = sections.some((section) => section.title === 'Problem');
+  const hasResponsibilitiesSection = sections.some((section) => section.title === 'Responsibilities');
+
+  if (!hasProblemSection) {
+    sections.unshift({
+      body: project.problem || project.challenge,
+      title: 'Problem',
+    });
+  }
+
+  if (project.responsibilities?.length && !hasResponsibilitiesSection) {
+    const insertIndex = sections[0]?.title === 'Problem' ? 1 : 0;
+
+    sections.splice(insertIndex, 0, {
+      items: project.responsibilities,
+      title: 'Responsibilities',
+    });
+  }
+
+  return sections;
 }
 
 function orderProjectsBySlugs(slugs, sourceProjects) {
