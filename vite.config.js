@@ -113,10 +113,26 @@ function contactApiPlugin() {
   };
 }
 
+function stripCrossoriginPlugin() {
+  return {
+    apply: 'build',
+    name: 'strip-crossorigin-attributes',
+    transformIndexHtml: {
+      handler(html) {
+        return html.replace(/\s+crossorigin(?=(?:\s|>))/g, '');
+      },
+      order: 'post',
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ''));
 
-  const plugins = mode === 'test' ? [react()] : [react(), tailwindcss(), contactApiPlugin()];
+  const plugins =
+    mode === 'test'
+      ? [react()]
+      : [react(), tailwindcss(), stripCrossoriginPlugin(), contactApiPlugin()];
 
   return {
     plugins,
