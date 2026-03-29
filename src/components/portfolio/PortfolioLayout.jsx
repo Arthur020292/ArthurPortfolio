@@ -3,6 +3,7 @@ import { PortfolioHeader } from './PortfolioHeader';
 import { PortfolioLeftContent } from './PortfolioCopy';
 import { PortfolioProjectGrid } from './PortfolioProjectGrid';
 import { PortfolioContactPanel } from './PortfolioContactPanel';
+import { PortfolioContactFooterCtaSection } from './PortfolioContactFooterCta';
 import { PortfolioProjectViewer } from './PortfolioProjectViewer';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
@@ -77,7 +78,10 @@ export function PortfolioLayout() {
   const disableRightPanelTransition =
     (isOverviewRoute(actualRoute.type) && isOverviewRoute(displayedRoute.type)) ||
     contactTransitionActive;
-
+  const showMobileFooterCta =
+    isMobileViewport &&
+    actualRoute.type !== 'contact' &&
+    (actualRoute.type === 'about' || actualRoute.type === 'projects');
   useEffect(() => {
     if (!isMobileViewport || actualRoute.type !== 'about') {
       setShowMobileBookCall(true);
@@ -253,13 +257,10 @@ export function PortfolioLayout() {
         Skip to main content
       </a>
       <div className="sticky top-0 z-40 hidden border-b border-[#ece7df] bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(250,250,250,0.94))] px-5 py-3 backdrop-blur-sm max-[980px]:block max-[640px]:px-4">
-        <PortfolioHeader
-          activeRoute={actualRoute.type}
-          showMobileBookCall={showMobileBookCall}
-        />
+        <PortfolioHeader activeRoute={actualRoute.type} />
       </div>
       <main
-        className="min-h-dvh overflow-hidden bg-white max-[980px]:min-h-0"
+        className="min-h-dvh overflow-hidden bg-white max-[980px]:min-h-0 max-[980px]:overflow-visible"
         id="portfolio-main-content"
         ref={mainContentRef}
         tabIndex={-1}
@@ -297,17 +298,11 @@ export function PortfolioLayout() {
               }`}
             >
               <div className="border-b border-slate-200/85 bg-[rgba(255,255,255,0.985)] px-12 py-5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] backdrop-blur-md max-[980px]:-mx-5 max-[980px]:px-5 max-[980px]:py-3 max-[640px]:-mx-4 max-[640px]:px-4">
-                <PortfolioHeader
-                  activeRoute={actualRoute.type}
-                  showMobileBookCall={showMobileBookCall}
-                />
+                <PortfolioHeader activeRoute={actualRoute.type} />
               </div>
             </div>
             <div className="relative z-30 max-[980px]:hidden">
-              <PortfolioHeader
-                activeRoute={actualRoute.type}
-                showMobileBookCall={showMobileBookCall}
-              />
+              <PortfolioHeader activeRoute={actualRoute.type} />
             </div>
             <div
               className={`mt-10 flex-1 max-[980px]:mt-6 ${
@@ -362,6 +357,9 @@ export function PortfolioLayout() {
             />
           </section>
         </div>
+        {showMobileFooterCta ? (
+          <PortfolioContactFooterCtaSection className="hidden max-[980px]:block" />
+        ) : null}
       </main>
     </>
   );

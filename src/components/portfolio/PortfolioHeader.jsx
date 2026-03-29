@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import {
   BRAND_COLOR,
-  CAL_COM_URL,
   PORTFOLIO_CONTACT_PATH,
   PORTFOLIO_HOME_PATH,
   PORTFOLIO_PROJECTS_PATH,
@@ -42,7 +41,6 @@ function PortfolioHeaderNavLink({
 export function PortfolioHeader({
   activeRoute,
   isInteractive = true,
-  showMobileBookCall = true,
 }) {
   const aboutLinkRef = useRef(null);
   const projectsLinkRef = useRef(null);
@@ -156,26 +154,6 @@ export function PortfolioHeader({
           }}
         />
       </div>
-      {isInteractive ? (
-        <a
-          className={`ml-auto inline-flex min-h-11 items-center justify-center self-center rounded-full px-4 py-2 text-center text-[0.86rem] font-semibold text-white no-underline transition-transform duration-200 hover:-translate-y-0.5 max-[640px]:min-h-10 max-[640px]:px-3 max-[640px]:text-[0.8rem] ${
-            showMobileBookCall ? '' : 'max-[980px]:hidden'
-          }`}
-          href={CAL_COM_URL}
-          rel="noreferrer"
-          style={{ backgroundColor: BRAND_COLOR }}
-          target="_blank"
-        >
-          Book a Call
-        </a>
-      ) : (
-        <span
-          className="ml-auto inline-flex min-h-11 items-center justify-center self-center rounded-full px-4 py-2 text-center text-[0.86rem] font-semibold text-white max-[640px]:min-h-10 max-[640px]:px-3 max-[640px]:text-[0.8rem]"
-          style={{ backgroundColor: BRAND_COLOR }}
-        >
-          Book a Call
-        </span>
-      )}
     </nav>
   );
 }

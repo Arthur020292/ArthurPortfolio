@@ -66,7 +66,7 @@ export function PortfolioProjectRouteNav({
   return (
     <nav
       aria-label="Next project"
-      className={`flex items-start justify-between gap-5 max-[980px]:flex-col max-[980px]:items-start ${className}`}
+      className={`flex items-start justify-between gap-5 max-[980px]:flex-col max-[980px]:items-start max-[980px]:gap-7 ${className}`}
     >
       <PortfolioNavLink
         className="inline-flex items-center font-medium text-slate-500 transition-colors hover:text-slate-900 max-[980px]:hidden"
@@ -92,8 +92,8 @@ export function PortfolioProjectRouteNav({
 
 export function PortfolioProjectDetails({ project }) {
   return (
-    <div className="flex min-h-full flex-col">
-      <div className="flex-1">
+    <div className="flex min-h-full flex-col max-[980px]:min-h-0">
+      <div className="flex-1 max-[980px]:flex-none">
         <div className="portfolio-left-item">
           <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
             {project.shortMeta.label}
@@ -162,7 +162,7 @@ export function PortfolioProjectDetails({ project }) {
         </div>
       </div>
 
-      <div className="portfolio-left-item mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mt-8 max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-7 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
+      <div className="portfolio-left-item mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mt-12 max-[980px]:min-h-[13rem] max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-12 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
         <PortfolioProjectRouteNav project={project} />
       </div>
     </div>
