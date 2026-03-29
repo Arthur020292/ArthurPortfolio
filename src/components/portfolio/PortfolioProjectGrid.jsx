@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { getBrowseProjects, getFeaturedProjects } from '../../data';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { PROJECTS_SEQUENCE_ENTER_MS, BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../portfolio/constants';
 import { PortfolioContactFooterCtaContent } from './PortfolioContactFooterCta';
 import { PortfolioNavLink } from './PortfolioNavLink';
 import { getProjectPath } from '../../portfolio/routes';
+import { useLocation } from '../../router-dom';
 
 function ProjectTile({
   animationDelay,

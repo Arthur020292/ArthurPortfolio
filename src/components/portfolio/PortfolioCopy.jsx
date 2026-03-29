@@ -3,9 +3,18 @@ import { PortfolioContactContent } from './copy/PortfolioContactContent';
 import { PortfolioProjectDetails } from './copy/PortfolioProjectDetails';
 import { PortfolioProjectsContent } from './copy/PortfolioProjectsContent';
 
-export function PortfolioLeftContent({ route }) {
+export function PortfolioLeftContent({
+  mobileBookCallCtaRef,
+  route,
+  showMobileBookCall,
+}) {
   if (route.type === 'about') {
-    return <PortfolioAboutContent />;
+    return (
+      <PortfolioAboutContent
+        mobileBookCallCtaRef={mobileBookCallCtaRef}
+        showMobileBookCall={showMobileBookCall}
+      />
+    );
   }
 
   if (route.type === 'projects') {

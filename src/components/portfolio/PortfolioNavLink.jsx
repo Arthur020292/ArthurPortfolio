@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
+import { Link, useNavigate } from '../../router-dom';
 
 function hasModifiedClick(event) {
   return (

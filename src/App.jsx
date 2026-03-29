@@ -1,4 +1,3 @@
-import { Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { PortfolioLayout } from './components/portfolio/PortfolioLayout';
 import {
   LEGACY_DESIGN_ONE_PATH,
@@ -7,6 +6,7 @@ import {
   PORTFOLIO_HOME_PATH,
 } from './portfolio/constants';
 import { getProjectPath } from './portfolio/routes';
+import { Navigate, Route, Routes, useParams } from './router-dom';
 
 function LegacyProjectRedirect() {
   const { slug } = useParams();
@@ -18,7 +18,7 @@ function LegacyProjectRedirect() {
   return <Navigate replace to={getProjectPath(slug)} />;
 }
 
-export default function App() {
+export function PortfolioRoutes() {
   return (
     <Routes>
       <Route element={<Navigate replace to={PORTFOLIO_HOME_PATH} />} path="/about" />
@@ -61,4 +61,8 @@ export default function App() {
       <Route element={<PortfolioLayout />} path="*" />
     </Routes>
   );
+}
+
+export default function App() {
+  return <PortfolioRoutes />;
 }
