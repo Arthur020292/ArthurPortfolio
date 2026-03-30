@@ -29,7 +29,7 @@ describe('PortfolioHeader', () => {
     );
 
     const aboutLink = screen.getByRole('link', { name: 'About' });
-    const projectLink = screen.getByRole('link', { name: 'Project' });
+    const projectLink = screen.getByRole('link', { name: 'Projects' });
     const contactLink = screen.getByRole('link', { name: 'Contact' });
 
     expect(screen.getByRole('link', { name: 'Arthur.' })).toBeInTheDocument();

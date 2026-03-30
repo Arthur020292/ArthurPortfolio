@@ -5,8 +5,8 @@ import {
   parseContactPayload,
 } from '../../shared/contact.js';
 
-export async function sendContactEmail(payload) {
-  const resendApiKey = process.env.RESEND_API_KEY;
+export async function sendContactEmail(payload, config = process.env) {
+  const resendApiKey = config.RESEND_API_KEY;
 
   if (!resendApiKey) {
     return {
@@ -16,7 +16,7 @@ export async function sendContactEmail(payload) {
     };
   }
 
-  const emailConfig = getRequiredEmailConfig(process.env);
+  const emailConfig = getRequiredEmailConfig(config);
 
   if (!emailConfig.ok) {
     return emailConfig;

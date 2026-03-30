@@ -8,7 +8,9 @@ export function SafeImage({
   fallbackLabel = 'Preview',
   fetchPriority = 'auto',
   loading = 'lazy',
+  sizes,
   src,
+  srcSet,
 }) {
   const [hasError, setHasError] = useState(!src);
 
@@ -38,7 +40,9 @@ export function SafeImage({
       fetchPriority={fetchPriority}
       loading={loading}
       onError={() => setHasError(true)}
+      sizes={sizes}
       src={src}
+      srcSet={srcSet}
     />
   );
 }

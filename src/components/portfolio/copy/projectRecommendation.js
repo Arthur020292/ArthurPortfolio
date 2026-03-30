@@ -61,7 +61,7 @@ export const projectRecommendationGroups = [
     slug: 'msp',
   },
   {
-    reasons: ['long-term design system consistency', 'healthcare admin platform work'],
+    reasons: ['earlier healthcare admin UI/UX work', 'minor frontend support on a healthcare platform'],
     slug: 'spokehealth',
   },
   {

@@ -66,29 +66,40 @@ function setStructuredData(data) {
   script.textContent = JSON.stringify(data);
 }
 
-export function useDocumentMeta({
-  description = DEFAULT_META_DESCRIPTION,
-  imagePath = DEFAULT_SOCIAL_IMAGE_PATH,
-  path = PORTFOLIO_HOME_PATH,
-  title,
-  type = 'website',
-}) {
+export function useDocumentMeta(meta) {
+  const {
+    description = DEFAULT_META_DESCRIPTION,
+    imagePath = DEFAULT_SOCIAL_IMAGE_PATH,
+    ogType = 'website',
+    path = PORTFOLIO_HOME_PATH,
+    robots = 'index,follow,max-image-preview:large',
+    title,
+    type = 'website',
+  } = meta;
+
   useEffect(() => {
     document.title = title;
 
     const canonicalUrl = toAbsoluteUrl(path, SITE_URL);
     const imageUrl = toAbsoluteUrl(imagePath, SITE_URL);
     const structuredData = buildPortfolioStructuredData(
-      { description, imagePath, path, title, type },
+      {
+        ...meta,
+        description,
+        imagePath,
+        path,
+        title,
+        type,
+      },
       SITE_URL
     );
 
     setMetaTag({ name: 'description', content: description });
-    setMetaTag({ name: 'robots', content: 'index,follow,max-image-preview:large' });
+    setMetaTag({ name: 'robots', content: robots });
     setMetaTag({ property: 'og:site_name', content: SITE_NAME });
     setMetaTag({ property: 'og:title', content: title });
     setMetaTag({ property: 'og:description', content: description });
-    setMetaTag({ property: 'og:type', content: type });
+    setMetaTag({ property: 'og:type', content: ogType });
     setMetaTag({ property: 'og:url', content: canonicalUrl || path });
     setMetaTag({ property: 'og:image', content: imageUrl || imagePath });
     setMetaTag({ name: 'twitter:card', content: 'summary_large_image' });
@@ -101,5 +112,5 @@ export function useDocumentMeta({
     }
 
     setStructuredData(structuredData);
-  }, [description, imagePath, path, title, type]);
+  }, [description, imagePath, meta, ogType, path, robots, title, type]);
 }

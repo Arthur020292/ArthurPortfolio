@@ -104,6 +104,7 @@ Set these variables in Cloudflare Pages under `Settings > Variables and Secrets`
 - `CONTACT_ALLOWED_ORIGINS` - comma-separated list of allowed extra origins, if needed
 - `CONTACT_RATE_LIMIT_MAX` - optional max contact attempts per IP in the rate-limit window
 - `CONTACT_RATE_LIMIT_WINDOW_MS` - optional rate-limit window in milliseconds
+- `CONTACT_RATE_LIMIT_KV` - optional Cloudflare KV binding for durable edge rate limiting
 - `TURNSTILE_SECRET_KEY` - optional Cloudflare Turnstile secret for bot protection
 - `VITE_TURNSTILE_SITE_KEY` - optional Cloudflare Turnstile site key for the contact form
 - `VITE_SITE_URL` - canonical site URL used for metadata, sitemap generation, and prerendered pages
@@ -122,7 +123,7 @@ The contact endpoint supports:
 - optional Turnstile verification before email is sent
 - origin checks for incoming form submissions
 - Fetch Metadata checks for same-origin browser requests
-- best-effort per-IP rate limiting in the application layer
+- best-effort per-IP rate limiting in the application layer, with durable KV backing when configured
 - stricter response headers via `public/_headers`
 
 ### Production rate limiting in Cloudflare
@@ -154,6 +155,10 @@ Where to configure it:
 
 This complements the in-app limiter. The in-app limiter is useful, but Cloudflare edge rate
 limiting is the stronger production control.
+
+If you want the application-layer limiter to persist across deploys and edge instances, bind a
+Cloudflare KV namespace as `CONTACT_RATE_LIMIT_KV`. The contact handler will use it when present
+and fall back to in-memory rate limiting otherwise.
 
 If you want an extra edge guard, you can also add a WAF rule that blocks requests to
 `/api/contact` unless the request method is `POST` and the `Origin` header matches the site.

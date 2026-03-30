@@ -1,1 +1,13 @@
-/* /index.html 200
+/about /
+/work.html /
+/design1 /
+/design1/ /
+/design1/projects/:slug /projects/:slug/
+/design2 /
+/design2/ /
+/design2/about /
+/design2/contact /contact/
+/design2/projects/:slug /projects/:slug/
+/designs/editorial-split /
+/designs/editorial-split/projects/:slug /projects/:slug/
+/* /404.html 404

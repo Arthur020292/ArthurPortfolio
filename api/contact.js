@@ -1,4 +1,4 @@
-import { sendContactEmail } from './_lib/contact.js';
+import { handleContactRequest } from '../shared/contactRequest.js';
 
 function parseRequestBody(body) {
   if (!body) {
@@ -26,6 +26,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: 'Invalid request body.' });
   }
 
-  const result = await sendContactEmail(payload);
-  return res.status(result.status).json({ message: result.message });
+  const response = await handleContactRequest({
+    env: process.env,
+    origin: req.headers.origin,
+    payload,
+    remoteIp: req.socket?.remoteAddress,
+    requestOrigin: `http://${req.headers.host || 'localhost'}`,
+    secFetchMode: req.headers['sec-fetch-mode'],
+    secFetchSite: req.headers['sec-fetch-site'],
+  });
+
+  return res.status(response.status).json(await response.json());
 }
