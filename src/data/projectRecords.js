@@ -16,7 +16,7 @@ export const baseProjects = [
       'Prospective clients needed a faster way to understand the service offering and trust the organization enough to reach out.',
     heroImage: '/assets/work/mrioa.jpg',
     heroAlt: 'MRIOA healthcare website redesign screens',
-    role: 'Web Designer UI/UX',
+    role: 'Product Designer',
     duration: '4 months',
     focus: 'Information architecture, responsive UI, analytics integration',
     challenge:
@@ -89,7 +89,7 @@ export const baseProjects = [
       'Enterprise buyers needed a clearer way to understand contract risk before entering the workflow.',
     heroImage: '/assets/work/contractsrx/contractsrx-solution.png',
     heroAlt: 'ContractsRx solutions overview screens',
-    role: 'Web Designer UI/UX',
+    role: 'Product Designer',
     duration: '2 months',
     focus: 'Messaging hierarchy, responsive website design, AI workflow screens',
     challenge:
@@ -163,7 +163,7 @@ export const baseProjects = [
       'The agency needed a clearer way to present technical services to prospective clients.',
     heroImage: '/assets/work/chromedia.jpg',
     heroAlt: 'Chromedia agency website redesign screens',
-    role: 'Web Designer UI/UX',
+    role: 'Product Designer',
     duration: '3 months',
     focus: 'Website design, information architecture, responsive storytelling',
     challenge:
@@ -231,7 +231,7 @@ export const baseProjects = [
     cardSummary:
       'Internal order management platform for a sustainable Portland catering and delivery business.',
     overview:
-      'Portland Pedal Power is a service business with a public website and an internal platform for managing orders, menus, customers, restaurant partners, and invoices.',
+      'Portland Pedal Power combined a public service website with internal operations tooling, so the experience had to connect marketing clarity with day-to-day order management.',
     websiteUrl: 'https://www.portlandpedalpower.com/',
     problem:
       'The team needed a dependable internal platform to manage orders, menus, customers, restaurant partners, and invoices while the public site kept the service story clear.',
@@ -239,7 +239,7 @@ export const baseProjects = [
     heroAlt: 'Portland Pedal Power website homepage preview',
     role: 'Product Designer & Frontend Developer',
     duration: 'N/A',
-    focus: 'Website design, operations workflows, frontend implementation',
+    focus: 'Service design, operations workflows, frontend implementation',
     challenge:
       'The internal platform had to keep orders, menus, customers, restaurant partners, and invoices organized without slowing down the team, while still staying connected to the public service story.',
     approach:
@@ -256,7 +256,13 @@ export const baseProjects = [
       'Helped connect the customer-facing site with the team’s day-to-day workflow.',
     ],
     outcome:
-      'The team got a more dependable platform for running orders, menus, customers, restaurants, and invoices, while the public site still supported the broader service story.',
+      'The team got a more dependable platform for running orders, menus, customers, restaurants, and invoices, while the public site communicated the service with clearer positioning and stronger continuity.',
+    builderSignal:
+      'Designed and implemented frontend-ready workflows across the website and ops platform so the public story and internal tools stayed aligned.',
+    productThinking:
+      'Connected customer-facing messaging with operational realities so the service promise matched how the business actually ran.',
+    outcomeSignal:
+      'Gave the team a clearer service story on the public site and a more dependable workflow foundation behind the scenes.',
     gallery: [
       {
         src: '/assets/work/portlandpedalpower-thumb.jpg',
@@ -290,9 +296,9 @@ export const baseProjects = [
       'Recruiters, candidates, and clients needed one system for talent data without fragmenting the workflows.',
     heroImage: '/assets/work/cti/Employee Profile - Employee.png',
     heroAlt: 'Talent Intelligence candidate profile screen',
-    role: 'Lead Product Designer / Frontend Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
-    focus: 'Information architecture, role-based workflows, frontend-ready product design',
+    focus: 'Product strategy, information architecture, role-based workflows, frontend-ready design',
     challenge:
       'The platform had to balance a data-heavy admin experience with secure, lightweight external journeys outside the standard authenticated application shell.',
     approach:
@@ -369,7 +375,13 @@ export const baseProjects = [
       'Prisma',
     ],
     outcome:
-      'The team gained a structured talent workflow with better admin visibility, easier candidate submission, and secure client sharing through expiring links.',
+      'The team gained a structured talent workflow with better admin visibility, easier candidate submission, and secure client sharing through expiring links that supported day-to-day recruiting operations.',
+    builderSignal:
+      'Designed tokenized external flows and admin patterns with deep links, resilient states, and implementation realities in mind.',
+    productThinking:
+      'Turned fragmented candidate, client, and admin needs into one role-based product system with secure public entry points.',
+    outcomeSignal:
+      'Made candidate data easier to manage, safer to share, and easier for teams to trust in everyday recruiting workflows.',
     gallery: [
       {
         src: '/assets/work/cti/Employee Profile - Employee.png',
@@ -415,7 +427,7 @@ export const baseProjects = [
       'Warehouse staff were losing time handling barcode-driven tasks on laptops or by writing things down manually.',
     heroImage: '/assets/work/nlrp.png',
     heroAlt: 'NLRP warehouse mobile app design screens',
-    role: 'UI/UX Designer',
+    role: 'Product Designer',
     duration: '2 months',
     focus: 'Mobile workflows, barcode scanning, usability refinement',
     challenge:
@@ -470,7 +482,7 @@ export const baseProjects = [
       'Healthcare teams needed a clearer way to manage member, benefits, and care coordination work without bouncing between disconnected screens and handoffs.',
     heroImage: '/assets/work/spokehealth.png',
     heroAlt: 'SpokeHealth admin platform design screens',
-    role: 'UI/UX Designer',
+    role: 'Product Designer',
     duration: '3 years',
     focus: 'Product UX, workflow design, research, handoff collaboration, minor frontend support',
     challenge:
@@ -540,14 +552,14 @@ export const baseProjects = [
     cardSummary:
       'Healthcare platform built to align care spend with actual usage through patient engagement and care coordination.',
     overview:
-      'ZIP is a healthcare platform that helps employers align care spend with actual usage while giving members, providers, and care teams a clearer way to navigate benefits, provider selection, and care coordination.',
+      'ZIP is a healthcare operations product that helps employers align care spend with actual usage while giving members, providers, and care teams a clearer way to navigate benefits, provider selection, and care coordination across separate internal and external product surfaces.',
     problem:
       'Employers were paying for broad healthcare coverage across every employee, even when only a small share of the workforce needed care or high-cost treatment, which made the cost model feel disconnected from real usage.',
     heroImage: '/assets/work/zip-thumb.png',
     heroAlt: 'ZIP platform design screens',
-    role: 'Lead Product Engineer',
+    role: 'Lead Product Designer & Frontend Developer',
     duration: 'N/A',
-    focus: 'Product design, UX architecture, frontend implementation',
+    focus: 'Product design, UX architecture, frontend implementation, backend-aware workflow design',
     challenge:
       'The challenge was explaining a new healthcare model clearly while keeping internal and external experiences separated, trustworthy, and usable for sensitive decisions.',
     approach:
@@ -625,7 +637,13 @@ export const baseProjects = [
       'Pino',
     ],
     outcome:
-      'The platform now gives teams a clearer way to separate internal administration from external care journeys while supporting a model that better reflects actual usage and care engagement.',
+      'The platform now gives teams a clearer separation between internal administration and member-facing care journeys, making the model easier to explain, safer to operate, and more practical to ship.',
+    builderSignal:
+      'Designed and implemented key frontend journeys while working directly with backend rules, permissions, and healthcare workflow constraints.',
+    productThinking:
+      'Turned a complex care-spend model into separate product surfaces and structured flows so each audience could act without carrying the full system complexity.',
+    outcomeSignal:
+      'Created a clearer, mobile-friendly care experience for members while making the admin platform more consistent and operationally reliable.',
     gallery: [
       {
         src: '/assets/work/zip/screencapture-localhost-5173-dashboard-2026-03-22-15_35_33.png',
@@ -679,7 +697,7 @@ export const baseProjects = [
     heroAlt: 'Chronomedia operations platform screens',
     role: 'Lead Product Designer',
     duration: 'N/A',
-    focus: 'Product design, frontend implementation, user research',
+    focus: 'Product design, workflow architecture, frontend implementation',
     challenge:
       'The platform had to bring together employee, finance, and operations workflows without making the system harder to use than the tools it was replacing.',
     approach:
@@ -754,7 +772,13 @@ export const baseProjects = [
       'Docker',
     ],
     outcome:
-      'Chronomedia brought time logging, payroll, reimbursements, leave, invoicing, rate data, and reporting into one system, making the work faster to run and easier to trust.',
+      'Chronomedia brought time logging, payroll, reimbursements, leave, invoicing, rate data, and reporting into one system, making the work faster to run, easier to review, and easier to trust.',
+    builderSignal:
+      'Translated workflow decisions into frontend-ready screens and collaborated closely with implementation and QA as the system took shape.',
+    productThinking:
+      'Reframed scattered payroll, leave, invoicing, and time-log tasks as one connected operations product with role-specific experiences.',
+    outcomeSignal:
+      'Made everyday admin work more reliable by pulling core tasks into one system with clearer review and follow-up paths.',
     gallery: [
       {
         src: '/assets/work/chronomedia/Admin Salary Data.png',
@@ -839,7 +863,7 @@ export const baseProjects = [
       'Homebuyers and homeowners lacked a transparent way to see the real cost of a house before and after purchase, making it hard to compare homes, plan maintenance, and avoid surprise repairs.',
     heroImage: '/assets/work/nester/nester-dashboard-seller.png',
     heroAlt: 'Nester seller dashboard platform screen',
-    role: 'Lead UI/UX Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'UI/UX design, full user flows, scalable design system',
     challenge:
@@ -970,7 +994,7 @@ export const baseProjects = [
       'Missionaries lacked a centralized platform that let them share their work, build visibility with potential supporters, and receive financial support in a way that felt trustworthy and easy to use. Existing solutions were fragmented, unintuitive, or not designed around missionary needs.',
     heroImage: '/assets/work/harvest21-thumb.png',
     heroAlt: 'Harvest21 platform design screens',
-    role: 'Lead UI/UX Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'UI/UX design, user flows, donation workflow design',
     challenge:
@@ -1094,7 +1118,7 @@ export const baseProjects = [
       'Lean teams needed a repeatable way to run work-observation and line-balance studies without paper forms.',
     heroImage: '/assets/work/workrite-thumb.png',
     heroAlt: 'Workrite platform design screens',
-    role: 'Lead UI/UX Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'Lean workflow design, observation analysis, reporting interfaces',
     challenge:
@@ -1197,7 +1221,7 @@ export const baseProjects = [
       'Families wanted kids to learn money habits through practical experience without turning it into lectures.',
     heroImage: '/assets/work/kidough-thumb.png',
     heroAlt: 'Kidough platform design screens',
-    role: 'Lead UI/UX Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'UI/UX design, parent supervision workflows, educational interface',
     challenge:
@@ -1335,7 +1359,7 @@ export const baseProjects = [
       'Admins were sorting through large photo libraries across events, schools, and teams and needed faster access to specific items.',
     heroImage: '/assets/work/msp-thumb.png',
     heroAlt: 'MSP Photography design screens',
-    role: 'Lead UI/UX Designer',
+    role: 'Lead Product Designer',
     duration: 'N/A',
     focus: 'UX/UI design for internal interfaces, asset workflow optimization',
     challenge:

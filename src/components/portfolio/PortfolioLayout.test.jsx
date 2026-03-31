@@ -75,7 +75,16 @@ describe('portfolio layout regressions', () => {
     expect(screen.getByLabelText('Projects')).toBeInTheDocument();
   });
 
-  it.each(['/', '/projects/', '/projects/nlrp/'])(
+  it('shows both the homepage CTA card and the shared mobile footer CTA on /', async () => {
+    installMatchMedia({ mobile: true, reducedMotion: false });
+    renderAt('/');
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('link', { name: 'Start a conversation' })).toHaveLength(2);
+    });
+  });
+
+  it.each(['/projects/', '/projects/nlrp/'])(
     'shows the shared mobile footer CTA exactly once on %s',
     async (pathname) => {
       installMatchMedia({ mobile: true, reducedMotion: false });

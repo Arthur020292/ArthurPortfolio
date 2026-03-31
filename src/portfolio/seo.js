@@ -17,7 +17,7 @@ const NOT_FOUND_ROBOTS = 'noindex,follow';
 function buildProjectSeoTitle(project) {
   return (
     project.seoTitle ||
-    `${project.name} ${project.category} Case Study | UI/UX Designer Portfolio | Arthur Baduyen`
+    `${project.name} ${project.category} Case Study | Product Designer Portfolio | Arthur Baduyen`
   );
 }
 
@@ -25,7 +25,7 @@ function buildProjectSeoDescription(project) {
   return (
     project.seoDescription ||
     project.metaDescription ||
-    `${project.name} case study by Arthur Baduyen covering ${project.category.toLowerCase()}, ${project.focus.toLowerCase()}, and the product design decisions behind the work.`
+    `${project.name} case study by Arthur Baduyen covering ${project.category.toLowerCase()}, ${project.focus.toLowerCase()}, product design decisions, and frontend-ready delivery considerations.`
   );
 }
 
@@ -79,13 +79,13 @@ export function getPortfolioPageMeta(route) {
   if (route?.type === 'contact') {
     return {
       description:
-        'Contact Arthur Baduyen for UI/UX design, product design, design systems, and frontend-ready product collaboration.',
+        'Contact Arthur Baduyen for product design, UI/UX design, frontend-ready collaboration, and AI-assisted product workflows.',
       imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
       ogType: 'website',
       pageType: 'ContactPage',
       path: PORTFOLIO_CONTACT_PATH,
       robots: DEFAULT_ROBOTS,
-      title: 'Contact Arthur Baduyen | UI/UX Designer',
+      title: 'Contact Arthur Baduyen | Product Designer',
       type: 'website',
     };
   }
@@ -93,7 +93,7 @@ export function getPortfolioPageMeta(route) {
   if (route?.type === 'projects') {
     return {
       description:
-        'Browse UI/UX design and product design case studies by Arthur Baduyen across healthcare, internal tools, design systems, and frontend-ready delivery.',
+        'Browse product design and UI/UX case studies by Arthur Baduyen across healthcare, internal tools, design systems, and frontend-ready delivery.',
       imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
       itemList: projects.map((project) => ({
         description: buildProjectSeoDescription(project),
@@ -105,7 +105,7 @@ export function getPortfolioPageMeta(route) {
       path: PORTFOLIO_PROJECTS_PATH,
       robots: DEFAULT_ROBOTS,
       schemaType: 'CollectionPage',
-      title: 'UI/UX Designer Case Studies | Arthur Baduyen',
+      title: 'Product Design Case Studies | Arthur Baduyen',
       type: 'website',
     };
   }
@@ -131,7 +131,7 @@ export function getPortfolioPageMeta(route) {
     pageType: 'ProfilePage',
     path: PORTFOLIO_HOME_PATH,
     robots: DEFAULT_ROBOTS,
-    title: 'Arthur Baduyen | UI/UX Designer Portfolio',
+    title: 'Arthur Baduyen | Product Designer Portfolio',
     type: 'website',
   };
 }
@@ -145,7 +145,7 @@ export function buildPortfolioStructuredData(meta, siteUrl) {
     '@id': `${websiteUrl}#person`,
     '@type': 'Person',
     email: CONTACT_EMAIL,
-    jobTitle: 'Senior Product Designer',
+    jobTitle: 'Product Designer',
     name: SITE_NAME,
     sameAs: [LINKEDIN_URL],
     url: resolvedSiteUrl || canonicalUrl || meta.path,

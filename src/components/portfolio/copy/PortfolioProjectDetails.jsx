@@ -64,6 +64,17 @@ function getRelatedProjects(project) {
     .slice(0, 3);
 }
 
+function getProjectHighlights(project) {
+  return [
+    project.productThinking
+      ? { label: 'Product Thinking', value: project.productThinking }
+      : null,
+    project.builderSignal ? { label: 'Build Lens', value: project.builderSignal } : null,
+    project.outcomeSignal ? { label: 'Outcome', value: project.outcomeSignal } : null,
+    project.aiWorkflow ? { label: 'AI Workflow', value: project.aiWorkflow } : null,
+  ].filter(Boolean);
+}
+
 export function PortfolioProjectRouteNav({
   className = '',
   project,
@@ -99,6 +110,7 @@ export function PortfolioProjectRouteNav({
 
 export function PortfolioProjectDetails({ project }) {
   const relatedProjects = getRelatedProjects(project);
+  const projectHighlights = getProjectHighlights(project);
 
   return (
     <div className="flex min-h-full flex-col max-[980px]:min-h-0">
@@ -145,6 +157,27 @@ export function PortfolioProjectDetails({ project }) {
             </div>
           ))}
         </dl>
+
+        {projectHighlights.length ? (
+          <div className="portfolio-left-item mt-8 max-[640px]:mt-6">
+            <SectionLabel>Project Highlights</SectionLabel>
+            <div className="mt-4 grid gap-3">
+              {projectHighlights.map((item) => (
+                <div
+                  className="rounded-[16px] border border-slate-200 bg-[#fbfaf7] px-4 py-4 shadow-[0_14px_36px_rgba(15,23,42,0.04)]"
+                  key={item.label}
+                >
+                  <h2 className="text-[0.72rem] font-bold tracking-[0.16em] text-slate-400 uppercase">
+                    {item.label}
+                  </h2>
+                  <p className="mt-2 text-[0.98rem] leading-[1.75] text-slate-700">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         {project.caseStudySections?.length ? (
           <div className="portfolio-left-item mt-10 grid gap-4 max-[640px]:mt-8 max-[640px]:gap-3">

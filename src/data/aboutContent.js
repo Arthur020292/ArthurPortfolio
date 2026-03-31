@@ -2,38 +2,53 @@ export const aboutContent = {
   capabilityGroups: [
     {
       items: [
-        'Product design',
+        'Product strategy',
         'User experience design',
         'Interaction design',
         'Information architecture',
         'Design systems',
         'Rapid prototyping',
       ],
-      title: 'Product & UX',
+      title: 'Product Design',
     },
     {
       items: [
-        'HTML, CSS, JavaScript',
+        'HTML, CSS, and JavaScript',
         'React and Next.js',
         'Frontend-ready design',
-        'AI-assisted prototyping',
-        'Prompt-driven product workflows',
+        'Prototyping in code',
+        'Implementation collaboration',
         'Debugging and iteration',
       ],
-      title: 'Frontend & AI',
+      title: 'Frontend Implementation',
+    },
+    {
+      items: [
+        'AI-assisted research',
+        'Prompt-driven exploration',
+        'Rapid prototyping support',
+        'Content and system mapping',
+        'Implementation support',
+        'Faster iteration with human judgment',
+      ],
+      title: 'AI-Assisted Workflow',
     },
   ],
+  ctaBody:
+    'I work with product teams, founders, and hiring managers who need stronger UX thinking, clearer interfaces, and frontend-ready execution.',
+  ctaTitle: 'Have a product in mind?',
   experience: [
-    'Senior UI/UX / Frontend Designer at Chromedia Far East, leading end-to-end product design across enterprise and startup products.',
-    'Freelance Product Designer and Frontend Developer delivering client work from UX strategy and interface design through frontend-ready implementation.',
-    'Earlier product roles across 55Knots, RFOX Labs, and digital marketing teams, contributing to internal tools, platform improvements, and multi-team collaboration.',
+    'Senior Product Designer at Chromedia Far East, leading end-to-end product design across enterprise and startup software.',
+    'Freelance Product Designer delivering work from UX strategy and interface design through frontend-ready implementation.',
+    'Earlier roles across 55Knots, RFOX Labs, and digital marketing teams shaped my strength in internal tools, websites, and cross-functional product delivery.',
   ],
   summary: [
-    'I am a senior UI/UX designer and product designer focused on turning complex product ideas into clear, frontend-ready experiences.',
-    'My portfolio covers healthcare platforms, internal tools, design systems, and responsive product workflows where structure, usability, and delivery quality matter.',
-    'I use AI-assisted workflows to move faster on exploration, prototyping, and iteration without losing rigor in product thinking or implementation detail.',
+    'I’m a Senior Product Designer who works across UI, UX, and frontend to turn complex workflows into clear, user-centered product experiences.',
+    'I prototype in both code and Figma, collaborate comfortably across frontend and backend constraints, and use an AI-augmented workflow to help design, build, and ship products without losing product judgment.',
   ],
-  title: "Hi, I'm Arthur,\na UI/UX Designer & Product Designer.",
+  supportingLine:
+    'UI/UX designer focused on frontend-ready products, user-centered design, and AI-assisted workflows.',
+  title: "Hi, I'm Arthur,\na Product Designer.",
   tools: [
     'Figma',
     'Framer',

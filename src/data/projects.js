@@ -58,7 +58,7 @@ function createScreens(project) {
 function createSeoTitle(project) {
   return (
     project.seoTitle ||
-    `${project.name} ${project.category} Case Study | UI/UX Designer Portfolio | Arthur Baduyen`
+    `${project.name} ${project.category} Case Study | Product Designer Portfolio | Arthur Baduyen`
   );
 }
 
@@ -66,7 +66,7 @@ function createSeoDescription(project) {
   return (
     project.seoDescription ||
     project.metaDescription ||
-    `${project.name} case study by Arthur Baduyen covering ${project.category.toLowerCase()}, ${project.focus.toLowerCase()}, and the product design decisions behind the work.`
+    `${project.name} case study by Arthur Baduyen covering ${project.category.toLowerCase()}, ${project.focus.toLowerCase()}, product design decisions, and frontend-ready delivery considerations.`
   );
 }
 
@@ -78,8 +78,10 @@ function createSeoKeywords(project) {
         project.category,
         project.focus,
         project.role,
+        'Product Designer portfolio',
         'UI/UX designer portfolio',
         'product design case study',
+        'AI-assisted workflow',
         'frontend-ready design',
       ]
         .filter(Boolean)
