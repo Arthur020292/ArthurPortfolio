@@ -31,10 +31,13 @@ describe('PortfolioHeader', () => {
     const aboutLink = screen.getByRole('link', { name: 'About' });
     const projectLink = screen.getByRole('link', { name: 'Projects' });
     const contactLink = screen.getByRole('link', { name: 'Contact' });
+    const resumeLink = screen.getByRole('link', { name: 'Resume' });
 
     expect(screen.getByRole('link', { name: 'Arthur.' })).toBeInTheDocument();
     expect(aboutLink).toHaveClass('relative', 'z-10', 'transition-colors');
     expect(projectLink).toHaveAttribute('aria-current', 'page');
     expect(contactLink).toHaveClass('relative', 'z-10', 'transition-colors');
+    expect(resumeLink).toHaveAttribute('href', '/arthur-baduyen-resume-2026.pdf');
+    expect(resumeLink).toHaveAttribute('target', '_blank');
   });
 });

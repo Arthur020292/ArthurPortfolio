@@ -8,9 +8,10 @@ export const BRAND_COLOR = '#eb6e51';
 export const CAL_COM_URL = 'https://cal.com/arthur-baduyen';
 export const CONTACT_EMAIL = 'hello@arthurbaduyen.dev';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/arthurbaduyenf/';
+export const PORTFOLIO_RESUME_PATH = '/arthur-baduyen-resume-2026.pdf';
 export const SITE_NAME = 'Arthur Baduyen';
 export const DEFAULT_META_DESCRIPTION =
-  'Arthur Baduyen is a senior UI/UX designer and product designer sharing portfolio case studies in healthcare, internal tools, design systems, and frontend-ready product work.';
+  'Arthur Baduyen is a Product Designer and UI/UX Designer sharing frontend-ready case studies across healthcare, internal tools, design systems, and AI-assisted product workflows.';
 export const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/portfolio-social-card.svg';
 
 export const DESIGN_TWO_EXIT_MS = 420;

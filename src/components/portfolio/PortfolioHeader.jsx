@@ -4,6 +4,7 @@ import {
   PORTFOLIO_CONTACT_PATH,
   PORTFOLIO_HOME_PATH,
   PORTFOLIO_PROJECTS_PATH,
+  PORTFOLIO_RESUME_PATH,
 } from '../../portfolio/constants';
 import { PortfolioNavLink } from './PortfolioNavLink';
 
@@ -143,6 +144,18 @@ export function PortfolioHeader({
           label="Contact"
           linkRef={contactLinkRef}
         />
+        {isInteractive ? (
+          <a
+            className="relative z-10 transition-colors hover:text-slate-900"
+            href={PORTFOLIO_RESUME_PATH}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Resume
+          </a>
+        ) : (
+          <span className="relative z-10 transition-colors">Resume</span>
+        )}
         <span
           aria-hidden="true"
           className="pointer-events-none absolute bottom-0 h-1 rounded-full transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"

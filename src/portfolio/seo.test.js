@@ -47,8 +47,18 @@ describe('portfolio seo helpers', () => {
     const structuredData = buildPortfolioStructuredData(meta, 'https://arthurbaduyen.dev');
 
     expect(meta.path).toBe('/projects/zip/');
+    expect(meta.title).toContain('Product Designer Portfolio');
     expect(structuredData['@type']).toBe('CreativeWork');
     expect(structuredData.url).toBe('https://arthurbaduyen.dev/projects/zip/');
+  });
+
+  it('creates product-designer-led home metadata and person schema', () => {
+    const meta = getPortfolioPageMeta({ key: 'about', type: 'about' });
+    const structuredData = buildPortfolioStructuredData(meta, 'https://arthurbaduyen.dev');
+
+    expect(meta.title).toBe('Arthur Baduyen | Product Designer Portfolio');
+    expect(meta.description).toContain('Product Designer');
+    expect(structuredData['@graph'][0].jobTitle).toBe('Product Designer');
   });
 
   it('creates noindex metadata for missing routes', () => {
@@ -70,6 +80,7 @@ describe('portfolio seo helpers', () => {
 
     expect(meta.path).toBe('/projects/');
     expect(meta.schemaType).toBe('CollectionPage');
+    expect(meta.title).toBe('Product Design Case Studies | Arthur Baduyen');
     expect(collectionPage['@type']).toBe('CollectionPage');
     expect(collectionPage.url).toBe('https://arthurbaduyen.dev/projects/');
     expect(firstItem.url).toMatch(/^https:\/\/arthurbaduyen\.dev\/projects\/[^/]+\/$/);
