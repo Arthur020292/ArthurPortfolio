@@ -65,12 +65,12 @@ describe('contact security helpers', () => {
     expect(isAllowedFetchMetadata({})).toBe(true);
   });
 
-  it('rate limits repeated requests for the same key', () => {
+  it('rate limits repeated requests for the same key', async () => {
     const key = `contact-test-${Date.now()}`;
     const windowMs = 10_000;
-    const first = enforceContactRateLimit({ key, maxRequests: 2, now: 1_000, windowMs });
-    const second = enforceContactRateLimit({ key, maxRequests: 2, now: 2_000, windowMs });
-    const third = enforceContactRateLimit({ key, maxRequests: 2, now: 3_000, windowMs });
+    const first = await enforceContactRateLimit({ key, maxRequests: 2, now: 1_000, windowMs });
+    const second = await enforceContactRateLimit({ key, maxRequests: 2, now: 2_000, windowMs });
+    const third = await enforceContactRateLimit({ key, maxRequests: 2, now: 3_000, windowMs });
 
     expect(first).toEqual({ ok: true });
     expect(second).toEqual({ ok: true });
@@ -79,6 +79,33 @@ describe('contact security helpers', () => {
       ok: false,
       status: 429,
     });
+  });
+
+  it('persists rate limits when a kv-backed store is available', async () => {
+    const store = {
+      get: vi.fn().mockResolvedValue(null),
+      put: vi.fn().mockResolvedValue(undefined),
+    };
+
+    const key = `contact-test-${Date.now()}`;
+
+    const first = await enforceContactRateLimit({
+      key,
+      maxRequests: 2,
+      now: 1_000,
+      store,
+      windowMs: 10_000,
+    });
+
+    expect(first).toEqual({ ok: true });
+    expect(store.get).toHaveBeenCalledWith(`contact-rate-limit:${key}`);
+    expect(store.put).toHaveBeenCalledWith(
+      `contact-rate-limit:${key}`,
+      JSON.stringify({ count: 1, windowStartedAt: 1_000 }),
+      expect.objectContaining({
+        expirationTtl: expect.any(Number),
+      })
+    );
   });
 
   it('treats a missing turnstile secret as disabled', async () => {

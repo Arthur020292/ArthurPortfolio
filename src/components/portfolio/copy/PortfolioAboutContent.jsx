@@ -45,6 +45,54 @@ export function PortfolioAboutContent({
           </p>
         ))}
 
+        <section className="grid gap-4 border-t border-slate-200/80 pt-6">
+          {aboutContent.capabilityGroups.map((group) => (
+            <div
+              className="rounded-[16px] border border-slate-200 bg-[#fbfaf7] p-5 shadow-[0_14px_36px_rgba(15,23,42,0.04)]"
+              key={group.title}
+            >
+              <h2 className="font-heading text-[1.2rem] font-semibold tracking-[-0.03em] text-slate-900">
+                {group.title}
+              </h2>
+              <p className="mt-3 text-[0.98rem] leading-[1.75] text-slate-600">
+                {group.items.join(', ')}.
+              </p>
+            </div>
+          ))}
+        </section>
+
+        <section className="grid gap-4 border-t border-slate-200/80 pt-6">
+          <h2 className="font-heading text-[1.2rem] font-semibold tracking-[-0.03em] text-slate-900">
+            Experience Snapshot
+          </h2>
+          <ul className="grid gap-2.5 list-disc pl-5">
+            {aboutContent.experience.map((item) => (
+              <li
+                className="text-[0.98rem] leading-[1.75] text-slate-600 marker:text-slate-400"
+                key={item}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="grid gap-4 border-t border-slate-200/80 pt-6">
+          <h2 className="font-heading text-[1.2rem] font-semibold tracking-[-0.03em] text-slate-900">
+            Tools I Use
+          </h2>
+          <div className="flex flex-wrap gap-2.5">
+            {aboutContent.tools.map((tool) => (
+              <span
+                className="rounded-full border border-slate-200 bg-[#fbfaf7] px-3 py-1.5 text-[0.82rem] font-medium text-slate-700"
+                key={tool}
+              >
+                {tool}
+              </span>
+            ))}
+          </div>
+        </section>
+
         <div className="rounded-[8px] border border-slate-200 bg-[#fbfaf7] p-6 shadow-[0_14px_36px_rgba(15,23,42,0.04)] max-[980px]:hidden">
           <h2 className="font-heading text-[1.55rem] leading-[1.1] font-medium tracking-[-0.04em] text-slate-900">
             You have a product you want to build?

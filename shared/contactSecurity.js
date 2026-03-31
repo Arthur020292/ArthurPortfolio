@@ -69,21 +69,81 @@ export function isAllowedFetchMetadata({ secFetchMode, secFetchSite }) {
 
 const rateLimitStore = new Map();
 
-export function enforceContactRateLimit({
+function normalizeRateLimitRecord(record) {
+  if (!record) {
+    return null;
+  }
+
+  if (typeof record === 'string') {
+    try {
+      return JSON.parse(record);
+    } catch {
+      return null;
+    }
+  }
+
+  if (typeof record === 'object') {
+    return record;
+  }
+
+  return null;
+}
+
+function isPersistentRateLimitStore(store) {
+  return Boolean(store && typeof store.get === 'function' && typeof store.put === 'function');
+}
+
+export async function enforceContactRateLimit({
   key,
   maxRequests = 5,
   now = Date.now(),
+  store,
   windowMs = 10 * 60 * 1000,
 }) {
   const normalizedKey =
     typeof key === 'string' && key.trim() ? key.trim() : 'unknown-contact-client';
-  const existingEntry = rateLimitStore.get(normalizedKey);
+  const existingStore = isPersistentRateLimitStore(store) ? store : rateLimitStore;
+
+  if (existingStore === rateLimitStore) {
+    const existingEntry = rateLimitStore.get(normalizedKey);
+
+    if (!existingEntry || now - existingEntry.windowStartedAt >= windowMs) {
+      rateLimitStore.set(normalizedKey, {
+        count: 1,
+        windowStartedAt: now,
+      });
+
+      return { ok: true };
+    }
+
+    if (existingEntry.count >= maxRequests) {
+      return {
+        message: 'Too many contact attempts. Please wait a few minutes and try again.',
+        ok: false,
+        status: 429,
+      };
+    }
+
+    existingEntry.count += 1;
+    rateLimitStore.set(normalizedKey, existingEntry);
+
+    return { ok: true };
+  }
+
+  const storageKey = `contact-rate-limit:${normalizedKey}`;
+  const existingEntry = normalizeRateLimitRecord(await existingStore.get(storageKey));
 
   if (!existingEntry || now - existingEntry.windowStartedAt >= windowMs) {
-    rateLimitStore.set(normalizedKey, {
-      count: 1,
-      windowStartedAt: now,
-    });
+    await existingStore.put(
+      storageKey,
+      JSON.stringify({
+        count: 1,
+        windowStartedAt: now,
+      }),
+      {
+        expirationTtl: Math.max(60, Math.ceil(windowMs / 1000) + 60),
+      }
+    );
 
     return { ok: true };
   }
@@ -96,8 +156,14 @@ export function enforceContactRateLimit({
     };
   }
 
-  existingEntry.count += 1;
-  rateLimitStore.set(normalizedKey, existingEntry);
+  const nextEntry = {
+    count: existingEntry.count + 1,
+    windowStartedAt: existingEntry.windowStartedAt,
+  };
+
+  await existingStore.put(storageKey, JSON.stringify(nextEntry), {
+    expirationTtl: Math.max(60, Math.ceil(windowMs / 1000) + 60),
+  });
 
   return { ok: true };
 }

@@ -6,24 +6,29 @@ import {
 } from './constants.js';
 
 export function getProjectPath(slug) {
-  return `${PORTFOLIO_PROJECTS_PATH}/${slug}`;
+  return `${PORTFOLIO_PROJECTS_PATH}${slug}/`;
+}
+
+function normalizePortfolioPath(pathname) {
+  return pathname !== PORTFOLIO_HOME_PATH && pathname.endsWith('/')
+    ? pathname.slice(0, -1)
+    : pathname;
 }
 
 export function parsePortfolioRoute(pathname) {
-  const normalizedPath =
-    pathname !== PORTFOLIO_HOME_PATH && pathname.endsWith('/')
-      ? pathname.slice(0, -1)
-      : pathname;
+  const normalizedPath = normalizePortfolioPath(pathname);
+  const normalizedProjectsPath = normalizePortfolioPath(PORTFOLIO_PROJECTS_PATH);
+  const normalizedContactPath = normalizePortfolioPath(PORTFOLIO_CONTACT_PATH);
 
   if (normalizedPath === PORTFOLIO_HOME_PATH) {
     return { key: 'about', type: 'about' };
   }
 
-  if (normalizedPath === PORTFOLIO_PROJECTS_PATH) {
+  if (normalizedPath === normalizedProjectsPath) {
     return { key: 'projects', type: 'projects' };
   }
 
-  if (normalizedPath === PORTFOLIO_CONTACT_PATH) {
+  if (normalizedPath === normalizedContactPath) {
     return { key: 'contact', type: 'contact' };
   }
 

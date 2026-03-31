@@ -1,5 +1,6 @@
 import { PortfolioAboutContent } from './copy/PortfolioAboutContent';
 import { PortfolioContactContent } from './copy/PortfolioContactContent';
+import { PortfolioNotFoundContent } from './copy/PortfolioNotFoundContent';
 import { PortfolioProjectDetails } from './copy/PortfolioProjectDetails';
 import { PortfolioProjectsContent } from './copy/PortfolioProjectsContent';
 
@@ -23,6 +24,10 @@ export function PortfolioLeftContent({
 
   if (route.type === 'contact') {
     return <PortfolioContactContent />;
+  }
+
+  if (route.type === 'missing') {
+    return <PortfolioNotFoundContent />;
   }
 
   return <PortfolioProjectDetails project={route.project} />;

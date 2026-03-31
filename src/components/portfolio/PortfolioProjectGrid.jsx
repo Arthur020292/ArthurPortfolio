@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { getBrowseProjects, getFeaturedProjects } from '../../data';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
-import { PROJECTS_SEQUENCE_ENTER_MS, BRAND_COLOR, PORTFOLIO_CONTACT_PATH } from '../../portfolio/constants';
+import {
+  PROJECTS_SEQUENCE_ENTER_MS,
+  BRAND_COLOR,
+  PORTFOLIO_CONTACT_PATH,
+  PORTFOLIO_PROJECTS_PATH,
+} from '../../portfolio/constants';
 import { PortfolioNavLink } from './PortfolioNavLink';
 import { getProjectPath } from '../../portfolio/routes';
 import { useLocation } from '../../router-dom';
@@ -88,13 +93,15 @@ export function PortfolioProjectGrid({
   overviewGridMotion,
 }) {
   const location = useLocation();
+  const isProjectsRoute =
+    location.pathname.replace(/\/$/, '') === PORTFOLIO_PROJECTS_PATH.replace(/\/$/, '');
   const isMobileViewport = useIsMobileViewport();
   const featuredCount = getFeaturedProjects().length;
   const browseProjects = getBrowseProjects();
   const [projectsSequenceStage, setProjectsSequenceStage] = useState('idle');
   const [projectsSequenceToken, setProjectsSequenceToken] = useState(null);
   const [projectsSequenceCompressing, setProjectsSequenceCompressing] = useState(
-    mode === 'all' && location.pathname === '/projects' && !overviewGridMotion?.token
+    mode === 'all' && isProjectsRoute && !overviewGridMotion?.token
   );
   const [featuredGridSettling, setFeaturedGridSettling] = useState(false);
   const orderedProjects = mode === 'featured' ? getFeaturedProjects() : browseProjects;

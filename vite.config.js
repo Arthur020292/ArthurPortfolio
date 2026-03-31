@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { sendContactEmail } from './api/_lib/contact.js';
 import {
   buildPortfolioStructuredData,
   getPortfolioPageMeta,
@@ -9,13 +8,7 @@ import {
   toAbsoluteUrl,
 } from './src/portfolio/seo.js';
 import { replacePortfolioTemplate } from './src/portfolio/htmlTemplate.js';
-import {
-  enforceContactRateLimit,
-  getAllowedOrigins,
-  isAllowedFetchMetadata,
-  isAllowedRequestOrigin,
-  verifyTurnstileToken,
-} from './shared/contactSecurity.js';
+import { handleContactRequest } from './shared/contactRequest.js';
 
 async function readJsonBody(req) {
   const chunks = [];
@@ -57,53 +50,19 @@ function contactApiPlugin() {
           Object.assign(process.env, loadEnv(server.config.mode, process.cwd(), ''));
 
           const payload = await readJsonBody(req);
-          const allowedOrigins = getAllowedOrigins(process.env.CONTACT_ALLOWED_ORIGINS);
-          const requestOrigin = `http://${req.headers.host}`;
-          const origin = req.headers.origin;
-          const secFetchMode = req.headers['sec-fetch-mode'];
-          const secFetchSite = req.headers['sec-fetch-site'];
-
-          if (
-            !isAllowedRequestOrigin({ allowedOrigins, origin, requestOrigin }) ||
-            !isAllowedFetchMetadata({ secFetchMode, secFetchSite })
-          ) {
-            res.statusCode = 403;
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ message: 'Origin not allowed.' }));
-            return;
-          }
-
-          const rateLimitResult = enforceContactRateLimit({
-            key: req.socket.remoteAddress,
-            maxRequests: Number(process.env.CONTACT_RATE_LIMIT_MAX || 5),
-            windowMs: Number(process.env.CONTACT_RATE_LIMIT_WINDOW_MS || 600000),
-          });
-
-          if (!rateLimitResult.ok) {
-            res.statusCode = rateLimitResult.status;
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ message: rateLimitResult.message }));
-            return;
-          }
-
-          const turnstileResult = await verifyTurnstileToken({
+          const response = await handleContactRequest({
+            env: process.env,
+            origin: req.headers.origin,
+            payload,
             remoteIp: req.socket.remoteAddress,
-            secretKey: process.env.TURNSTILE_SECRET_KEY,
-            token: payload?.turnstileToken,
+            requestOrigin: `http://${req.headers.host}`,
+            secFetchMode: req.headers['sec-fetch-mode'],
+            secFetchSite: req.headers['sec-fetch-site'],
           });
 
-          if (!turnstileResult.ok) {
-            res.statusCode = turnstileResult.status;
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ message: turnstileResult.message }));
-            return;
-          }
-
-          const result = await sendContactEmail(payload);
-
-          res.statusCode = result.status;
+          res.statusCode = response.status;
           res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify({ message: result.message }));
+          res.end(JSON.stringify(await response.json()));
         } catch (error) {
           console.error('Contact API dev middleware failed:', error);
           res.statusCode = 500;
@@ -147,6 +106,8 @@ function portfolioMetaPlugin(siteUrl) {
           description: homeMeta.description,
           imageUrl: toAbsoluteUrl(homeMeta.imagePath, siteUrl),
           jsonLd: structuredData,
+          ogType: homeMeta.ogType,
+          robots: homeMeta.robots,
           title: homeMeta.title,
         });
       },
@@ -178,6 +139,7 @@ export default defineConfig(({ mode }) => {
     test: {
       environment: 'node',
       globals: true,
+      pool: 'threads',
     },
   };
 });

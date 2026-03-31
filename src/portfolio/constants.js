@@ -1,8 +1,8 @@
 export const LEGACY_DESIGN_ONE_PATH = '/design1';
 export const LEGACY_DESIGN_TWO_PATH = '/design2';
 export const PORTFOLIO_HOME_PATH = '/';
-export const PORTFOLIO_CONTACT_PATH = '/contact';
-export const PORTFOLIO_PROJECTS_PATH = '/projects';
+export const PORTFOLIO_CONTACT_PATH = '/contact/';
+export const PORTFOLIO_PROJECTS_PATH = '/projects/';
 
 export const BRAND_COLOR = '#eb6e51';
 export const CAL_COM_URL = 'https://cal.com/arthur-baduyen';
@@ -10,8 +10,8 @@ export const CONTACT_EMAIL = 'hello@arthurbaduyen.dev';
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/arthurbaduyenf/';
 export const SITE_NAME = 'Arthur Baduyen';
 export const DEFAULT_META_DESCRIPTION =
-  'Arthur Baduyen is a Senior Product Designer focused on product UX, frontend-ready design, and AI-augmented delivery.';
-export const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/work/zip-thumb-v2.png';
+  'Arthur Baduyen is a senior UI/UX designer and product designer sharing portfolio case studies in healthcare, internal tools, design systems, and frontend-ready product work.';
+export const DEFAULT_SOCIAL_IMAGE_PATH = '/assets/portfolio-social-card.svg';
 
 export const DESIGN_TWO_EXIT_MS = 420;
 export const DESIGN_TWO_ENTER_MS = 420;

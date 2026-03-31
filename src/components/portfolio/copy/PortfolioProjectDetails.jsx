@@ -2,6 +2,7 @@ import { getBrowseProjects } from '../../../data';
 import {
   BRAND_COLOR,
   PORTFOLIO_CONTACT_PATH,
+  PORTFOLIO_HOME_PATH,
   PORTFOLIO_PROJECTS_PATH,
 } from '../../../portfolio/constants';
 import { getProjectPath } from '../../../portfolio/routes';
@@ -57,6 +58,12 @@ function getAdjacentProjects(project) {
   };
 }
 
+function getRelatedProjects(project) {
+  return getBrowseProjects()
+    .filter((entry) => entry.slug !== project.slug)
+    .slice(0, 3);
+}
+
 export function PortfolioProjectRouteNav({
   className = '',
   project,
@@ -91,9 +98,26 @@ export function PortfolioProjectRouteNav({
 }
 
 export function PortfolioProjectDetails({ project }) {
+  const relatedProjects = getRelatedProjects(project);
+
   return (
     <div className="flex min-h-full flex-col max-[980px]:min-h-0">
       <div className="flex-1 max-[980px]:flex-none">
+        <nav
+          aria-label="Breadcrumb"
+          className="portfolio-left-item flex flex-wrap items-center gap-2 text-[0.8rem] text-slate-500"
+        >
+          <PortfolioNavLink className="transition-colors hover:text-slate-900" to={PORTFOLIO_HOME_PATH}>
+            Home
+          </PortfolioNavLink>
+          <span aria-hidden="true">/</span>
+          <PortfolioNavLink className="transition-colors hover:text-slate-900" to={PORTFOLIO_PROJECTS_PATH}>
+            Case Studies
+          </PortfolioNavLink>
+          <span aria-hidden="true">/</span>
+          <span className="text-slate-900">{project.name}</span>
+        </nav>
+
         <div className="portfolio-left-item">
           <p className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
             {project.shortMeta.label}
@@ -141,6 +165,28 @@ export function PortfolioProjectDetails({ project }) {
                 >
                   {tool}
                 </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {relatedProjects.length ? (
+          <div className="portfolio-left-item mt-10 max-[640px]:mt-8">
+            <SectionLabel>Related Case Studies</SectionLabel>
+            <div className="mt-4 grid gap-3">
+              {relatedProjects.map((entry) => (
+                <PortfolioNavLink
+                  className="inline-flex flex-col rounded-[16px] border border-slate-200 bg-[#fbfaf7] px-4 py-3 text-left no-underline transition-colors hover:border-slate-300"
+                  key={entry.slug}
+                  to={getProjectPath(entry.slug)}
+                >
+                  <span className="text-[0.72rem] font-bold tracking-[0.16em] text-slate-400 uppercase">
+                    {entry.category}
+                  </span>
+                  <span className="mt-1 text-[1rem] font-semibold text-slate-900">
+                    {entry.name}
+                  </span>
+                </PortfolioNavLink>
               ))}
             </div>
           </div>

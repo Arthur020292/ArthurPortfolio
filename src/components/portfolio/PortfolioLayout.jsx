@@ -9,10 +9,9 @@ import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { usePortfolioTransition } from '../../hooks/usePortfolioTransition';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
-import { PORTFOLIO_HOME_PATH } from '../../portfolio/constants';
 import { isOverviewRoute, parsePortfolioRoute } from '../../portfolio/routes';
 import { getPortfolioPageMeta } from '../../portfolio/seo';
-import { Navigate, useLocation } from '../../router-dom';
+import { useLocation } from '../../router-dom';
 
 function PortfolioRightContent({
   contactExitState,
@@ -42,6 +41,16 @@ function PortfolioRightContent({
 
   if (route.type === 'contact') {
     return <PortfolioContactPanel motionState={contactPanelTransitionState} />;
+  }
+
+  if (route.type === 'missing') {
+    return (
+      <PortfolioProjectGrid
+        contactExitState={contactExitState}
+        mode="featured"
+        overviewGridMotion={overviewGridMotion}
+      />
+    );
   }
 
   return <PortfolioProjectViewer project={route.project} />;
@@ -207,8 +216,8 @@ export function PortfolioLayout() {
       return;
     }
 
-    panel.scrollTo({ top: 0 });
-    rightPanel?.scrollTo({ top: 0 });
+    panel.scrollTo?.({ top: 0 });
+    rightPanel?.scrollTo?.({ top: 0 });
     lastLeftScrollRef.current = panel.scrollTop;
     setShowStickyNav(false);
   }, [displayedRoute.key]);
@@ -246,10 +255,6 @@ export function PortfolioLayout() {
       body.style.scrollBehavior = previousBodyScrollBehavior;
     });
   }, [location.pathname]);
-
-  if (actualRoute.type === 'missing') {
-    return <Navigate replace to={PORTFOLIO_HOME_PATH} />;
-  }
 
   return (
     <>

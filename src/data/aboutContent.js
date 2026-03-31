@@ -29,9 +29,11 @@ export const aboutContent = {
     'Earlier product roles across 55Knots, RFOX Labs, and digital marketing teams, contributing to internal tools, platform improvements, and multi-team collaboration.',
   ],
   summary: [
-    'I design clear, frontend-ready products from concept to production, using AI-assisted workflows to move faster on exploration, prototyping, and iteration.',
+    'I am a senior UI/UX designer and product designer focused on turning complex product ideas into clear, frontend-ready experiences.',
+    'My portfolio covers healthcare platforms, internal tools, design systems, and responsive product workflows where structure, usability, and delivery quality matter.',
+    'I use AI-assisted workflows to move faster on exploration, prototyping, and iteration without losing rigor in product thinking or implementation detail.',
   ],
-  title: "Hi, I'm Arthur,\na Senior Product Designer.",
+  title: "Hi, I'm Arthur,\na UI/UX Designer & Product Designer.",
   tools: [
     'Figma',
     'Framer',

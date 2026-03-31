@@ -133,7 +133,7 @@ export function PortfolioHeader({
           active={activeRoute === 'projects' || activeRoute === 'project'}
           href={PORTFOLIO_PROJECTS_PATH}
           isInteractive={isInteractive}
-          label="Project"
+          label="Projects"
           linkRef={projectsLinkRef}
         />
         <PortfolioHeaderNavLink

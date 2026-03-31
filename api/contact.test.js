@@ -1,9 +1,9 @@
 import { vi } from 'vitest';
 
-const sendContactEmail = vi.fn();
+const handleContactRequest = vi.fn();
 
-vi.mock('./_lib/contact.js', () => ({
-  sendContactEmail,
+vi.mock('../shared/contactRequest.js', () => ({
+  handleContactRequest,
 }));
 
 function createMockResponse() {
@@ -24,7 +24,7 @@ function createMockResponse() {
 
 describe('contact api handler', () => {
   beforeEach(() => {
-    sendContactEmail.mockReset();
+    handleContactRequest.mockReset();
   });
 
   it('rejects non-POST requests', async () => {
@@ -39,10 +39,14 @@ describe('contact api handler', () => {
   });
 
   it('parses the request body and forwards it to sendContactEmail', async () => {
-    sendContactEmail.mockResolvedValue({
-      message: 'Thanks, your message has been sent.',
-      status: 200,
-    });
+    handleContactRequest.mockResolvedValue(
+      new Response(JSON.stringify({ message: 'Thanks, your message has been sent.' }), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        status: 200,
+      })
+    );
 
     const { default: handler } = await import('./contact.js');
     const res = createMockResponse();
@@ -53,13 +57,21 @@ describe('contact api handler', () => {
       projectType: 'Redesign',
     });
 
-    await handler({ body, method: 'POST' }, res);
+    await handler({ body, headers: { host: 'arthurbaduyen.dev' }, method: 'POST' }, res);
 
-    expect(sendContactEmail).toHaveBeenCalledWith({
-      email: 'arthur@example.com',
-      message: 'Need help with a redesign.',
-      name: 'Arthur',
-      projectType: 'Redesign',
+    expect(handleContactRequest).toHaveBeenCalledWith({
+      env: process.env,
+      origin: undefined,
+      payload: {
+        email: 'arthur@example.com',
+        message: 'Need help with a redesign.',
+        name: 'Arthur',
+        projectType: 'Redesign',
+      },
+      remoteIp: undefined,
+      requestOrigin: 'http://arthurbaduyen.dev',
+      secFetchMode: undefined,
+      secFetchSite: undefined,
     });
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.payload).toEqual({ message: 'Thanks, your message has been sent.' });
@@ -71,7 +83,7 @@ describe('contact api handler', () => {
 
     await handler({ body: '{invalid json', method: 'POST' }, res);
 
-    expect(sendContactEmail).not.toHaveBeenCalled();
+    expect(handleContactRequest).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.payload).toEqual({ message: 'Invalid request body.' });
   });

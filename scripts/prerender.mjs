@@ -85,6 +85,8 @@ for (const pathname of routes) {
     description: meta.description,
     imageUrl,
     jsonLd: structuredData,
+    ogType: meta.ogType,
+    robots: meta.robots,
     title: meta.title,
   }).replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
 
@@ -95,3 +97,18 @@ for (const pathname of routes) {
 
 await writeFile(path.join(distDir, 'sitemap.xml'), buildSitemapXml(routes));
 await writeFile(path.join(distDir, 'robots.txt'), buildRobotsTxt());
+
+const notFoundRoute = parsePortfolioRoute('/404/');
+const notFoundMeta = getPortfolioPageMeta(notFoundRoute);
+const notFoundStructuredData = buildPortfolioStructuredData(notFoundMeta, siteUrl);
+const notFoundHtml = replacePortfolioTemplate(template, {
+  canonicalUrl: toAbsoluteUrl(notFoundMeta.path, siteUrl),
+  description: notFoundMeta.description,
+  imageUrl: toAbsoluteUrl(notFoundMeta.imagePath, siteUrl),
+  jsonLd: notFoundStructuredData,
+  ogType: notFoundMeta.ogType,
+  robots: notFoundMeta.robots,
+  title: notFoundMeta.title,
+}).replace('<div id="root"></div>', `<div id="root">${render('/404/')}</div>`);
+
+await writeFile(path.join(distDir, '404.html'), notFoundHtml);

@@ -65,7 +65,7 @@ describe('project recommendations', () => {
   it('rotates the helper copy, pauses on hover, and keeps the clickable project link stable in reduced motion', () => {
     mockMatchMedia(false);
     render(
-      <MemoryRouter initialEntries={['/projects']}>
+      <MemoryRouter initialEntries={['/projects/']}>
         <PortfolioProjectRecommendation />
       </MemoryRouter>
     );
@@ -76,7 +76,7 @@ describe('project recommendations', () => {
     const labelRow = label.closest('div');
 
     expect(initialLink).toHaveTextContent('ZIP');
-    expect(initialLink).toHaveAttribute('href', '/projects/zip');
+    expect(initialLink).toHaveAttribute('href', '/projects/zip/');
     expect(initialLink).toHaveStyle('color: #eb6e51');
     expect(labelRow).not.toBeNull();
     expect(labelRow).toHaveClass('flex', 'items-center', 'gap-3');
@@ -129,7 +129,7 @@ describe('project recommendations', () => {
   it('stays stable when the user prefers reduced motion', () => {
     mockMatchMedia(true);
     render(
-      <MemoryRouter initialEntries={['/projects']}>
+      <MemoryRouter initialEntries={['/projects/']}>
         <PortfolioProjectRecommendation />
       </MemoryRouter>
     );

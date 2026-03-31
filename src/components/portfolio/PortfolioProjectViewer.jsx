@@ -86,7 +86,7 @@ export function PortfolioProjectViewer({ project }) {
       project.screens[displayedScreenIndex + 1],
     ]
       .filter(Boolean)
-      .map((screen) => screen.src)
+      .map((screen) => screen.displaySrc || screen.src)
       .filter((src) => src && !preloadedScreensRef.current.has(src));
 
     if (!adjacentScreenSources.length) {
@@ -144,7 +144,7 @@ export function PortfolioProjectViewer({ project }) {
       thumbnailStrip.clientWidth / 2 +
       activeThumbnail.clientWidth / 2;
 
-    thumbnailStrip.scrollTo({
+    thumbnailStrip.scrollTo?.({
       behavior: disableScreenTransitions ? 'auto' : 'smooth',
       left: Math.max(0, targetLeft),
     });
@@ -240,7 +240,8 @@ export function PortfolioProjectViewer({ project }) {
                     fallbackLabel={project.name}
                     fetchPriority="high"
                     loading="eager"
-                    src={currentScreen.src}
+                    sizes="(max-width: 640px) 92vw, (max-width: 980px) 88vw, 1080px"
+                    src={currentScreen.displaySrc || currentScreen.src}
                   />
                 </div>
               ) : (
@@ -251,7 +252,8 @@ export function PortfolioProjectViewer({ project }) {
                   fallbackLabel={project.name}
                   fetchPriority="high"
                   loading="eager"
-                  src={currentScreen.src}
+                  sizes="(max-width: 640px) 92vw, (max-width: 980px) 88vw, 1080px"
+                  src={currentScreen.displaySrc || currentScreen.src}
                 />
               )}
             </div>
@@ -316,7 +318,7 @@ export function PortfolioProjectViewer({ project }) {
                     alt={screen.alt}
                     className="h-20 w-32 object-cover max-[640px]:h-16 max-[640px]:w-24"
                     loading="lazy"
-                    src={screen.src}
+                    src={screen.thumbnailSrc || screen.src}
                   />
                   <span
                     aria-hidden="true"

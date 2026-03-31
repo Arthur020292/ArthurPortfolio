@@ -155,9 +155,9 @@ export const baseProjects = [
     cardImage: '/assets/work/chromedia.jpg',
     cardAlt: 'Chromedia agency website design preview',
     cardSummary:
-      'Agency site and visual system built to present complex digital services clearly.',
+      'Agency site and visual system built to present complex digital services clearly on Chromedia.',
     overview:
-      'A website and supporting visual system for a digital product engineering agency, built to make its service offering feel more modern, credible, and easy to navigate.',
+      'Chromedia is a website and supporting visual system for a digital product engineering agency, built to make its service offering feel more modern, credible, and easy to navigate.',
     websiteUrl: 'https://chromedia.com/',
     problem:
       'The agency needed a clearer way to present technical services to prospective clients.',
@@ -188,11 +188,6 @@ export const baseProjects = [
         src: '/assets/work/chromedia/chromedia-desktop-01.png',
         alt: 'Chromedia homepage hero and staff augmentation section',
         display: 'longform',
-      },
-      {
-        src: '/assets/work/chromedia-screens.jpg',
-        alt: 'Chromedia supporting website screen collection',
-        display: 'screen',
       },
       {
         src: '/assets/work/chromedia/chromedia-desktop-05.png',
@@ -307,6 +302,15 @@ export const baseProjects = [
       'Created tokenized candidate skill-assessment and client-sharing experiences.',
       'Collaborated on resilient loading, empty, error, and retry states across operational flows.',
     ],
+    responsibilities: [
+      'Synthesized stakeholder and user input to align candidate, client, and admin workflows with business goals and product constraints.',
+      'Defined the information architecture and role-based navigation across admin, candidate, client, and authentication flows.',
+      'Designed the dashboard, candidate management, profile editor, skills taxonomy, shared profiles, and audit log experiences.',
+      'Simplified dense tables and form-heavy workflows with filters, deep links, reusable components, and progressive disclosure.',
+      'Designed the tokenized candidate skill-assessment flow to support autosave, resume state, and accessible navigation.',
+      'Shaped the read-only shared profile experience for clients, with clear visibility into link status and expiration.',
+      'Collaborated on loading, empty, error, and retry states to make operational workflows resilient.',
+    ],
     caseStudySections: [
       {
         title: 'Responsibilities',
@@ -344,10 +348,10 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Created a single, structured workflow for candidate data, skills, and sharing.',
-          'Improved operational visibility through dashboard metrics, filters, and auditability.',
-          'Reduced friction in candidate self-assessment with a guided, resumable flow.',
-          'Enabled safe client sharing through expiring, revocable links.',
+          'Gave recruiters and admins one place to review candidate data, skill evidence, and sharing activity.',
+          'Surfaced candidate health and sharing status through dashboards, filters, and audit-friendly views.',
+          'Made the skill-assessment experience easier to resume after interruptions or context switches.',
+          'Kept client access limited and revocable without exposing the full internal platform.',
         ],
       },
     ],
@@ -433,12 +437,16 @@ export const baseProjects = [
       'Workers could complete barcode-driven tasks directly in the field with less friction and faster execution.',
     gallery: [
       {
-        src: '/assets/work/nlrp.png',
-        alt: 'NLRP mobile app flow collection',
+        src: '/assets/work/nlrp-final.png',
+        alt: 'NLRP final mobile workflow board',
       },
       {
-        src: '/assets/work/nlrp-screens.png',
-        alt: 'NLRP additional mobile workflow screens',
+        src: '/assets/work/nlrp-mockup.png',
+        alt: 'NLRP mobile workflow mockup',
+      },
+      {
+        src: '/assets/work/nlrp-wireframes.png',
+        alt: 'NLRP wireframes for the mobile workflow',
       },
     ],
     ctaTitle: 'Need a workflow simplified for mobile?',
@@ -451,37 +459,37 @@ export const baseProjects = [
     category: 'Web Admin Platform',
     metaTitle: 'SpokeHealth | Arthur Baduyen',
     metaDescription:
-      'SpokeHealth case study by Arthur Baduyen covering long-term UX work for a healthcare admin platform and reusable design system.',
+      'SpokeHealth case study by Arthur Baduyen covering an earlier healthcare admin platform focused on member, benefits, and care coordination workflows.',
     cardImage: '/assets/work/spokehealth.png',
     cardAlt: 'SpokeHealth web admin platform preview',
     cardSummary:
-      'Long-term product design for a healthcare admin platform and design system.',
+      'Earlier healthcare admin platform for member, benefits, and care coordination workflows.',
     overview:
-      'Long-term product design for a healthcare administration platform, focused on improving consistency, delivery speed, and usability across a growing product surface.',
+      'SpokeHealth was an earlier healthcare administration platform that helped teams manage member, benefits, and care coordination workflows. I worked mostly as a UI/UX designer, with a few minor frontend tasks along the way.',
     problem:
-      'The team needed to keep shipping features without consistency slipping as the product grew.',
+      'Healthcare teams needed a clearer way to manage member, benefits, and care coordination work without bouncing between disconnected screens and handoffs.',
     heroImage: '/assets/work/spokehealth.png',
     heroAlt: 'SpokeHealth admin platform design screens',
     role: 'UI/UX Designer',
     duration: '3 years',
-    focus: 'Product UX, design systems, research, handoff collaboration',
+    focus: 'Product UX, workflow design, research, handoff collaboration, minor frontend support',
     challenge:
-      'The challenge was maintaining a reusable system and clear interaction patterns across a long-lived, expanding healthcare platform.',
+      'The challenge was organizing a dense healthcare workflow so admins could move between member, benefits, and care tasks without losing context.',
     approach:
-      'I supported research, IA, wireframes, prototyping, interface design, and design-to-dev collaboration while building reusable components for a stronger shared system.',
+      'I supported research, IA, wireframes, prototyping, interface design, and design-to-dev collaboration, then handled small frontend updates where needed while building reusable patterns around member, benefits, and care-management flows.',
     selectedWork: [
-      'Built and maintained a reusable component-based design system.',
-      'Supported feature work across multiple years of releases.',
-      'Improved consistency and delivery speed through shared design assets.',
+      'Defined reusable patterns for member, benefits, and care-management workflows.',
+      'Improved flow consistency across core healthcare admin tasks while primarily working in UI/UX.',
+      'Handled small frontend tasks and design handoff support as needed.',
     ],
     responsibilities: [
-      'Synthesized product and stakeholder input to keep long-term feature work aligned with consistency goals.',
-      'Supported research, IA, and wireframes across multiple releases.',
+      'Synthesized product and stakeholder input to keep the UI/UX direction aligned with member, benefits, and care workflow goals.',
+      'Supported research, IA, wireframes, and prototyping across multiple releases.',
       'Built reusable design patterns and shared assets that could scale with the platform.',
-      'Collaborated closely with developers to protect handoff quality as the product evolved.',
+      'Handled minor frontend tasks when needed and collaborated closely with developers to protect handoff quality.',
     ],
     outcome:
-      'The product stayed more consistent as it grew, with clearer patterns for users and a smoother handoff process for the team.',
+      'The project established a clearer healthcare operations foundation and reusable design patterns that carried forward into later healthcare work.',
     gallery: [
       {
         src: '/assets/work/spokehealth/admin-members.lists.png',
@@ -549,6 +557,13 @@ export const baseProjects = [
       'Designed structured workflows for benefits navigation and care journeys.',
       'Treated the external experience as mobile-first from the start.',
     ],
+    responsibilities: [
+      'Aligned product and stakeholder input with backend rules, permissions, and healthcare workflow constraints.',
+      'Worked across product design, UX architecture, frontend implementation, and platform hardening.',
+      'Structured the product into separate internal and external surfaces with clear role boundaries.',
+      'Designed and built key journeys across onboarding, care coordination, analytics, and AI-guided care flows.',
+      'Aligned the UI with backend workflows, permissions, performance requirements, and security constraints.',
+    ],
     caseStudySections: [
       {
         title: 'Responsibilities',
@@ -582,11 +597,11 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Established a clearer two-app architecture with stronger audience boundaries.',
-          'Turned the external experience into a mobile-first care product with clearer navigation and engagement.',
-          'Made the admin platform more consistent across dashboards, tables, dialogs, and management flows.',
-          'Improved reliability and performance through stronger validation, startup behavior, caching, and runtime hardening.',
-          'Strengthened security through clearer auth boundaries, safer route policies, and more deliberate handling of sensitive workflows.',
+          'Separated internal administration from patient-facing care so each audience saw a clearer product surface.',
+          'Shaped the external experience around fast mobile navigation and engagement instead of admin-style interaction.',
+          'Standardized dashboards, tables, dialogs, and management flows so the admin side felt more cohesive.',
+          'Reduced operational surprises by tightening validation, startup behavior, caching, and runtime hardening.',
+          'Strengthened sensitive workflows with clearer auth boundaries and safer route handling.',
         ],
       },
     ],
@@ -674,6 +689,14 @@ export const baseProjects = [
       'Redesigned payroll, reimbursement, leave, and invoice workflows around shared data.',
       'Built employee management, rate cards, and reporting tools for admins.',
     ],
+    responsibilities: [
+      'Synthesized stakeholder and user input to align payroll, reimbursements, leave, invoicing, and time-tracking workflows with business rules and team needs.',
+      'Led the overall product design from discovery to delivery.',
+      'Conducted stakeholder and user interviews to gather requirements and validate workflows.',
+      'Designed the full product UI, UX, and design system.',
+      'Created mockups and interactive prototypes for reviews and demos.',
+      'Contributed to frontend implementation and collaborated closely with PM and QA during testing.',
+    ],
     caseStudySections: [
       {
         title: 'Problem',
@@ -709,11 +732,11 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Replaced spreadsheet-, Jira-, and Confluence-based workflows with a centralized internal platform.',
-          'Automated payroll processing and invoice workflows that had previously been assembled by hand.',
-          'Simplified employee time logging, leave requests, and worklog review in one interface.',
-          'Reduced missed time logs through clearer summary views of completed and missing entries.',
-          'Gave admins a single operational system for employee data, rates, and reporting instead of forcing them across multiple tools.',
+          'Moved day-to-day operations out of scattered tools and into a single admin system.',
+          'Cut down on manual assembly work for payroll and invoice preparation.',
+          'Made it easier to review time logs, leave, and employee activity without jumping between systems.',
+          'Helped admins spot incomplete logs and missing entries sooner.',
+          'Kept employee data, rates, and reporting in one place for faster operational follow-up.',
         ],
       },
     ],
@@ -808,25 +831,33 @@ export const baseProjects = [
     cardImage: '/assets/work/nester/nester-dashboard-seller.png',
     cardAlt: 'Nester seller dashboard platform preview',
     cardSummary:
-      'Real estate platform simplifying property evaluation and reporting.',
+      'Real estate platform built to reveal the true cost of homeownership.',
     overview:
-      'Nester is a real estate platform designed to help home buyers, sellers, and realtors make better property decisions through structured property analysis and reporting.',
+      'Nester is a real estate platform that helps buyers, sellers, and homeowners understand the true cost of ownership through reports, comparisons, and maintenance planning.',
     websiteUrl: 'https://nester.app/',
     problem:
-      'Multiple user roles needed to interpret the same property data without getting lost in technical reporting.',
+      'Homebuyers and homeowners lacked a transparent way to see the real cost of a house before and after purchase, making it hard to compare homes, plan maintenance, and avoid surprise repairs.',
     heroImage: '/assets/work/nester/nester-dashboard-seller.png',
     heroAlt: 'Nester seller dashboard platform screen',
     role: 'Lead UI/UX Designer',
     duration: 'N/A',
     focus: 'UI/UX design, full user flows, scalable design system',
     challenge:
-      'The challenge was translating a complex property-analysis workflow into something each role could navigate confidently.',
+      'The experience had to turn complex cost, repair, and maintenance data into something buyers, sellers, and owners could understand quickly.',
     approach:
-      'Simplified multi-role user flows, created a clear onboarding journey, and focused on making report pages clear, structured, and easy to interpret.',
+      'I simplified the multi-role user flows, designed report and comparison screens, and created a scalable design system that could support different stages of homeownership.',
     selectedWork: [
-      'Simplified multi-role user flows to reduce complexity.',
-      'Designed structured report pages for clear data interpretation.',
+      'Simplified multi-role flows across buying, selling, and owning.',
+      'Designed comparison and report pages for clearer decision-making.',
       'Created a comprehensive and scalable design system.',
+    ],
+    responsibilities: [
+      'Aligned stakeholder input with property workflows and the needs of buyers, sellers, and realtors.',
+      'Led the overall UI and UX design for the platform.',
+      'Designed the landing page, product interface, and complete multi-role user flows.',
+      'Created a scalable design system for consistent UI across the product.',
+      'Designed report generation flows and report output experiences.',
+      'Built prototypes to validate UX decisions and align stakeholders.',
     ],
     caseStudySections: [
       {
@@ -869,7 +900,7 @@ export const baseProjects = [
       },
     ],
     outcome:
-      'The product now gives each user type a clearer path through property analysis and reporting, supported by a unified UI system.',
+      'The product now gives buyers and homeowners a clearer way to compare homes, anticipate maintenance, and make decisions with the real cost of ownership in view.',
     gallery: [
       {
         src: '/assets/work/nester/nester-landing-home.png',
@@ -951,6 +982,14 @@ export const baseProjects = [
       'Reduced friction in content sharing and donation workflows.',
       'Delivered mobile-friendly experiences for missionaries.',
     ],
+    responsibilities: [
+      'Synthesized stakeholder and user input to align donation and sharing workflows with the needs of missionaries and supporters.',
+      'Designed the complete UI and UX for the platform.',
+      'Created the design system used across the product.',
+      'Developed wireframes, high-fidelity mockups, and interactive prototypes.',
+      'Designed user flows for visitors, supporters, and missionaries.',
+      'Assisted with early frontend implementation to protect design-system quality.',
+    ],
     caseStudySections: [
       {
         title: 'Responsibilities',
@@ -983,11 +1022,10 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Gave missionaries a dedicated platform to share work, updates, and progress.',
-          'Made it easier for supporters to follow and financially support missions.',
-          'Reduced friction in content sharing and donation flows.',
-          'Kept the experience usable even for less technical users.',
-          'Created a scalable design system that could support platform growth.',
+          'Organized missionary stories, updates, and profile content into a clearer publishing model.',
+          'Made the support journey feel connected to the mission story instead of like a detached form.',
+          'Kept donation and sharing steps approachable for field users and less technical supporters.',
+          'Left room for the platform to scale as more missionaries, agencies, and supporters joined.',
         ],
       },
     ],
@@ -1102,9 +1140,9 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Replaced paper-heavy documentation with a guided digital sequence that teams could reuse.',
-          'Made work observation and line-balance studies easier to repeat, compare, and review consistently.',
-          'Gave teams a clearer path from observation to improvement action items.',
+          'Turned field observations into reusable digital studies instead of paper packets.',
+          'Reduced back-and-forth when comparing manual, machine, and walking time across studies.',
+          'Kept improvement follow-up tied to the same sequence that captured the observations.',
         ],
       },
     ],
@@ -1112,16 +1150,12 @@ export const baseProjects = [
       'Lean teams could run work-observation and line-balance studies in one repeatable digital flow, with clearer comparisons and easier review.',
     gallery: [
       {
-        src: '/assets/work/workrite/Project_Process.png',
-        alt: 'Workrite process configuration screen',
-      },
-      {
         src: '/assets/work/workrite/Work Combination.png',
         alt: 'Workrite work combination analysis screen',
       },
       {
-        src: '/assets/work/workrite/Work Observation Training.pptx.pdf - Page 3 of 27.png',
-        alt: 'Workrite work observation training overview',
+        src: '/assets/work/workrite/Project_Process.png',
+        alt: 'Workrite process configuration screen',
       },
       {
         src: '/assets/work/workrite/Work Observation.png',
@@ -1175,6 +1209,14 @@ export const baseProjects = [
       'Created parent dashboards that made setup and oversight straightforward.',
       'Unified both roles under a clear design system and shared learning flow.',
     ],
+    responsibilities: [
+      'Aligned product input with the kid and parent experiences and the goals of financial education and family trust.',
+      'Owned the overall UI and UX direction for the platform.',
+      'Designed the complete product experience from concept to final interface.',
+      'Created the product design system.',
+      'Designed user flows for both children and parents.',
+      'Developed wireframes, high-fidelity mockups, and prototypes.',
+    ],
     caseStudySections: [
       {
         title: 'Problem',
@@ -1212,10 +1254,10 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Created a product that helps children learn financial responsibility through hands-on allowance practice.',
-          'Enabled parents to set up the experience once, then guide learning with minimal effort.',
-          'Turned financial education into an engaging digital experience centered on practice and responsibility.',
-          'Delivered a scalable interface that supported both user roles clearly.',
+          'Gave kids a hands-on allowance workflow with visible savings, goals, and consequences.',
+          'Let parents guide the learning without having to micromanage every interaction.',
+          'Made the financial-learning model feel more practical than a classroom lesson.',
+          'Kept the kid and parent roles distinct while still feeling like one product.',
         ],
       },
     ],
@@ -1305,6 +1347,14 @@ export const baseProjects = [
       'Introduced clearer logical steps for managing large photo collections.',
       'Reduced visual clutter while maintaining core features.',
     ],
+    responsibilities: [
+      'Aligned stakeholder input with photo-management workflows, admin needs, and operational constraints.',
+      'Designed the UX and UI for the internal admin interface used to manage photos.',
+      'Simplified workflows for organizing and managing image assets.',
+      'Created high-fidelity UI mockups and prototypes.',
+      'Worked with stakeholders to refine features and improve usability.',
+      'Iterated on designs based on product-team feedback.',
+    ],
     caseStudySections: [
       {
         title: 'Responsibilities',
@@ -1336,10 +1386,10 @@ export const baseProjects = [
       {
         title: 'Impact',
         items: [
-          'Made the admin system significantly easier to navigate.',
-          'Reduced friction when managing large photo collections.',
-          'Improved efficiency for administrators handling photo workflows.',
-          'Created a clearer and more intuitive internal user experience.',
+          'Organized photo-review work into clearer steps for administrators.',
+          'Helped admins sort, locate, and act on large batches of images more efficiently.',
+          'Kept supporting tools accessible without crowding the main workflow.',
+          'Reduced training overhead by making the interface easier to learn and revisit.',
         ],
       },
     ],
