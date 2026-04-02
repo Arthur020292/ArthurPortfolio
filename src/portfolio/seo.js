@@ -229,6 +229,9 @@ export function buildPortfolioStructuredData(meta, siteUrl) {
         isPartOf: {
           '@id': websiteNode['@id'],
         },
+        mainEntity: {
+          '@id': personNode['@id'],
+        },
         name: meta.title,
         url: canonicalUrl || meta.path,
       },
