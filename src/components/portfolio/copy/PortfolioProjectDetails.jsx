@@ -58,7 +58,7 @@ function getAdjacentProjects(project) {
   };
 }
 
-function getRelatedProjects(project) {
+export function getRelatedProjects(project) {
   return getBrowseProjects()
     .filter((entry) => entry.slug !== project.slug)
     .slice(0, 3);
@@ -204,7 +204,7 @@ export function PortfolioProjectDetails({ project }) {
         ) : null}
 
         {relatedProjects.length ? (
-          <div className="portfolio-left-item mt-10 max-[640px]:mt-8">
+          <div className="portfolio-left-item mt-10 max-[640px]:mt-8 max-[640px]:hidden">
             <SectionLabel>Related Case Studies</SectionLabel>
             <div className="mt-4 grid gap-3">
               {relatedProjects.map((entry) => (
