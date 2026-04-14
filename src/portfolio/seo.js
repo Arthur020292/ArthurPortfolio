@@ -93,7 +93,7 @@ export function getPortfolioPageMeta(route) {
   if (route?.type === 'projects') {
     return {
       description:
-        'Browse product design and UI/UX case studies by Arthur Baduyen across healthcare, internal tools, design systems, and frontend-ready delivery.',
+        'Browse product design and UI/UX case studies by Arthur Baduyen across healthcare, internal tools, design systems, and service platforms.',
       imagePath: DEFAULT_SOCIAL_IMAGE_PATH,
       itemList: projects.map((project) => ({
         description: buildProjectSeoDescription(project),

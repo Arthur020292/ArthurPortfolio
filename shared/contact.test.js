@@ -30,13 +30,11 @@ describe('contact helpers', () => {
         email: '  arthur@example.com ',
         message: '  Need help with a redesign. ',
         name: ' Arthur ',
-        projectType: ' Redesign ',
       })
     ).toEqual({
       email: 'arthur@example.com',
       message: 'Need help with a redesign.',
       name: 'Arthur',
-      projectType: 'Redesign',
       spam: false,
     });
   });
@@ -54,7 +52,6 @@ describe('contact helpers', () => {
       email: '',
       message: '',
       name: '',
-      projectType: '',
       spam: true,
     });
   });
@@ -64,12 +61,11 @@ describe('contact helpers', () => {
       email: 'arthur@example.com',
       message: 'Line 1\n<script>alert("x")</script>',
       name: '<Arthur>',
-      projectType: 'Redesign & Strategy',
     });
 
     expect(html).toContain('&lt;Arthur&gt;');
-    expect(html).toContain('Redesign &amp; Strategy');
     expect(html).toContain('Line 1<br />&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;');
-    expect(text).toContain('Project type: Redesign & Strategy');
+    expect(html).not.toContain('Project type');
+    expect(text).not.toContain('Project type');
   });
 });

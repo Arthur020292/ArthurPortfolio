@@ -54,7 +54,6 @@ describe('contact api handler', () => {
       email: 'arthur@example.com',
       message: 'Need help with a redesign.',
       name: 'Arthur',
-      projectType: 'Redesign',
     });
 
     await handler({ body, headers: { host: 'arthurbaduyen.dev' }, method: 'POST' }, res);
@@ -66,7 +65,6 @@ describe('contact api handler', () => {
         email: 'arthur@example.com',
         message: 'Need help with a redesign.',
         name: 'Arthur',
-        projectType: 'Redesign',
       },
       remoteIp: undefined,
       requestOrigin: 'http://arthurbaduyen.dev',

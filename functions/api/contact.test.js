@@ -66,7 +66,6 @@ describe('cloudflare contact function', () => {
           email: 'arthur@example.com',
           message: 'Need help with a redesign.',
           name: 'Arthur',
-          projectType: 'Redesign',
           turnstileToken: 'token',
         }),
         url: 'https://arthurbaduyen.dev/api/contact',
@@ -92,7 +91,6 @@ describe('cloudflare contact function', () => {
         email: 'arthur@example.com',
         message: 'Need help with a redesign.',
         name: 'Arthur',
-        projectType: 'Redesign',
         turnstileToken: 'token',
       },
       rateLimitStore: {

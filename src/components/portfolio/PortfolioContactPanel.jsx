@@ -8,7 +8,6 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
     email: '',
     message: '',
     name: '',
-    projectType: '',
   });
   const [turnstileToken, setTurnstileToken] = useState('');
   const [submitState, setSubmitState] = useState({
@@ -124,7 +123,6 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
         email: '',
         message: '',
         name: '',
-        projectType: '',
       });
       if (requiresTurnstile) {
         resetTurnstile();
@@ -215,29 +213,6 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
               type="email"
               value={formState.email}
             />
-          </label>
-          <label className="grid gap-2">
-            <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">
-              Project Type
-            </span>
-            <select
-              className="rounded-full border border-slate-200 bg-white px-5 py-3 text-slate-900 outline-none transition-colors focus:border-slate-400"
-              name="projectType"
-              onChange={(event) =>
-                setFormState((current) => ({
-                  ...current,
-                  projectType: event.target.value,
-                }))
-              }
-              value={formState.projectType}
-            >
-              <option value="">Select one if helpful</option>
-              <option value="New product">New product</option>
-              <option value="Redesign">Redesign</option>
-              <option value="Design system">Design system</option>
-              <option value="Frontend-ready design">Frontend-ready design</option>
-              <option value="Other">Other</option>
-            </select>
           </label>
           <label className="grid gap-2">
             <span className="text-[0.72rem] font-bold tracking-[0.18em] text-slate-400 uppercase">

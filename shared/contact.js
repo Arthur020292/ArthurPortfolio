@@ -39,7 +39,6 @@ export function parseContactPayload(payload) {
   const name = normalizeField(payload?.name);
   const email = normalizeField(payload?.email);
   const message = normalizeField(payload?.message);
-  const projectType = normalizeField(payload?.projectType);
 
   if (company) {
     return {
@@ -47,7 +46,6 @@ export function parseContactPayload(payload) {
       email: '',
       message: '',
       name: '',
-      projectType: '',
       spam: true,
     };
   }
@@ -80,30 +78,13 @@ export function parseContactPayload(payload) {
     throw new Error('Message is too long.');
   }
 
-  if (projectType.length > 120) {
-    throw new Error('Project type is too long.');
-  }
-
-  return { email, message, name, projectType, spam: false };
+  return { email, message, name, spam: false };
 }
 
-export function createEmailContent({ email, message, name, projectType }) {
+export function createEmailContent({ email, message, name }) {
   const escapedName = escapeHtml(name);
   const escapedEmail = escapeHtml(email);
   const escapedMessage = escapeHtml(message).replaceAll('\n', '<br />');
-  const escapedProjectType = projectType ? escapeHtml(projectType) : '';
-  const projectTypeRow = escapedProjectType
-    ? `
-          <tr>
-            <td style="padding: 0 0 12px; color: #667085; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;">
-              Project type
-            </td>
-            <td style="padding: 0 0 12px; color: #101828; font-size: 16px; font-weight: 500;">
-              ${escapedProjectType}
-            </td>
-          </tr>
-      `
-    : '';
 
   return {
     html: `
@@ -139,7 +120,6 @@ export function createEmailContent({ email, message, name, projectType }) {
                   <a href="mailto:${escapedEmail}" style="color: #1d4ed8; text-decoration: none;">${escapedEmail}</a>
                 </td>
               </tr>
-              ${projectTypeRow}
             </table>
 
             <div style="margin-top: 28px;">
@@ -162,7 +142,6 @@ Reply to: ${email}
 
 Name: ${name}
 Email: ${email}
-${projectType ? `Project type: ${projectType}\n` : ''}
 
 Message:
 ${message}`,
