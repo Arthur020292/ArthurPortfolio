@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { getRelatedProjects } from './copy/PortfolioProjectDetails';
 import { SafeImage } from './SafeImage';
 import { useIsMobileViewport } from '../../hooks/useIsMobileViewport';
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion';
-import { PortfolioProjectRouteNav } from './copy/PortfolioProjectDetails';
 import { PortfolioContactFooterCtaSection } from './PortfolioContactFooterCta';
+import { SectionLabel } from './copy/SectionLabel';
+import { PortfolioNavLink } from './PortfolioNavLink';
+import { getProjectPath } from '../../portfolio/routes';
 
 function hexToRgb(hexColor) {
   if (!hexColor?.startsWith('#')) {
@@ -31,6 +34,7 @@ export function PortfolioProjectViewer({ project }) {
   const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion = usePrefersReducedMotion();
   const disableScreenTransitions = prefersReducedMotion || isMobileViewport;
+  const relatedProjects = getRelatedProjects(project);
   const [screenIndex, setScreenIndex] = useState(0);
   const [displayedScreenIndex, setDisplayedScreenIndex] = useState(0);
   const [screenTransition, setScreenTransition] = useState('idle');
@@ -335,9 +339,27 @@ export function PortfolioProjectViewer({ project }) {
         </div>
       </div>
 
-      <div className="hidden border-t border-slate-200/80 bg-[rgba(250,250,250,0.96)] px-4 py-5 shadow-[0_-10px_20px_rgba(15,23,42,0.05)] backdrop-blur-sm max-[640px]:block">
-        <PortfolioProjectRouteNav project={project} />
-      </div>
+      {relatedProjects.length ? (
+        <div className="hidden w-full px-4 pt-8 pb-4 max-[640px]:block max-[640px]:px-4 max-[640px]:pt-8 max-[640px]:pb-4">
+          <SectionLabel>Related Case Studies</SectionLabel>
+          <div className="mt-4 grid gap-3">
+            {relatedProjects.map((entry) => (
+              <PortfolioNavLink
+                className="inline-flex flex-col rounded-[16px] border border-slate-200 bg-[#fbfaf7] px-4 py-3 text-left no-underline transition-colors hover:border-slate-300"
+                key={entry.slug}
+                to={getProjectPath(entry.slug)}
+              >
+                <span className="text-[0.72rem] font-bold tracking-[0.16em] text-slate-400 uppercase">
+                  {entry.category}
+                </span>
+                <span className="mt-1 text-[1rem] font-semibold text-slate-900">
+                  {entry.name}
+                </span>
+              </PortfolioNavLink>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <PortfolioContactFooterCtaSection className="hidden max-[640px]:block" />
 
