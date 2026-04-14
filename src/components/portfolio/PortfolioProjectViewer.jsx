@@ -30,6 +30,14 @@ function hexToRgb(hexColor) {
   };
 }
 
+function getGalleryImageSrc(screen) {
+  if (screen.display === 'longform') {
+    return screen.src;
+  }
+
+  return screen.displaySrc || screen.src;
+}
+
 export function PortfolioProjectViewer({ project }) {
   const isMobileViewport = useIsMobileViewport();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -90,7 +98,7 @@ export function PortfolioProjectViewer({ project }) {
       project.screens[displayedScreenIndex + 1],
     ]
       .filter(Boolean)
-      .map((screen) => screen.displaySrc || screen.src)
+      .map((screen) => getGalleryImageSrc(screen))
       .filter((src) => src && !preloadedScreensRef.current.has(src));
 
     if (!adjacentScreenSources.length) {
@@ -245,7 +253,7 @@ export function PortfolioProjectViewer({ project }) {
                     fetchPriority="high"
                     loading="eager"
                     sizes="(max-width: 640px) 92vw, (max-width: 980px) 88vw, 1080px"
-                    src={currentScreen.displaySrc || currentScreen.src}
+                    src={getGalleryImageSrc(currentScreen)}
                   />
                 </div>
               ) : (
@@ -257,7 +265,7 @@ export function PortfolioProjectViewer({ project }) {
                   fetchPriority="high"
                   loading="eager"
                   sizes="(max-width: 640px) 92vw, (max-width: 980px) 88vw, 1080px"
-                  src={currentScreen.displaySrc || currentScreen.src}
+                  src={getGalleryImageSrc(currentScreen)}
                 />
               )}
             </div>
