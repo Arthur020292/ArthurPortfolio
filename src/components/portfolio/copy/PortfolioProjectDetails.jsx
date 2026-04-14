@@ -40,24 +40,6 @@ function renderSummaryWithLink(summary, linkText, href) {
   );
 }
 
-function getAdjacentProjects(project) {
-  const orderedProjects = getBrowseProjects();
-  const currentIndex = orderedProjects.findIndex((entry) => entry.slug === project.slug);
-
-  if (currentIndex === -1) {
-    return {
-      nextProject: orderedProjects[0] ?? project,
-    };
-  }
-
-  return {
-    nextProject:
-      currentIndex < orderedProjects.length - 1
-        ? orderedProjects[currentIndex + 1]
-        : orderedProjects[0],
-  };
-}
-
 export function getRelatedProjects(project) {
   return getBrowseProjects()
     .filter((entry) => entry.slug !== project.slug)
@@ -75,45 +57,12 @@ function getProjectHighlights(project) {
   ].filter(Boolean);
 }
 
-export function PortfolioProjectRouteNav({
-  className = '',
-  project,
-}) {
-  const { nextProject } = getAdjacentProjects(project);
-
-  return (
-    <nav
-      aria-label="Next project"
-      className={`flex items-start justify-between gap-5 max-[980px]:flex-col max-[980px]:items-start max-[980px]:gap-7 ${className}`}
-    >
-      <PortfolioNavLink
-        className="inline-flex items-center font-medium text-slate-500 transition-colors hover:text-slate-900 max-[980px]:hidden"
-        to={PORTFOLIO_PROJECTS_PATH}
-      >
-        All Projects
-      </PortfolioNavLink>
-      <PortfolioNavLink
-        className="group ml-auto flex flex-col items-start text-left max-[980px]:ml-0 max-[980px]:items-start"
-        to={getProjectPath(nextProject.slug)}
-      >
-        <span className="inline-flex items-center gap-2 text-[0.74rem] font-bold tracking-[0.16em] text-slate-400 uppercase transition-colors group-hover:text-slate-500">
-          Next Project
-          <span aria-hidden="true">→</span>
-        </span>
-        <span className="mt-1 text-[1.02rem] font-semibold leading-[1.35] text-slate-900 transition-colors group-hover:text-slate-700 sm:mt-2 sm:text-[1.08rem]">
-          {nextProject.name}
-        </span>
-      </PortfolioNavLink>
-    </nav>
-  );
-}
-
 export function PortfolioProjectDetails({ project }) {
   const relatedProjects = getRelatedProjects(project);
   const projectHighlights = getProjectHighlights(project);
 
   return (
-    <div className="flex min-h-full flex-col max-[980px]:min-h-0">
+    <div className="flex min-h-full flex-col pb-12 max-[980px]:min-h-0 max-[980px]:pb-0">
       <div className="flex-1 max-[980px]:flex-none">
         <nav
           aria-label="Breadcrumb"
@@ -241,9 +190,6 @@ export function PortfolioProjectDetails({ project }) {
         </div>
       </div>
 
-      <div className="portfolio-left-item mt-10 border-t border-slate-200/80 bg-[rgba(250,250,250,0.98)] px-12 py-6 shadow-[0_-14px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm max-[980px]:mt-12 max-[980px]:min-h-[13rem] max-[980px]:bg-[rgba(250,250,250,0.96)] max-[980px]:px-0 max-[980px]:py-12 max-[980px]:shadow-[0_-10px_20px_rgba(15,23,42,0.05)] max-[640px]:hidden">
-        <PortfolioProjectRouteNav project={project} />
-      </div>
     </div>
   );
 }
