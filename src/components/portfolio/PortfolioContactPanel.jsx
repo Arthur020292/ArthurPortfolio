@@ -268,14 +268,6 @@ export function PortfolioContactPanel({ motionState = 'idle' }) {
           </div>
         </form>
 
-        <div className="mt-3">
-          <a
-            className="text-[0.95rem] text-slate-600 underline decoration-slate-300 underline-offset-4 transition-colors hover:text-slate-900"
-            href={`mailto:${CONTACT_EMAIL}`}
-          >
-            Prefer your email app instead?
-          </a>
-        </div>
       </div>
     </div>
   );
