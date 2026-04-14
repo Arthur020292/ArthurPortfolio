@@ -6,7 +6,7 @@ export function PortfolioContactContent() {
     <div className="flex h-full flex-col">
       <div className="portfolio-left-item max-[980px]:hidden">
         <h1 className="font-heading text-[clamp(2.3rem,4vw,4rem)] leading-[0.96] font-bold tracking-[-0.05em] text-slate-900">
-          Let&apos;s talk about your next product.
+          Let&apos;s talk about your product.
         </h1>
         <p className="mt-6 max-w-[29rem] text-[1.02rem] leading-[1.8] text-slate-500 max-[980px]:hidden">
           Tell me what you&apos;re building, where you need support, and what stage you&apos;re in.
